@@ -26,14 +26,9 @@ class RootActivity : AppCompatActivity() {
         // ...
     }
 
-    /* binding.bottomNavigationView.menu.findItem(R.id.mediaLibraryFragment).isChecked = true
-     viewModel.updateTheme()*/
-
     val navHostFragment =
         supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
-    /* val navController = navHostFragment.navController
-     val bottomNavigationView = binding.bottomNavigationView
-     bottomNavigationView.setupWithNavController(navController)*/
+
 
     override fun onDestroy() {
         super.onDestroy()

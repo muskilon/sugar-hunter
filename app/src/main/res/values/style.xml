@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <style name="CustomBottomNavigation" parent="Widget.Design.BottomNavigationView">
+        <item name="android:textSize">12sp</item> <!-- Размер текста -->
+        <item name="android:paddingTop">8dp</item> <!-- Отступ сверху -->
+        <item name="android:paddingBottom">8dp</item> <!-- Отступ снизу -->
+        <item name="android:fontFamily">@font/my_custom_font</item> <!-- Размер шрифта -->
+    </style>
+</resources>
