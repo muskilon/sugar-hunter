@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <style name="CustomBottomNavigation" parent="Widget.Design.BottomNavigationView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="lineHeight">16sp</item>
+        <!-- Шрифт дисплей регудар -->
+    </style>
+</resources>
