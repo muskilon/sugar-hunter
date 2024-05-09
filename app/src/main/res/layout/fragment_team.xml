@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:text="@string/team"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/margin_24dp"
         android:paddingTop="@dimen/margin_19dp"
         android:paddingBottom="@dimen/margin_19dp"
         android:paddingStart="@dimen/margin_16dp"
