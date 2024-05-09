@@ -1,9 +1,9 @@
-package ru.practicum.android.diploma.ui.search
+package ru.practicum.android.diploma.ui.filter
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SearchViewModel : ViewModel() {
+class FilterViewModel : ViewModel() {
 
     val mutable = MutableLiveData<Int>()
 
