@@ -9,10 +9,10 @@ import androidx.room.Query
 @Dao
 interface FavouritesVacanciesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertVacancy(vacancy: FavouriteVacancy)
+    fun insertVacancy(vacancy: FavouriteVacancy)
 
     @Query("SELECT * FROM favourite_vacancy")
-    suspend fun getVacancies(): List<FavouriteVacancy>
+    fun getVacancies(): List<FavouriteVacancy>
 
     @Delete(entity = FavouriteVacancy::class)
     fun deleteVacancy(vacancy: FavouriteVacancy)
