@@ -5,7 +5,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
 class RetrofitNetworkClient(
-    private val context: Context, private val hhApi: HHApi
+    private val context: Context,
+    private val hhApi: HHApi
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response { //  placeholder
