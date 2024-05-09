@@ -29,7 +29,6 @@ class RootActivity : AppCompatActivity() {
     val navHostFragment =
         supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
 
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
