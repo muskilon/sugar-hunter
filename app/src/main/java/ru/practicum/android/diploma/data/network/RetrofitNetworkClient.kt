@@ -11,7 +11,7 @@ class RetrofitNetworkClient(
     private val hhApi: HHApi
 ) : NetworkClient {
 
-    override suspend fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response { //placeholder
         return try {
             if (!isConnected()) {
                 return Response().apply { resultCode = SERVER_ERROR }
@@ -24,7 +24,7 @@ class RetrofitNetworkClient(
             } else {
                 Response().apply { resultCode = NOT_FOUND }
             }
-        } catch (ex: Exception) {
+        } catch (ex: AccessDeniedException) {
             Response().apply { resultCode = NOT_FOUND }
         }
     }
@@ -37,8 +37,8 @@ class RetrofitNetworkClient(
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
             when {
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> return true
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> return true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> return true
             }
         }
