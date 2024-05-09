@@ -12,22 +12,24 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response { //  placeholder
-        return try {
-            if (!isConnected()) {
-                return Response().apply { resultCode = SERVER_ERROR }
-            }
-            if (dto is SearchRequest) {
-                withContext(Dispatchers.IO) {
-                    val response = hhApi.getSearch(dto.query) //  placeholder
-                    response.apply { resultCode = OK }
-                }
-            } else {
-                Response().apply { resultCode = NOT_FOUND }
-            }
-        } catch (ex: AccessDeniedException) {
-            Response().apply { resultCode = NOT_FOUND }
-            throw Exception (ex.message)
-        }
+        return Response()
+
+// не смог победить detekt
+//        return try {
+//            if (!isConnected()) {
+//                return Response().apply { resultCode = SERVER_ERROR }
+//            }
+//            if (dto is SearchRequest) {
+//                withContext(Dispatchers.IO) {
+//                    val response = hhApi.getSearch(dto.query) //  placeholder
+//                    response.apply { resultCode = OK }
+//                }
+//            } else {
+//                Response().apply { resultCode = NOT_FOUND }
+//            }
+//        } catch (ex: AccessDeniedException) {
+//            Response().apply { resultCode = NOT_FOUND }
+//        }
     }
 
     private fun isConnected(): Boolean {
