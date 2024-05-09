@@ -17,7 +17,7 @@ class App : Application() {
             androidContext(this@App)
             modules(dataModules, domainModules, viewModelModules)
         }
-        resourcess = resources
+        resource = resources
 
         when (this.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
 //            Это, по-идее, ставит приложению тему, в соответствии с текущей темой телефона
@@ -38,7 +38,7 @@ class App : Application() {
     }
 
     companion object {
-        private lateinit var resourcess: Resources
+        private var resource: Resources? = null
 
         fun changeTheme(isNightMode: Boolean) {
             when (isNightMode) {
@@ -47,8 +47,8 @@ class App : Application() {
             }
         }
 
-        fun getAppResources(): Resources { // Это если где-то нужно будет получить ресурсы
-            return resourcess
+        fun getAppResource(): Resources? { // Это если где-то нужно будет получить ресурсы
+            return resource
         }
     }
 }
