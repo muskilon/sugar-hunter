@@ -59,35 +59,34 @@ dependencies {
     androidTestImplementation(libs.uiTests.espressoCore)
     // endregion
 
-    //Glide
+    // Glide
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
 
-    //Retrofit
+    // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-    //Interceptor
+    // Interceptor
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
 
-    //KMMP
+    // KMMP
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.livedata.ktx)
 
-    //Koin
+    // Koin
     implementation(libs.koin.android)
 
-    //NavigationCompose + Fragment
+    // NavigationCompose + Fragment
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
     implementation(libs.fragment.ktx)
 
-    //coroutines
+    // coroutines
     implementation(libs.kotlinx.coroutines.android)
 
-    //room
-    val room_version = "2.5.1"
+    // room
     implementation(libs.room.runtime)
     kapt(libs.room.compiler)
     implementation(libs.room.ktx)
