@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.filter.choice_place
+package ru.practicum.android.diploma.ui.filter.`choice$place`
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

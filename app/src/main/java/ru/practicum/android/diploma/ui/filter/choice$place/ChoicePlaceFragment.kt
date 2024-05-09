@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.filter.choice_place
+package ru.practicum.android.diploma.ui.filter.`choice$place`
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ class ChoicePlaceFragment : Fragment() {
 
     private var _binding: FragmentChoicePlaceBinding? = null
     private val binding get() = _binding!!
-    //private val viewModel by viewModel<ChoicePlaceViewModel>()
+    // private val viewModel by viewModel<ChoicePlaceViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
