@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/searchFragment2">
+    app:startDestination="@id/searchFragment">
 
     <fragment
         android:id="@+id/choicePlaceFragment"
@@ -28,12 +28,12 @@
         android:label="fragment_country"
         tools:layout="@layout/fragment_country" />
     <fragment
-        android:id="@+id/favouriteFragment2"
+        android:id="@+id/favouriteFragment"
         android:name="ru.practicum.android.diploma.ui.favourite.FavouriteFragment"
         android:label="fragment_favourite"
         tools:layout="@layout/fragment_favourite" >
         <action
-            android:id="@+id/action_favouriteFragment2_to_vacancyFragment"
+            android:id="@+id/action_favouriteFragment_to_vacancyFragment"
             app:destination="@id/vacancyFragment" />
     </fragment>
     <fragment
@@ -54,31 +54,31 @@
         android:label="fragment_region"
         tools:layout="@layout/fragment_region" />
     <fragment
-        android:id="@+id/searchFragment2"
+        android:id="@+id/searchFragment"
         android:name="ru.practicum.android.diploma.ui.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_searchFragment2_to_filterFragment"
+            android:id="@+id/action_searchFragment_to_filterFragment"
             app:destination="@id/filterFragment" />
         <action
-            android:id="@+id/action_searchFragment2_to_choicePlaceFragment"
+            android:id="@+id/action_searchFragment_to_choicePlaceFragment"
             app:destination="@id/choicePlaceFragment" />
         <action
-            android:id="@+id/action_searchFragment2_to_countryFragment"
+            android:id="@+id/action_searchFragment_to_countryFragment"
             app:destination="@id/countryFragment" />
         <action
-            android:id="@+id/action_searchFragment2_to_choiceSphereFragment"
+            android:id="@+id/action_searchFragment_to_choiceSphereFragment"
             app:destination="@id/choiceSphereFragment" />
         <action
-            android:id="@+id/action_searchFragment2_to_regionFragment"
+            android:id="@+id/action_searchFragment_to_regionFragment"
             app:destination="@id/regionFragment" />
         <action
-            android:id="@+id/action_searchFragment2_to_vacancyFragment"
+            android:id="@+id/action_searchFragment_to_vacancyFragment"
             app:destination="@id/vacancyFragment" />
     </fragment>
     <fragment
-        android:id="@+id/teamFragment2"
+        android:id="@+id/teamFragment"
         android:name="ru.practicum.android.diploma.ui.team.TeamFragment"
         android:label="fragment_team"
         tools:layout="@layout/fragment_team" />

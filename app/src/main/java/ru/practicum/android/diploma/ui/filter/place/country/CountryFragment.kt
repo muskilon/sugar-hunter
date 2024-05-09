@@ -32,4 +32,3 @@ class CountryFragment : Fragment() {
         _binding = null
     }
 }
-
