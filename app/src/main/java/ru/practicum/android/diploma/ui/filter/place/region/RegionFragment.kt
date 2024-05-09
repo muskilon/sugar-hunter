@@ -1,24 +1,24 @@
-package ru.practicum.android.diploma.ui.favourite
+package ru.practicum.android.diploma.ui.filter.place.region
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
+import ru.practicum.android.diploma.databinding.FragmentRegionBinding
 
-class FavouriteFragment : Fragment() {
+class RegionFragment : Fragment() {
 
-    private var _binding: FragmentFavouriteBinding? = null
+    private var _binding: FragmentRegionBinding? = null
     private val binding get() = _binding!!
-//    private val viewModel by viewModel<FavouriteViewModel>()
+//    private val viewModel by viewModel<RegionViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFavouriteBinding.inflate(inflater, container, false)
+        _binding = FragmentRegionBinding.inflate(inflater, container, false)
         return binding.root
     }
 
