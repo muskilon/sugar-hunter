@@ -7,12 +7,11 @@ import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 
-class RootActivity: AppCompatActivity() {
+class RootActivity : AppCompatActivity() {
 
     private var _binding: ActivityRootBinding? = null
     private val binding get() = _binding!!
-   // private val viewModel by viewModel<RootViewModel>()
-
+    // private val viewModel by viewModel<RootViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +26,14 @@ class RootActivity: AppCompatActivity() {
         // ...
     }
 
-   /* binding.bottomNavigationView.menu.findItem(R.id.mediaLibraryFragment).isChecked = true
-    viewModel.updateTheme()*/
+    /* binding.bottomNavigationView.menu.findItem(R.id.mediaLibraryFragment).isChecked = true
+     viewModel.updateTheme()*/
 
     val navHostFragment =
         supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
-   /* val navController = navHostFragment.navController
-    val bottomNavigationView = binding.bottomNavigationView
-    bottomNavigationView.setupWithNavController(navController)*/
-
+    /* val navController = navHostFragment.navController
+     val bottomNavigationView = binding.bottomNavigationView
+     bottomNavigationView.setupWithNavController(navController)*/
 
     override fun onDestroy() {
         super.onDestroy()
@@ -43,6 +41,3 @@ class RootActivity: AppCompatActivity() {
     }
 
 }
-
-
-
