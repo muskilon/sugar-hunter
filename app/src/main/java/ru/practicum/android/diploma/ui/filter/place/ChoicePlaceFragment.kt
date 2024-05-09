@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.filter.`choice$place`
+package ru.practicum.android.diploma.ui.filter.place
 
 import android.os.Bundle
 import android.view.LayoutInflater
