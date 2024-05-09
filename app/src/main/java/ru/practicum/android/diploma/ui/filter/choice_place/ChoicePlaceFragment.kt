@@ -1,24 +1,24 @@
-package ru.practicum.android.diploma.ui.search
+package ru.practicum.android.diploma.ui.filter.choice_place
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.databinding.FragmentChoicePlaceBinding
 
-class SearchFragment : Fragment() {
+class ChoicePlaceFragment : Fragment() {
 
-    private var _binding: FragmentSearchBinding? = null
+    private var _binding: FragmentChoicePlaceBinding? = null
     private val binding get() = _binding!!
-    // private val viewModel by viewModel<SearchViewModel>()
+    //private val viewModel by viewModel<ChoicePlaceViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentChoicePlaceBinding.inflate(inflater, container, false)
         return binding.root
     }
 
