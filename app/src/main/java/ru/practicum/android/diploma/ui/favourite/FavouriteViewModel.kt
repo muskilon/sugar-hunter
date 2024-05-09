@@ -1,9 +1,9 @@
-package ru.practicum.android.diploma.ui.filter.sphere
+package ru.practicum.android.diploma.ui.favourite
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ChoiceSphereViewModel : ViewModel() {
+class FavouriteViewModel: ViewModel() {
 
     val mutable = MutableLiveData<Int>()
 
