@@ -19,8 +19,6 @@ class App : Application() {
         }
         resourcess = resources
 
-        val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE)
-
         when (this.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
 //            Это, по-идее, ставит приложению тему, в соответствии с текущей темой телефона
 
@@ -40,7 +38,6 @@ class App : Application() {
     }
 
     companion object {
-        const val SHARED_PREFERENCES = "sharedPreferences"
         private lateinit var resourcess: Resources
 
         fun changeTheme(isNightMode: Boolean) {
