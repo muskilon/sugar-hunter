@@ -1,8 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!--    Base app colors-->
+    <attr name="prime_color_black" />
+    <attr name="prime_color_white" />
+    <attr name="secondary_gray" />
+
+    <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="prime_color_black">@color/Black_Day</item>
+        <item name="prime_color_white">@color/White_Day</item>
+        <item name="secondary_gray">@color/Light_grey</item>
+
+        <item name="android:statusBarColor">@color/White_Day</item>
+        <item name="android:navigationBarColor">@color/White_Day</item>
+
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 
     <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma" />
