@@ -8,9 +8,9 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
         <!-- Customize your application's theme here. -->
-        <item name="colorOnPrimary">@color/YP_white</item>
-        <item name="colorReverseOnPrimary">@color/YP_black</item>
-        <item name="colorOnSecondary">@color/YP_light_grey</item>
+        <item name="colorOnPrimary">@color/White_Universal</item>
+        <item name="colorReverseOnPrimary">@color/Black_Universal</item>
+        <item name="colorOnSecondary">@color/Light_grey</item>
     </style>
 
     <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma">

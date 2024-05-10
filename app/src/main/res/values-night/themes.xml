@@ -3,8 +3,8 @@
     <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <item name="colorOnPrimary">@color/YP_black</item>
-        <item name="colorReverseOnPrimary">@color/YP_white</item>
-        <item name="colorOnSecondary">@color/YP_gray</item>
+        <item name="colorOnPrimary">@color/Black_Universal</item>
+        <item name="colorReverseOnPrimary">@color/White_Universal</item>
+        <item name="colorOnSecondary">@color/Gray</item>
     </style>
 </resources>

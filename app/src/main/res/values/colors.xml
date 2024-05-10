@@ -2,9 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="YP_black">#1A1B22</color>
-    <color name="YP_white">#FDFDFD</color>
-    <color name="YP_light_grey">#E6E8EB</color>
-    <color name="YP_blue">#3772E7</color>
-    <color name="YP_gray">#AEAFB4</color>
+    <color name="Black_Universal">#1A1B22</color>
+    <color name="White_Universal">#FDFDFD</color>
+    <color name="Light_grey">#E6E8EB</color>
+    <color name="Blue">#3772E7</color>
+    <color name="Red">#F56B6C</color>
+    <color name="Gray">#AEAFB4</color>
+    <color name="Background">#1A1B2280</color>
 </resources>
