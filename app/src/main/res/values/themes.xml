@@ -1,9 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <attr name="colorOnPrimary" format="color" />
+    <attr name="colorReverseOnPrimary" format="color" />
+    <attr name="colorOnSecondary" format="color" />
     <!-- Base application theme. -->
-    <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- Customize your application's theme here. -->
+        <item name="colorOnPrimary">@color/YP_white</item>
+        <item name="colorReverseOnPrimary">@color/YP_black</item>
+        <item name="colorOnSecondary">@color/YP_light_grey</item>
     </style>
 
-    <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma" />
+    <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma">
+    </style>
 </resources>

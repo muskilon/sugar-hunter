@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".TeamFragment">
+    tools:context=".TeamFragment"
+    android:background="?attr/colorOnPrimary"
+    android:theme="@style/Base.Theme.PracticumAndroidDiploma">
 
 
     <TextView
@@ -18,7 +20,8 @@
         android:paddingStart="@dimen/margin_16dp"
         android:paddingEnd="@dimen/margin_8dp"
         android:textSize="@dimen/textSize_22sp"
-        android:fontFamily="@font/ys_display_medium"/>
+        android:fontFamily="@font/ys_display_medium"
+        android:textColor="?attr/colorReverseOnPrimary"/>
 
 
 
@@ -36,7 +39,7 @@
             android:text="@string/teamAuthorTitle"
             android:textSize="@dimen/textSize_32sp"
             android:fontFamily="@font/ys_display_bold"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorReverseOnPrimary"
             android:paddingBottom="@dimen/margin_8dp"
             android:paddingTop="@dimen/margin_8dp"
             android:paddingStart="@dimen/margin_16dp"
@@ -49,7 +52,7 @@
             android:text="@string/teamAuthor1"
             android:textSize="@dimen/textSize_16sp"
             android:fontFamily="@font/ys_display_medium"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorReverseOnPrimary"
             android:layout_marginTop="@dimen/margin_24dp"
             android:layout_marginStart="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"/>
@@ -61,7 +64,7 @@
             android:text="@string/teamAuthor2"
             android:textSize="@dimen/textSize_16sp"
             android:fontFamily="@font/ys_display_medium"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorReverseOnPrimary"
             android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginStart="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"/>
@@ -73,7 +76,7 @@
             android:text="@string/teamAuthor3"
             android:textSize="@dimen/textSize_16sp"
             android:fontFamily="@font/ys_display_medium"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorReverseOnPrimary"
             android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginStart="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"/>
@@ -85,7 +88,7 @@
             android:text="@string/teamAuthor4"
             android:textSize="@dimen/textSize_16sp"
             android:fontFamily="@font/ys_display_medium"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorReverseOnPrimary"
             android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginStart="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"/>
