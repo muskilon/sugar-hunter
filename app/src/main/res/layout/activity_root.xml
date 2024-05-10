@@ -15,9 +15,8 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <!-- app:navGraph="@navigation/nav_graph"-->
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_graph" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -26,8 +25,8 @@
         android:layout_height="56dp"
         android:background="@color/white"
         app:itemIconTint="@animator/tab_color"
-        app:itemPaddingTop="8dp"
         app:itemPaddingBottom="8dp"
+        app:itemPaddingTop="8dp"
         app:itemTextColor="@animator/tab_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
