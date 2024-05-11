@@ -14,34 +14,34 @@ import ru.practicum.android.diploma.ui.team.TeamViewModel
 import ru.practicum.android.diploma.ui.vacancy.VacancyViewModel
 
 val viewModelModules = module {
-    viewModel{
+    viewModel {
         FavouriteViewModel()
     }
-    viewModel{
+    viewModel {
         CountryViewModel()
     }
-    viewModel{
+    viewModel {
         RegionViewModel()
     }
-    viewModel{
+    viewModel {
         ChoicePlaceViewModel()
     }
-    viewModel{
+    viewModel {
         ChoiceSphereViewModel()
     }
-    viewModel{
+    viewModel {
         FilterViewModel()
     }
-    viewModel{
+    viewModel {
         RootViewModel()
     }
-    viewModel{
+    viewModel {
         SearchViewModel()
     }
-    viewModel{
+    viewModel {
         TeamViewModel()
     }
-    viewModel{
+    viewModel {
         VacancyViewModel()
     }
 }
