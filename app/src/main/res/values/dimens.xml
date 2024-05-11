@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<dimen name="margin_24dp">24dp</dimen>
-<dimen name="margin_19dp">19dp</dimen>
-<dimen name="margin_16dp">16dp</dimen>
-<dimen name="margin_8dp">8dp</dimen>
-<dimen name="textSize_32sp">32sp</dimen>
-<dimen name="textSize_22sp">22sp</dimen>
-<dimen name="textSize_16sp">16sp</dimen>
+    <!--    Margins-->
+    <dimen name="margin_24dp">24dp</dimen>
+    <dimen name="margin_19dp">19dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+
+    <!--Paddings-->
+    <dimen name="padding_8dp">8dp</dimen>
+
+    <!--TextSize-->
+    <dimen name="textSize_32sp">32sp</dimen>
+    <dimen name="textSize_22sp">22sp</dimen>
+    <dimen name="textSize_16sp">16sp</dimen>
+    <dimen name="textSize_12sp">12sp</dimen>
+
+    <!--    Text Line Hieghts-->
+    <dimen name="text_line_height_26dp">26dp</dimen>
+    <dimen name="text_line_height_38dp">38dp</dimen>
+    <dimen name="text_line_height_19dp">19dp</dimen>
+    <dimen name="text_line_height_16dp">16dp</dimen>
+
+    <!--Holders and States-->
+    <dimen name="autofill_view">0dp</dimen>
+
+    <!--    View Sizes-->
+    <dimen name="bottom_navigation_height">56dp</dimen>
 </resources>

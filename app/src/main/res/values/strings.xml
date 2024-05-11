@@ -1,10 +1,11 @@
 <resources>
+    <!--    Bottom bar Tab's names-->
     <string name="app_name">Practicum-Android-Diploma</string>
     <string name="main">Главная</string>
     <string name="favourite">Избранное</string>
+
+    <!--    Team Fragment Strings-->
     <string name="team">Команда</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="teamAuthorTitle">Над приложением работали</string>
     <string name="teamAuthor1">Михаил Шумихин</string>
     <string name="teamAuthor2">Мария Кузнецова</string>
