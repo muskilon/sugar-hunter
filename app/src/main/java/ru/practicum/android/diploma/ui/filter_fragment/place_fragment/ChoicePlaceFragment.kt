@@ -1,24 +1,24 @@
-package ru.practicum.android.diploma.ui.filter.place.region
+package ru.practicum.android.diploma.ui.filter_fragment.place_fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentRegionBinding
+import ru.practicum.android.diploma.databinding.FragmentChoicePlaceBinding
 
-class RegionFragment : Fragment() {
+class ChoicePlaceFragment : Fragment() {
 
-    private var _binding: FragmentRegionBinding? = null
+    private var _binding: FragmentChoicePlaceBinding? = null
     private val binding get() = _binding!!
-//    private val viewModel by viewModel<RegionViewModel>()
+    // private val viewModel by viewModel<ChoicePlaceViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRegionBinding.inflate(inflater, container, false)
+        _binding = FragmentChoicePlaceBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -1,9 +1,9 @@
-package ru.practicum.android.diploma.ui.favourite
+package ru.practicum.android.diploma.ui.root_activity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class FavouriteViewModel : ViewModel() {
+class RootViewModel : ViewModel() {
 
     val mutable = MutableLiveData<Int>()
 

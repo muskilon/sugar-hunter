@@ -1,24 +1,24 @@
-package ru.practicum.android.diploma.ui.filter
+package ru.practicum.android.diploma.ui.filter_fragment.sphere_fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.databinding.FragmentChoiceSphereBinding
 
-class FilterFragment : Fragment() {
+class ChoiceSphereFragment : Fragment() {
 
-    private var _binding: FragmentFilterBinding? = null
+    private var _binding: FragmentChoiceSphereBinding? = null
     private val binding get() = _binding!!
-//    private val viewModel by viewModel<FilterViewModel>()
+    // private val viewModel by viewModel<ChoiceSphereViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFilterBinding.inflate(inflater, container, false)
+        _binding = FragmentChoiceSphereBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -31,4 +31,5 @@ class FilterFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

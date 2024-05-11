@@ -1,9 +1,9 @@
-package ru.practicum.android.diploma.ui.filter.place.region
+package ru.practicum.android.diploma.ui.filter_fragment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class RegionViewModel : ViewModel() {
+class FilterViewModel : ViewModel() {
 
     val mutable = MutableLiveData<Int>()
 

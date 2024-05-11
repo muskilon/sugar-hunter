@@ -1,24 +1,24 @@
-package ru.practicum.android.diploma.ui.favourite
+package ru.practicum.android.diploma.ui.vacancy_fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
+import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 
-class FavouriteFragment : Fragment() {
+class VacancyFragment : Fragment() {
 
-    private var _binding: FragmentFavouriteBinding? = null
+    private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
-//    private val viewModel by viewModel<FavouriteViewModel>()
+//    private val viewModel by viewModel<VacancyViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFavouriteBinding.inflate(inflater, container, false)
+        _binding = FragmentVacancyBinding.inflate(inflater, container, false)
         return binding.root
     }
 

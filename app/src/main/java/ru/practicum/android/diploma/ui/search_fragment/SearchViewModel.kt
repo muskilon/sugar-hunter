@@ -1,9 +1,9 @@
-package ru.practicum.android.diploma.ui.team
+package ru.practicum.android.diploma.ui.search_fragment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class TeamViewModel : ViewModel() {
+class SearchViewModel : ViewModel() {
 
     val mutable = MutableLiveData<Int>()
 

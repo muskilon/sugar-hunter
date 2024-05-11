@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.vacancy
+package ru.practicum.android.diploma.ui.vacancy_fragment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
