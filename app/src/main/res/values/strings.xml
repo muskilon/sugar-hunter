@@ -11,4 +11,9 @@
     <string name="teamAuthor2">Мария Кузнецова</string>
     <string name="teamAuthor3">Максим Юрищев</string>
     <string name="teamAuthor4">Денис Кузьмин</string>
+
+
+    <!--    Favourite Fragment Strings-->
+    <string name="favouriteEmpty">Список пуст</string>
+    <string name="favouriteError">Не удалось получить список вакансий</string>
 </resources>
