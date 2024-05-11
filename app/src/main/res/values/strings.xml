@@ -11,4 +11,8 @@
     <string name="teamAuthor2">Мария Кузнецова</string>
     <string name="teamAuthor3">Максим Юрищев</string>
     <string name="teamAuthor4">Денис Кузьмин</string>
+
+    <!--    Search Fragment Strings-->
+    <string name="search">Поиск вакансий</string>
+    <string name="search_edittext_hint">Введите запрос</string>
 </resources>
