@@ -82,7 +82,8 @@
             android:paddingVertical="@dimen/padding_4dp"
             android:textColor="@color/White_Universal"
             android:visibility="gone"
-            tools:visibility="gone" />
+            tools:visibility="visible"
+            tools:text="Найдено 22 вакансии"/>
 
         <ImageView
             android:id="@+id/placeholder_search"
@@ -91,7 +92,7 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:src="@drawable/placeholder_search"
             android:visibility="visible"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -164,6 +165,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchRecyclerView"
             android:layout_width="match_parent"
+            tools:listitem="@layout/item_vacancy"
+            android:layout_marginTop="46dp"
             android:layout_height="match_parent" />
 
 
