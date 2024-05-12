@@ -4,6 +4,7 @@
         <item name="prime_color_black">@color/Black_Night</item>
         <item name="prime_color_white">@color/White_Night</item>
         <item name="secondary_gray">@color/Dark_Gray</item>
+        <item name="secondary_dark_gray">@color/White_Universal</item>
 
         <item name="android:statusBarColor">@color/White_Night</item>
         <item name="android:navigationBarColor">@color/White_Night</item>
