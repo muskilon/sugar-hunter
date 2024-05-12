@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
 
 class FavouriteFragment : Fragment() {
 
     private var _binding: FragmentFavouriteBinding? = null
     private val binding get() = _binding!!
-//    private val viewModel by viewModel<FavouriteViewModel>()
+    private val viewModel by viewModel<FavouriteViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

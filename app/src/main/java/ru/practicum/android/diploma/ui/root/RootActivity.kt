@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
@@ -14,7 +15,7 @@ class RootActivity : AppCompatActivity() {
 
     private var _binding: ActivityRootBinding? = null
     private val binding get() = _binding!!
-    // private val viewModel by viewModel<RootViewModel>()
+    private val viewModel by viewModel<RootViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
