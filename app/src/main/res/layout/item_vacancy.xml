@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/vacancyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize_22sp"
+            android:fontFamily="@font/ys_display_medium"
+            android:lineHeight="@dimen/text_line_height_26dp"
+            android:textColor="?attr/prime_color_black"/>
+
+        <TextView
+            android:id="@+id/companyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize_16sp"
+            android:fontFamily="@font/ys_display_regular"
+            android:lineHeight="@dimen/text_line_height_19dp"
+            android:textColor="?attr/prime_color_black"/>
+
+        <TextView
+            android:id="@+id/financeCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize_16sp"
+            android:fontFamily="@font/ys_display_regular"
+            android:lineHeight="@dimen/text_line_height_19dp"
+            android:textColor="?attr/prime_color_black"/>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
