@@ -18,4 +18,8 @@
     <string name="search_error">Не удалось получить список вакансий</string>
     <string name="search_error_no_internet">Нет интернета</string>
     <string name="search_error_no_vacancies">Таких вакансий нет</string>
+
+    <!--    Favourite Fragment Strings-->
+    <string name="favouriteEmpty">Список пуст</string>
+    <string name="favouriteError">Не удалось получить список вакансий</string>
 </resources>
