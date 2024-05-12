@@ -21,8 +21,6 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
 
-    private lateinit var searchEditText: TextWatcher
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,7 +38,7 @@ class SearchFragment : Fragment() {
             closeKeyboard()
         }
 
-        searchEditText = object : TextWatcher {
+        val searchEditText = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
             }
@@ -161,14 +159,13 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun closeKeyboard(){
+    private fun closeKeyboard() {
         val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(requireActivity().window.decorView.windowToken, 0)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        searchEditText.let { binding.searchEditText.removeTextChangedListener(it) }
         _binding = null
     }
 }
