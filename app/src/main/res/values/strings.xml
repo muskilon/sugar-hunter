@@ -15,4 +15,7 @@
     <!--    Search Fragment Strings-->
     <string name="search">Поиск вакансий</string>
     <string name="search_edittext_hint">Введите запрос</string>
+    <string name="search_error">Не удалось получить список вакансий</string>
+    <string name="search_error_no_internet">Нет интернета</string>
+    <string name="search_error_no_vacancies">Таких вакансий нет</string>
 </resources>
