@@ -26,6 +26,9 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //        Для тестирования!!! Можно удалять
+        viewModel.searchVacancies("Kotlin")
+
     }
 
     override fun onDestroyView() {

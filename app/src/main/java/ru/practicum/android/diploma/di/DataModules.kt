@@ -14,7 +14,8 @@ val dataModules = module {
     single<NetworkClient> { RetrofitNetworkClient(androidContext(), hhApi = get()) }
     single<HHApi> {
         Retrofit.Builder().baseUrl("https://api.hh.ru/")
-            .addConverterFactory(GsonConverterFactory.create()).build()
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
             .create(HHApi::class.java)
     }
 
