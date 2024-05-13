@@ -11,5 +11,5 @@ interface HHApi {
     ): SearchResponse
 
     @GET("/vacancies/{vacancy_id}")
-    suspend fun getVacancy(@Path("vacancy_id") id: String): Response
+    suspend fun getVacancy(@Path("vacancy_id") id: String): DetailsResponse
 }

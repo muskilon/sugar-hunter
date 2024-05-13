@@ -63,7 +63,7 @@ class VacanciesRepositoryImpl(
                         id = this.id,
                         title = this.name
                     )
-                    data
+                    emit(Resource.Data(data))
                 }
             }
             in NOT_FOUND -> emit(Resource.NotFound("not_found"))
