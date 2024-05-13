@@ -7,7 +7,8 @@ data class VacanciesDTO(
     val name: String,
     val area: Area,
     val employer: Employer,
-    val salary: Salary?
+    val salary: Salary?,
+    val url: String
 )
 
 data class Area(

@@ -17,16 +17,31 @@ class RetrofitNetworkClient(
         var response = Response()
         if (!isConnected()) {
             response.resultCode = SERVER_ERROR
-        } else if (dto !is SearchRequest) {
+        } else if ((dto !is SearchRequest) && (dto !is DetailsRequest)) {
             response.resultCode = NOT_FOUND
         } else {
-            response = withContext(Dispatchers.IO) {
-                try {
-                    val apiResponse = hhApi.getSearch(dto.text)
-                    apiResponse.apply { resultCode = OK }
-                } catch (ex: IOException) {
-                    Log.e(REQUEST_ERROR_TAG, ex.toString())
-                    Response().apply { resultCode = NOT_FOUND }
+            when (dto) {
+                is SearchRequest -> {
+                    response = withContext(Dispatchers.IO) {
+                        try {
+                            val apiResponse = hhApi.getSearch(dto.text)
+                            apiResponse.apply { resultCode = OK }
+                        } catch (ex: IOException) {
+                            Log.e(REQUEST_ERROR_TAG, ex.toString())
+                            Response().apply { resultCode = NOT_FOUND }
+                        }
+                    }
+                }
+                is DetailsRequest ->{
+                    response = withContext(Dispatchers.IO) {
+                        try {
+                            val apiResponse = hhApi.getVacancy(dto.id)
+                            apiResponse.apply { resultCode = OK }
+                        } catch (ex: IOException) {
+                            Log.e(REQUEST_ERROR_TAG, ex.toString())
+                            Response().apply { resultCode = NOT_FOUND }
+                        }
+                    }
                 }
             }
         }
