@@ -14,38 +14,22 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
-        var response = Response()
-        if (!isConnected()) {
-            response.resultCode = SERVER_ERROR
-        } else if ((dto !is SearchRequest) && (dto !is DetailsRequest)) {
-            response.resultCode = NOT_FOUND
+        return if (!isConnected()) {
+            Response().apply { resultCode = SERVER_ERROR }
         } else {
-            when (dto) {
-                is SearchRequest -> {
-                    response = withContext(Dispatchers.IO) {
-                        try {
-                            val apiResponse = hhApi.getSearch(dto.text)
-                            apiResponse.apply { resultCode = OK }
-                        } catch (ex: IOException) {
-                            Log.e(REQUEST_ERROR_TAG, ex.toString())
-                            Response().apply { resultCode = NOT_FOUND }
-                        }
+            withContext(Dispatchers.IO) {
+                try {
+                    when (dto) {
+                        is SearchRequest -> hhApi.getSearch(dto.text).apply { resultCode = OK }
+                        is DetailsRequest -> hhApi.getVacancy(dto.id).apply { resultCode = OK }
+                        else -> Response().apply { resultCode = NOT_FOUND }
                     }
-                }
-                is DetailsRequest ->{
-                    response = withContext(Dispatchers.IO) {
-                        try {
-                            val apiResponse = hhApi.getVacancy(dto.id)
-                            apiResponse.apply { resultCode = OK }
-                        } catch (ex: IOException) {
-                            Log.e(REQUEST_ERROR_TAG, ex.toString())
-                            Response().apply { resultCode = NOT_FOUND }
-                        }
-                    }
+                } catch (ex: IOException) {
+                    Log.e(REQUEST_ERROR_TAG, ex.toString())
+                    Response().apply { resultCode = NOT_FOUND }
                 }
             }
         }
-        return response
     }
 
     private fun isConnected(): Boolean {

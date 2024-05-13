@@ -33,12 +33,6 @@ class VacanciesInterActorImpl(
                 is Resource.ConnectionError -> Resource.ConnectionError(EMPTY)
             }
         }
-
-//        return when (val result = repository.getVacancy(id)) {
-//            is Resource.Data -> result
-//            is Resource.NotFound -> Resource.NotFound(EMPTY)
-//            is Resource.ConnectionError -> Resource.ConnectionError(EMPTY)
-//        }
     }
 
     companion object {

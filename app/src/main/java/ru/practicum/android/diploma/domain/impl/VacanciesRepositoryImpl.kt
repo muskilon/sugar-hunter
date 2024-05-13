@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.domain.impl
 
-import android.util.Log
-import androidx.core.net.toUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -33,42 +31,50 @@ class VacanciesRepositoryImpl(
                             city = it.area.name,
                             employer = it.employer.name,
                             logos = it.employer.logoUrls,
-                            salary = it.salary,
-                            vacancyUrl = it.url.toUri()
+                            salary = it.salary
                         )
                         vacancy
                     }
                     if (data.isEmpty()) {
-                        emit(Resource.NotFound("not_found"))
+                        emit(Resource.NotFound(NOT_FOUND_TEXT))
                     } else {
                         emit(Resource.Data(data))
                     }
                 }
             }
-            in NOT_FOUND -> emit(Resource.NotFound("not_found"))
+            in NOT_FOUND -> emit(Resource.NotFound(NOT_FOUND_TEXT))
             else -> {
-                emit(Resource.ConnectionError("connection_error"))
+                emit(Resource.ConnectionError(CONNECTION_ERROR))
             }
         }
     }.flowOn(Dispatchers.IO)
 
     override suspend fun getVacancy(
         id: String
-    ) : Flow<Resource<VacancyDetails>> = flow {
+    ): Flow<Resource<VacancyDetails>> = flow {
         val response = networkClient.doRequest(DetailsRequest(id))
         when (response.resultCode) {
             OK -> {
                 with(response as DetailsResponse) {
                     val data = VacancyDetails(
                         id = this.id,
-                        title = this.name
+                        title = this.name,
+                        area = this.area,
+                        employer = this.employer,
+                        salary = this.salary,
+                        experience = this.experience,
+                        employment = this.employment,
+                        schedule = this.schedule,
+                        description = this.description,
+                        keySkills = this.keySkills,
+                        contacts = this.contacts
                     )
                     emit(Resource.Data(data))
                 }
             }
-            in NOT_FOUND -> emit(Resource.NotFound("not_found"))
+            in NOT_FOUND -> emit(Resource.NotFound(NOT_FOUND_TEXT))
             else -> {
-                emit(Resource.ConnectionError("connection_error"))
+                emit(Resource.ConnectionError(CONNECTION_ERROR))
             }
         }
     }
@@ -76,5 +82,7 @@ class VacanciesRepositoryImpl(
     companion object {
         private const val OK = 200
         private val NOT_FOUND = listOf(400, 404)
+        private const val CONNECTION_ERROR = "connection_error"
+        private const val NOT_FOUND_TEXT = "not_found"
     }
 }

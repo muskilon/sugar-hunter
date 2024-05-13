@@ -23,10 +23,10 @@ class SearchViewModel(
         }
     }
 
-//    ДЛЯ ТЕСТИРОВАНИЯ!!!
+    //    ДЛЯ ТЕСТИРОВАНИЯ!!!
     fun getVacancy(id: String) {
         viewModelScope.launch {
-            vacanciesInterActor.getVacancy(id).collect{
+            vacanciesInterActor.getVacancy(id).collect {
                 when (it) {
                     is Resource.ConnectionError -> Log.d(TAG, it.message)
 
@@ -38,6 +38,7 @@ class SearchViewModel(
         }
     }
 
+    //        ДЛЯ ТЕСТИРОВАНИЯ!!!
     private fun processResult(foundVacancies: Resource<List<Vacancy>>) {
         when (foundVacancies) {
             is Resource.ConnectionError -> Log.d(TAG, foundVacancies.message)
