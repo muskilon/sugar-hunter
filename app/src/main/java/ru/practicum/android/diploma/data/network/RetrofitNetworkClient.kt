@@ -14,17 +14,23 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
-        if (!isConnected()) return Response().apply { resultCode = SERVER_ERROR }
-        if (dto !is SearchRequest) return Response().apply { resultCode = NOT_FOUND }
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = hhApi.getSearch(dto.text)
-                response.apply { resultCode = OK }
-            } catch (ex: IOException) {
-                Log.e(REQUEST_ERROR_TAG, ex.toString())
-                Response().apply { resultCode = NOT_FOUND }
+        var response = Response()
+        if (!isConnected()) {
+            response.resultCode = SERVER_ERROR
+        } else if (dto !is SearchRequest) {
+            response.resultCode = NOT_FOUND
+        } else {
+            response = withContext(Dispatchers.IO) {
+                try {
+                    val apiResponse = hhApi.getSearch(dto.text)
+                    apiResponse.apply { resultCode = OK }
+                } catch (ex: IOException) {
+                    Log.e(REQUEST_ERROR_TAG, ex.toString())
+                    Response().apply { resultCode = NOT_FOUND }
+                }
             }
         }
+        return response
     }
 
     private fun isConnected(): Boolean {
