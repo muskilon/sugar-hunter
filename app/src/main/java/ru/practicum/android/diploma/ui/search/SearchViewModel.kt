@@ -14,8 +14,6 @@ class SearchViewModel : ViewModel() {
     private val stateLiveData = MutableLiveData<SearchFragmentState>()
     fun observeState(): LiveData<SearchFragmentState> = stateLiveData
 
-    val mutable = MutableLiveData<Int>()
-
     private var latestSearchText: String? = null
     private var searchJob: Job? = null
     private var isClickAllowed = true

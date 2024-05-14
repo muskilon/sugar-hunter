@@ -14,6 +14,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
+import ru.practicum.android.diploma.ui.search.recyclerview.SearchAdapter
 
 class SearchFragment : Fragment() {
 
