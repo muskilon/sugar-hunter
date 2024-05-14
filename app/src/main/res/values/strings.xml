@@ -22,4 +22,21 @@
     <!--    Favourite Fragment Strings-->
     <string name="favouriteEmpty">Список пуст</string>
     <string name="favouriteError">Не удалось получить список вакансий</string>
+
+
+    <!--    Vacancy Fragment Strings-->
+    <string name="vacancyFragmentHeader">Вакансия</string>
+    <string name="experienceHeader">Требуемый опыт</string>
+    <string name="aboutJobHeader">Описание вакансии</string>
+    <string name="responsibilitiesHeader">Обязанности</string>
+    <string name="requirementsHeader">Требования</string>
+    <string name="conditionsHeader">Условия</string>
+    <string name="keySkillsHeader">Ключевые навыки</string>
+    <string name="contactsHeader">Контакты</string>
+    <string name="contactFaceHeader">Контактное лицо</string>
+    <string name="contactEmailHeader">E-mail</string>
+    <string name="contactPhoneHeader">Телефон</string>
+    <string name="contactCommentsHeader">Комментарий</string>
+
+
 </resources>

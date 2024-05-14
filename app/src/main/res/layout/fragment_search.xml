@@ -8,9 +8,9 @@
 
 
     <TextView
-        android:id="@+id/teamTitle"
+        android:id="@+id/searchScreenTitle"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:fontFamily="@font/ys_display_medium"
         android:lineHeight="@dimen/text_line_height_26dp"
         android:paddingStart="@dimen/margin_16dp"
@@ -21,46 +21,70 @@
         android:textColor="?attr/prime_color_black"
         android:textFontWeight="500"
         android:textSize="@dimen/textSize_22sp"
-        app:layout_constraintEnd_toStartOf="@+id/filter"
+        app:layout_constraintEnd_toStartOf="@+id/favoriteButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/filter"
+        android:id="@+id/favoriteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/padding_20dp"
         android:paddingTop="@dimen/padding_20dp"
         android:paddingRight="@dimen/padding_20dp"
         android:paddingBottom="@dimen/padding_20dp"
-        android:src="@drawable/search_filter"
+        android:src="@drawable/search_filter_inactive"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/teamTitle"
+        app:layout_constraintStart_toEndOf="@id/searchScreenTitle"
         app:layout_constraintTop_toTopOf="parent"
         android:importantForAccessibility="no" />
 
-    <EditText
-        android:id="@+id/search_edit_text"
+    <FrameLayout
+        android:id="@+id/search_edit_frame"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="@dimen/margin_16dp"
-        android:layout_marginVertical="@dimen/margin_8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/search_edittext_shape"
-        android:drawableEnd="@drawable/search_icon"
-        android:fontFamily="@font/ys_display_regular"
-        android:hint="@string/search_edittext_hint"
-        android:inputType="text"
-        android:lineHeight="@dimen/text_line_height_19dp"
-        android:maxLines="1"
-        android:paddingHorizontal="@dimen/padding_16dp"
-        android:textColor="@color/Black_Universal"
-        android:textColorHint="?attr/secondary_dark_gray"
-        android:textCursorDrawable="@drawable/search_edittext_color_cursor"
-        android:textSize="@dimen/textSize_16sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/teamTitle" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchScreenTitle">
+
+        <EditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="@dimen/margin_16dp"
+            android:layout_marginVertical="@dimen/margin_8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/search_edittext_shape"
+            android:fontFamily="@font/ys_display_regular"
+            android:hint="@string/search_edittext_hint"
+            android:inputType="text"
+            android:lineHeight="@dimen/text_line_height_19dp"
+            android:maxLines="1"
+            android:paddingHorizontal="@dimen/padding_16dp"
+            android:textColor="@color/Black_Universal"
+            android:textColorHint="?attr/secondary_dark_gray"
+            android:textCursorDrawable="@drawable/search_edittext_color_cursor"
+            android:textSize="@dimen/textSize_16sp"/>
+
+        <ImageView
+            android:id="@+id/clearIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="32dp"
+            android:src="@drawable/clear_button"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="32dp"
+            android:src="@drawable/search_icon"
+            android:visibility="visible" />
+
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -69,9 +93,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_edit_text">
+        app:layout_constraintTop_toBottomOf="@id/search_edit_frame">
+
+
 
         <TextView
+            android:id="@+id/vacancy_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -82,7 +109,7 @@
             android:paddingVertical="@dimen/padding_4dp"
             android:textColor="@color/White_Universal"
             android:visibility="gone"
-            tools:visibility="visible"
+            tools:visibility="gone"
             tools:text="Найдено 22 вакансии"/>
 
         <ImageView
@@ -92,7 +119,7 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:src="@drawable/placeholder_search"
             android:visibility="visible"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -166,8 +193,8 @@
             android:id="@+id/searchRecyclerView"
             android:layout_width="match_parent"
             tools:listitem="@layout/item_vacancy"
-            android:layout_marginTop="46dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
 
 
     </FrameLayout>
