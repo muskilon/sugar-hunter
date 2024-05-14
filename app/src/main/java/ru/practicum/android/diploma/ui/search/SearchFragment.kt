@@ -23,7 +23,7 @@ class SearchFragment : Fragment() {
     private val viewModel by viewModel<SearchViewModel>()
 
     private val searchAdapter by lazy {
-         SearchAdapter { vacancy ->
+         SearchAdapter{ vacancy ->
             if (viewModel.clickDebounce()) {
                 findNavController().navigate(
                     R.id.action_searchFragment_to_vacancyFragment
