@@ -1,10 +1,13 @@
 package ru.practicum.android.diploma.di
 
+import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.data.ExternalNavigator
+import ru.practicum.android.diploma.data.db.AppDatabase
+import ru.practicum.android.diploma.data.db.Convertor
 import ru.practicum.android.diploma.data.network.HHApi
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
@@ -20,5 +23,11 @@ val dataModules = module {
     }
 
     single { ExternalNavigator(context = androidContext()) }
+
+    factory { Convertor() }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "favourite_vacancy.db")
+    }
 
 }
