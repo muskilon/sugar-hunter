@@ -1,14 +1,14 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -21,6 +21,12 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
 
+    private lateinit var searchAdapter: SearchAdapter
+
+    companion object {
+        private const val NULL_TEXT = ""
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,10 +38,10 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setAdapters()
 
         binding.clearIcon.setOnClickListener {
-            binding.searchEditText.setText("")
-            closeKeyboard()
+            binding.searchEditText.setText(NULL_TEXT)
         }
 
         val searchEditText = object : TextWatcher {
@@ -115,6 +121,7 @@ class SearchFragment : Fragment() {
             progressBar.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
         }
+        Log.d("errorMessage: ", errorMessage)
     }
 
     private fun showEmpty(emptyMessage: String) {
@@ -128,6 +135,7 @@ class SearchFragment : Fragment() {
             somethingWrong.visibility = View.GONE
             vacancyCount.visibility = View.GONE
         }
+        Log.d("emptyMessage: ", emptyMessage)
     }
 
     private fun showContent(vacancy: List<Vacancy>) {
@@ -141,6 +149,18 @@ class SearchFragment : Fragment() {
             somethingWrong.visibility = View.GONE
             noInternet.visibility = View.GONE
         }
+        searchAdapter.setData(vacancy)
+    }
+
+    private fun setAdapters() {
+        searchAdapter = SearchAdapter { vacancy ->
+            if (viewModel.clickDebounce()) {
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_vacancyFragment
+                )
+            }
+        }
+        binding.searchRecyclerView.adapter = searchAdapter
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -157,11 +177,6 @@ class SearchFragment : Fragment() {
         } else {
             View.VISIBLE
         }
-    }
-
-    private fun closeKeyboard() {
-        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-        inputMethodManager?.hideSoftInputFromWindow(requireActivity().window.decorView.windowToken, 0)
     }
 
     override fun onDestroyView() {

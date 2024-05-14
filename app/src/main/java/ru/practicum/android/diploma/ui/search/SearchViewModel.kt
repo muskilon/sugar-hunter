@@ -18,6 +18,7 @@ class SearchViewModel : ViewModel() {
 
     private var latestSearchText: String? = null
     private var searchJob: Job? = null
+    private var isClickAllowed = true
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
@@ -46,19 +47,32 @@ class SearchViewModel : ViewModel() {
             )
             viewModelScope.launch {
                 delay(SEARCH_DEBOUNCE_DELAY)
-                renderState(
-                    SearchFragmentState.Empty("Nothing found")
-                )
+                processResult()
             }
         }
     }
 
     private fun processResult() {
-
+        renderState(
+            SearchFragmentState.Empty("Nothing found")
+        )
     }
 
     private fun renderState(state: SearchFragmentState) {
         stateLiveData.postValue(state)
+    }
+
+
+    fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
     }
 
 }
