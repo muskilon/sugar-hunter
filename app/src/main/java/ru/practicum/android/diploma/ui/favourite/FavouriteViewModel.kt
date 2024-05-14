@@ -14,7 +14,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 class FavouriteViewModel(private val favouriteDataBaseInteractor: FavouriteDataBaseInteractor) : ViewModel() {
 
     private var stateMutableLiveData = MutableLiveData<FavouritesState>()
-    fun checkState(): LiveData<FavouritesState> = stateMutableLiveData
+    fun checkStateLiveData(): LiveData<FavouritesState> = stateMutableLiveData
 
     private var favoriteMutableListLiveData = MutableLiveData<ArrayList<Vacancy>>()
     fun favoriteListLiveData(): LiveData<ArrayList<Vacancy>> = favoriteMutableListLiveData
