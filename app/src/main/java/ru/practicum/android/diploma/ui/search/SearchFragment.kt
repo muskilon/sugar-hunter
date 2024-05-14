@@ -22,7 +22,17 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
 
-    private var searchAdapter: SearchAdapter? = null
+    private val searchAdapter by lazy {
+         SearchAdapter { vacancy ->
+            if (viewModel.clickDebounce()) {
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_vacancyFragment
+                )
+            }
+        }.also {
+            binding.searchRecyclerView.adapter = it
+        }
+    }
 
     companion object {
         private const val NULL_TEXT = ""
@@ -39,7 +49,6 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setAdapters()
 
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(NULL_TEXT)
@@ -150,18 +159,7 @@ class SearchFragment : Fragment() {
             somethingWrong.visibility = View.GONE
             noInternet.visibility = View.GONE
         }
-        searchAdapter?.setData(vacancy)
-    }
-
-    private fun setAdapters() {
-        searchAdapter = SearchAdapter { vacancy ->
-            if (viewModel.clickDebounce()) {
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_vacancyFragment
-                )
-            }
-        }
-        binding.searchRecyclerView.adapter = searchAdapter
+        searchAdapter.setData(vacancy)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
