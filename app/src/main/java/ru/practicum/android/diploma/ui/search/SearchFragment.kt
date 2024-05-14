@@ -135,6 +135,10 @@ class SearchFragment : Fragment() {
 
     private fun showEmpty(emptyMessage: String) {
         with(binding) {
+            vacancyCount.text = requireContext().getString(
+                R.string.search_error_no_vacancies
+            )
+            vacancyCount.visibility = View.VISIBLE
             noInternet.visibility = View.VISIBLE
         }
         with(binding) {
@@ -142,14 +146,14 @@ class SearchFragment : Fragment() {
             progressBar.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
             somethingWrong.visibility = View.GONE
-            vacancyCount.visibility = View.GONE
         }
         Log.d("emptyMessage: ", emptyMessage)
     }
 
     private fun showContent(vacancy: List<Vacancy>) {
         with(binding) {
-            vacancyCount.visibility = View.GONE
+            vacancyCount.text = "Найдено ${vacancy.size} ${countToString(vacancy.size)}"
+            vacancyCount.visibility = View.VISIBLE
             searchRecyclerView.visibility = View.VISIBLE
         }
         with(binding) {
@@ -174,6 +178,15 @@ class SearchFragment : Fragment() {
             View.GONE
         } else {
             View.VISIBLE
+        }
+    }
+
+    private fun countToString(count: Int): String {
+        return when (count.mod(10)) {
+            0 -> "вакансий"
+            1 -> "вакансия"
+            2, 3, 4 -> "вакансии"
+            else -> "вакансий"
         }
     }
 
