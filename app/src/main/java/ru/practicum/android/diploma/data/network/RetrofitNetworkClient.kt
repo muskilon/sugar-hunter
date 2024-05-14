@@ -17,28 +17,57 @@ class RetrofitNetworkClient(
     private val context: Context,
     private val hhApi: HHApi
 ) : NetworkClient {
-
+    private var response = Response()
     override suspend fun doRequest(dto: Any): Response {
         return if (!isConnected()) {
             Response().apply { resultCode = SERVER_ERROR }
         } else {
-            withContext(Dispatchers.IO) {
-                try {
-                    when (dto) {
-                        is SearchRequest -> hhApi.getSearch(dto.text).apply { resultCode = OK }
-                        is DetailsRequest -> hhApi.getVacancy(dto.id).apply { resultCode = OK }
-                        is IndustryRequest -> mapper(hhApi.getIndustry()).apply { resultCode = OK }
-                        else -> Response().apply { resultCode = NOT_FOUND }
-                    }
-                } catch (ex: IOException) {
-                    Log.e(REQUEST_ERROR_TAG, ex.toString())
-                    Response().apply { resultCode = NOT_FOUND }
-                }
+            when (dto) {
+                is SearchRequest -> getSearchResponse(dto)
+                is DetailsRequest -> getDetailsResponse(dto)
+                is IndustryRequest -> getIndustryResponse(dto)
+                else -> Response().apply { resultCode = NOT_FOUND }
             }
         }
     }
 
-    private fun mapper(array: Array<IndustryList>): IndustryResponse {
+    private suspend fun getSearchResponse(dto: SearchRequest): Response {
+        withContext(Dispatchers.IO) {
+            try {
+                response = hhApi.getSearch(dto.text).apply { resultCode = OK }
+            } catch (ex: IOException) {
+                Log.e(REQUEST_ERROR_TAG, ex.toString())
+                response = Response().apply { resultCode = NOT_FOUND }
+            }
+        }
+        return response
+    }
+
+    private suspend fun getDetailsResponse(dto: DetailsRequest): Response {
+        withContext(Dispatchers.IO) {
+            try {
+                response = hhApi.getVacancy(dto.id).apply { resultCode = OK }
+            } catch (ex: IOException) {
+                Log.e(REQUEST_ERROR_TAG, ex.toString())
+                response = Response().apply { resultCode = NOT_FOUND }
+            }
+        }
+        return response
+    }
+
+    private suspend fun getIndustryResponse(dto: IndustryRequest): Response {
+        withContext(Dispatchers.IO) {
+            try {
+                response = industryMapper(hhApi.getIndustry()).apply { resultCode = OK }
+            } catch (ex: IOException) {
+                Log.e(REQUEST_ERROR_TAG, ex.toString())
+                response = Response().apply { resultCode = NOT_FOUND }
+            }
+        }
+        return response
+    }
+
+    private fun industryMapper(array: Array<IndustryList>): IndustryResponse {
         return IndustryResponse(
             container = array.asList()
         )
