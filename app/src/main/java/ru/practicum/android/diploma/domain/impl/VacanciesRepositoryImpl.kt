@@ -4,12 +4,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import ru.practicum.android.diploma.data.network.DetailsRequest
-import ru.practicum.android.diploma.data.network.DetailsResponse
 import ru.practicum.android.diploma.data.network.NetworkClient
-import ru.practicum.android.diploma.data.network.SearchRequest
-import ru.practicum.android.diploma.data.network.SearchResponse
+import ru.practicum.android.diploma.data.network.requests.DetailsRequest
+import ru.practicum.android.diploma.data.network.requests.IndustryRequest
+import ru.practicum.android.diploma.data.network.requests.SearchRequest
+import ru.practicum.android.diploma.data.network.responses.DetailsResponse
+import ru.practicum.android.diploma.data.network.responses.IndustryResponse
+import ru.practicum.android.diploma.data.network.responses.KeySkills
+import ru.practicum.android.diploma.data.network.responses.SearchResponse
 import ru.practicum.android.diploma.domain.VacanciesRepository
+import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
@@ -18,9 +22,9 @@ class VacanciesRepositoryImpl(
     private val networkClient: NetworkClient,
 ) : VacanciesRepository {
     override fun searchVacancies(
-        text: String
+        options: Map<String, String>
     ): Flow<Resource<List<Vacancy>>> = flow {
-        val response = networkClient.doRequest(SearchRequest(text))
+        val response = networkClient.doRequest(SearchRequest(options))
         when (response.resultCode) {
             OK -> {
                 with(response as SearchResponse) {
@@ -42,6 +46,7 @@ class VacanciesRepositoryImpl(
                     }
                 }
             }
+
             in NOT_FOUND -> emit(Resource.NotFound(NOT_FOUND_TEXT))
             else -> {
                 emit(Resource.ConnectionError(CONNECTION_ERROR))
@@ -66,17 +71,49 @@ class VacanciesRepositoryImpl(
                         employment = this.employment,
                         schedule = this.schedule,
                         description = this.description,
-                        keySkills = this.keySkills,
+                        keySkills = skillsMapper(this.keySkills),
                         contacts = this.contacts
                     )
                     emit(Resource.Data(data))
                 }
             }
+
             in NOT_FOUND -> emit(Resource.NotFound(NOT_FOUND_TEXT))
             else -> {
                 emit(Resource.ConnectionError(CONNECTION_ERROR))
             }
         }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun getIndustries(): Flow<Resource<List<Industries>>> = flow {
+        val response = networkClient.doRequest(IndustryRequest())
+        when (response.resultCode) {
+            OK -> {
+                with(response as IndustryResponse) {
+                    val data = container.map {
+                        val industries = Industries(
+                            id = it.id,
+                            name = it.name,
+                            industries = it.industries
+                        )
+                        industries
+                    }
+                    emit(Resource.Data(data))
+                }
+            }
+
+            in NOT_FOUND -> emit(Resource.NotFound(NOT_FOUND_TEXT))
+            else -> {
+                emit(Resource.ConnectionError(CONNECTION_ERROR))
+            }
+        }
+    }.flowOn(Dispatchers.IO)
+
+    private fun skillsMapper(list: List<KeySkills>?): List<String>? {
+        if (list.isNullOrEmpty()) {
+            return null
+        }
+        return list.mapNotNull { it.name }
     }
 
     companion object {

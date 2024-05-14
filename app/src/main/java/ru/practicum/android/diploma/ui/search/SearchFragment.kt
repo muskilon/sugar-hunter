@@ -49,6 +49,16 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //       Для тестирования!!! Можно удалять
+//       Пример формирования options для @QueryMap
+        val options: HashMap<String, String> = HashMap()
+        options["text"] = "VisualBasic"
+        viewModel.searchVacancies(options)
+
+        viewModel.getVacancy("98561017")
+        viewModel.getVacancy("98899447")
+        viewModel.getIndustries()
+
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(NULL_TEXT)
         }
@@ -61,9 +71,7 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.visibility = clearButtonVisibility(s)
                 binding.searchIcon.visibility = searchButtonVisibility(s)
-                viewModel.searchDebounce(
-                    changedText = s?.toString() ?: ""
-                )
+                viewModel.searchDebounce(changedText = s?.toString() ?: "", options = options)
             }
 
             override fun afterTextChanged(s: Editable?) {
