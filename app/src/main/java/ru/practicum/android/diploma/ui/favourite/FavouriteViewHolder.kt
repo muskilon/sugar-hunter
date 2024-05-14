@@ -33,7 +33,7 @@ class FavouriteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         financeCount.text = salaryText
 
-        Glide.with(itemView.context).load(vacancy.logos).placeholder(R.drawable.vacancy_no_image_holder)
+        Glide.with(itemView.context).load(vacancy.logos?.logo90).placeholder(R.drawable.vacancy_no_image_holder)
             .transform(
                 FitCenter(),
                 RoundedCorners(
