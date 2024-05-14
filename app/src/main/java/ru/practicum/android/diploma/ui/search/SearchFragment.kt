@@ -59,7 +59,6 @@ class SearchFragment : Fragment() {
         binding.searchRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(NULL_TEXT)
         }
