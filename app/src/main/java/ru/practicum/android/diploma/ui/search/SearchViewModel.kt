@@ -62,10 +62,15 @@ class SearchViewModel(
     }
 
     private fun searchVacancies(text: String) {
+        renderState(
+            SearchFragmentState.Loading
+        )
         viewModelScope.launch {
-            vacanciesInterActor.searchVacancies(text).collect { result ->
-                processResult(result)
-            }
+            vacanciesInterActor
+                .searchVacancies(text)
+                .collect { result ->
+                    processResult(result)
+                }
         }
     }
 
