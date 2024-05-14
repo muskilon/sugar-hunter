@@ -10,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
 import ru.practicum.android.diploma.domain.models.FavouritesState
 
@@ -36,9 +35,9 @@ class FavouriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.favoriteListLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it.isEmpty()){
+            if (it.isEmpty()) {
                 viewModel.setStateEmpty()
-            } else if (it.isNotEmpty()){
+            } else if (it.isNotEmpty()) {
                 viewModel.setStateContent()
                 adapter.favoriteList = it
                 adapter.notifyDataSetChanged()
@@ -69,19 +68,19 @@ class FavouriteFragment : Fragment() {
         }
     }
 
-    private fun showError(){
+    private fun showError() {
         binding.favoriteNetworkErrorHolder.isVisible = true
         binding.favoriteEmptyListHolder.isVisible = false
         binding.favoriteRecyclerView.isVisible = false
     }
 
-    private fun showEmpty(){
+    private fun showEmpty() {
         binding.favoriteNetworkErrorHolder.isVisible = true
         binding.favoriteEmptyListHolder.isVisible = false
         binding.favoriteRecyclerView.isVisible = false
     }
 
-    private fun showContent(){
+    private fun showContent() {
         binding.favoriteNetworkErrorHolder.isVisible = false
         binding.favoriteEmptyListHolder.isVisible = false
         binding.favoriteRecyclerView.isVisible = true
