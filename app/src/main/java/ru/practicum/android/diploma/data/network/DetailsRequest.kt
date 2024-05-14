@@ -1,3 +1,3 @@
 package ru.practicum.android.diploma.data.network
 
-data class SearchRequest(val text: String)
+data class DetailsRequest(val id: String)

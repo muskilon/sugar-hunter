@@ -36,7 +36,7 @@ val viewModelModules = module {
         RootViewModel()
     }
     viewModel {
-        SearchViewModel()
+        SearchViewModel(vacanciesInterActor = get())
     }
     viewModel {
         TeamViewModel()
