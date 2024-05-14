@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.di
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.favourite.FavouriteViewModel
 import ru.practicum.android.diploma.ui.filter.FilterViewModel
 import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceViewModel
@@ -15,7 +16,7 @@ import ru.practicum.android.diploma.ui.vacancy.VacancyViewModel
 
 val viewModelModules = module {
     viewModel {
-        FavouriteViewModel()
+        FavouriteViewModel(get())
     }
     viewModel {
         CountryViewModel()
@@ -42,6 +43,7 @@ val viewModelModules = module {
         TeamViewModel()
     }
     viewModel {
-        VacancyViewModel()
+            (vacancy: Vacancy) ->
+        VacancyViewModel(vacancy = vacancy, get())
     }
 }

@@ -30,4 +30,7 @@
 
     <!--    View Sizes-->
     <dimen name="bottom_navigation_height">56dp</dimen>
+
+    <!--    View Sizes-->
+    <dimen name="rounded_corners">12dp</dimen>
 </resources>
