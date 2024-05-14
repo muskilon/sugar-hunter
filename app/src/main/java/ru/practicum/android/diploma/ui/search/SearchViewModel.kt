@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.content.ContentValues.TAG
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,10 +10,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -31,6 +28,7 @@ class SearchViewModel(
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val TAG = "process"
     }
 
     fun searchDebounce(changedText: String) {
@@ -116,7 +114,4 @@ class SearchViewModel(
         }
     }
 
-    companion object {
-        private const val TAG = "process"
-    }
 }
