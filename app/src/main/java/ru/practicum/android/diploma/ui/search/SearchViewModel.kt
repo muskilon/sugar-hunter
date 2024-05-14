@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.content.ContentValues.TAG
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -42,26 +41,8 @@ class SearchViewModel(
 
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
-            searchRequest(changedText)
+            searchVacancies(changedText)
         }
-    }
-
-    private fun searchRequest(newSearchText: String) {
-        if (newSearchText.isNotEmpty()) {
-            renderState(
-                SearchFragmentState.Loading
-            )
-            viewModelScope.launch {
-                delay(SEARCH_DEBOUNCE_DELAY)
-                processResult()
-            }
-        }
-    }
-
-    private fun processResult() {
-        renderState(
-            SearchFragmentState.Empty("Nothing found")
-        )
     }
 
     private fun renderState(state: SearchFragmentState) {
@@ -80,7 +61,7 @@ class SearchViewModel(
         return current
     }
 
-    fun searchVacancies(text: String) {
+    private fun searchVacancies(text: String) {
         viewModelScope.launch {
             vacanciesInterActor.searchVacancies(text).collect { result ->
                 processResult(result)
@@ -103,14 +84,31 @@ class SearchViewModel(
         }
     }
 
-    //        ДЛЯ ТЕСТИРОВАНИЯ!!!
     private fun processResult(foundVacancies: Resource<List<Vacancy>>) {
         when (foundVacancies) {
-            is Resource.ConnectionError -> Log.d(TAG, foundVacancies.message)
+            is Resource.ConnectionError -> {
+                renderState(
+                    SearchFragmentState.Error(
+                        foundVacancies.message
+                    )
+                )
+            }
 
-            is Resource.NotFound -> Log.d(TAG, foundVacancies.message)
+            is Resource.NotFound -> {
+                renderState(
+                    SearchFragmentState.Empty(
+                        foundVacancies.message
+                    )
+                )
+            }
 
-            is Resource.Data -> Log.d(TAG, foundVacancies.value.toString())
+            is Resource.Data -> {
+                renderState(
+                    SearchFragmentState.Content(
+                        foundVacancies.value
+                    )
+                )
+            }
         }
     }
 

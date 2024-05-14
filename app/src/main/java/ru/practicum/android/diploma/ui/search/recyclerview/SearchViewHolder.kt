@@ -13,13 +13,13 @@ class SearchViewHolder(
     private val binding: ItemVacancyBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    companion object{
+    companion object {
         const val RADIUS_IN_DP = 12f
     }
 
     fun bind(model: Vacancy) {
         Glide.with(binding.vacancyLogo)
-            .load(model.imgURL)
+            .load(model.logos)
             .placeholder(R.drawable.vacancy_no_image_holder)
             .transform(RoundedCorners(dpToPx(itemView.context)))
             .into(binding.vacancyLogo)
