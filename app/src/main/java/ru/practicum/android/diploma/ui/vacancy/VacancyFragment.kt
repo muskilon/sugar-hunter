@@ -34,15 +34,11 @@ class VacancyFragment : Fragment() {
                 binding.favoriteButton.setImageResource(R.drawable.favorite_inactive)
             }
 
-            //нужен метод для сетонкликлистенера на favoriteButton (сейчас нет вакансии, чтобы реализовать)
+            // нужен метод для сетонкликлистенера на favoriteButton (сейчас нет вакансии, чтобы реализовать)
 
         })
 
-
-
-
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
