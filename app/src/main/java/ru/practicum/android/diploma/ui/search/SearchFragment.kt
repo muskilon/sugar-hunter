@@ -27,7 +27,11 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 //       Для тестирования!!! Можно удалять
-        viewModel.searchVacancies("Kotlin")
+//       Пример формирования options для @QueryMap
+        val options: HashMap<String, String> = HashMap()
+        options["text"] = "VisualBasic"
+        viewModel.searchVacancies(options)
+
         viewModel.getVacancy("98561017")
         viewModel.getVacancy("98899447")
         viewModel.getIndustries()

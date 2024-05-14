@@ -25,7 +25,7 @@ class RetrofitNetworkClient(
             when (dto) {
                 is SearchRequest -> getSearchResponse(dto)
                 is DetailsRequest -> getDetailsResponse(dto)
-                is IndustryRequest -> getIndustryResponse(dto)
+                is IndustryRequest -> getIndustryResponse()
                 else -> Response().apply { resultCode = NOT_FOUND }
             }
         }
@@ -34,7 +34,7 @@ class RetrofitNetworkClient(
     private suspend fun getSearchResponse(dto: SearchRequest): Response {
         withContext(Dispatchers.IO) {
             try {
-                response = hhApi.getSearch(dto.text).apply { resultCode = OK }
+                response = hhApi.getSearch(dto.options).apply { resultCode = OK }
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
                 response = Response().apply { resultCode = NOT_FOUND }
@@ -55,7 +55,7 @@ class RetrofitNetworkClient(
         return response
     }
 
-    private suspend fun getIndustryResponse(dto: IndustryRequest): Response {
+    private suspend fun getIndustryResponse(): Response {
         withContext(Dispatchers.IO) {
             try {
                 response = industryMapper(hhApi.getIndustry()).apply { resultCode = OK }

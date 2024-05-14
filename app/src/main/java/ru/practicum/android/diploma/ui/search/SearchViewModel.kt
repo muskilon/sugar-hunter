@@ -15,9 +15,9 @@ class SearchViewModel(
 
     val mutable = MutableLiveData<Int>()
 
-    fun searchVacancies(text: String) {
+    fun searchVacancies(options: Map<String, String>) {
         viewModelScope.launch {
-            vacanciesInterActor.searchVacancies(text).collect { result ->
+            vacanciesInterActor.searchVacancies(options).collect { result ->
                 processResult(result)
             }
         }

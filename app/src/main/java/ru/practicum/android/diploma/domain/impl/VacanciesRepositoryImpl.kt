@@ -22,9 +22,9 @@ class VacanciesRepositoryImpl(
     private val networkClient: NetworkClient,
 ) : VacanciesRepository {
     override fun searchVacancies(
-        text: String
+        options: Map<String, String>
     ): Flow<Resource<List<Vacancy>>> = flow {
-        val response = networkClient.doRequest(SearchRequest(text))
+        val response = networkClient.doRequest(SearchRequest(options))
         when (response.resultCode) {
             OK -> {
                 with(response as SearchResponse) {

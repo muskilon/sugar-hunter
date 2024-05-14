@@ -13,9 +13,9 @@ class VacanciesInterActorImpl(
     private val repository: VacanciesRepository
 ) : VacanciesInterActor {
     override fun searchVacancies(
-        text: String
+        options: Map<String, String>
     ): Flow<Resource<List<Vacancy>>> {
-        return repository.searchVacancies(text).map { result ->
+        return repository.searchVacancies(options).map { result ->
             when (result) {
                 is Resource.Data -> result
                 is Resource.NotFound -> Resource.NotFound(EMPTY)
