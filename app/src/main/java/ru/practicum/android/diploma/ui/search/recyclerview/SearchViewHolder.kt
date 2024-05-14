@@ -19,11 +19,14 @@ class SearchViewHolder(
 
     fun bind(model: Vacancy) {
         Glide.with(binding.vacancyLogo)
-            .load(model.logos)
+            .load(model.logos?.logo240)
             .placeholder(R.drawable.vacancy_no_image_holder)
             .transform(RoundedCorners(dpToPx(itemView.context)))
             .into(binding.vacancyLogo)
-        // Тут нужно будт заполнить остальные поля
+
+        binding.vacancyName.text = model.title
+        binding.companyName.text = model.employer
+        binding.financeCount.text = "от ${model.salary?.from} до ${model.salary?.to}"
     }
 
     private fun dpToPx(context: Context): Int {

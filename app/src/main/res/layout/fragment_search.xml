@@ -96,6 +96,12 @@
         app:layout_constraintTop_toBottomOf="@id/search_edit_frame">
 
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecyclerView"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/item_vacancy"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/vacancy_count"
@@ -189,12 +195,7 @@
                 android:textSize="@dimen/textSize_22sp" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/searchRecyclerView"
-            android:layout_width="match_parent"
-            tools:listitem="@layout/item_vacancy"
-            android:layout_height="match_parent"
-            android:visibility="gone"/>
+
 
 
     </FrameLayout>
