@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -35,6 +36,12 @@ class SearchFragment : Fragment() {
 
     companion object {
         private const val NULL_TEXT = ""
+        private const val MOD_10 = 10
+        private const val NUMBER_0 = 0
+        private const val NUMBER_1 = 1
+        private const val NUMBER_2 = 2
+        private const val NUMBER_3 = 3
+        private const val NUMBER_4 = 4
     }
 
     override fun onCreateView(
@@ -48,6 +55,8 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.searchRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(NULL_TEXT)
@@ -182,10 +191,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun countToString(count: Int): String {
-        return when (count.mod(10)) {
-            0 -> "вакансий"
-            1 -> "вакансия"
-            2, 3, 4 -> "вакансии"
+        return when (count.mod(MOD_10)) {
+            NUMBER_0 -> "вакансий"
+            NUMBER_1 -> "вакансия"
+            NUMBER_2, NUMBER_3, NUMBER_4 -> "вакансии"
             else -> "вакансий"
         }
     }

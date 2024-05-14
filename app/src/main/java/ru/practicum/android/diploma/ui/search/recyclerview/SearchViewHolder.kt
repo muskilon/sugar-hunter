@@ -19,7 +19,7 @@ class SearchViewHolder(
 
     fun bind(model: Vacancy) {
         Glide.with(binding.vacancyLogo)
-            .load(model.logos)
+            .load(model.logos?.logo240)
             .placeholder(R.drawable.vacancy_no_image_holder)
             .transform(RoundedCorners(dpToPx(itemView.context)))
             .into(binding.vacancyLogo)
