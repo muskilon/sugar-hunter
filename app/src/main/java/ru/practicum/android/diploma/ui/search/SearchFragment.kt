@@ -29,6 +29,8 @@ class SearchFragment : Fragment() {
 //       Для тестирования!!! Можно удалять
         viewModel.searchVacancies("Kotlin")
         viewModel.getVacancy("98561017")
+        viewModel.getVacancy("98899447")
+        viewModel.getIndustries()
 //        Для тестирования!!! Можно удалять
     }
 

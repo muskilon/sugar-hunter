@@ -37,8 +37,20 @@ class SearchViewModel(
             }
         }
     }
+    fun getIndustries() {
+        viewModelScope.launch {
+            vacanciesInterActor.getIndustries().collect {
+                when (it) {
+                    is Resource.ConnectionError -> Log.d(TAG, it.message)
 
-    //        ДЛЯ ТЕСТИРОВАНИЯ!!!
+                    is Resource.NotFound -> Log.d(TAG, it.message)
+
+                    is Resource.Data -> Log.d(TAG, it.value.toString())
+                }
+            }
+        }
+    }
+
     private fun processResult(foundVacancies: Resource<List<Vacancy>>) {
         when (foundVacancies) {
             is Resource.ConnectionError -> Log.d(TAG, foundVacancies.message)
@@ -48,6 +60,8 @@ class SearchViewModel(
             is Resource.Data -> Log.d(TAG, foundVacancies.value.toString())
         }
     }
+
+    //        ДЛЯ ТЕСТИРОВАНИЯ!!!
 
     companion object {
         private const val TAG = "process"

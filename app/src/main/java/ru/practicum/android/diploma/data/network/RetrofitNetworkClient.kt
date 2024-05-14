@@ -6,6 +6,11 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.practicum.android.diploma.data.network.requests.DetailsRequest
+import ru.practicum.android.diploma.data.network.requests.IndustryRequest
+import ru.practicum.android.diploma.data.network.requests.SearchRequest
+import ru.practicum.android.diploma.data.network.responses.IndustryList
+import ru.practicum.android.diploma.data.network.responses.IndustryResponse
 import java.io.IOException
 
 class RetrofitNetworkClient(
@@ -22,6 +27,7 @@ class RetrofitNetworkClient(
                     when (dto) {
                         is SearchRequest -> hhApi.getSearch(dto.text).apply { resultCode = OK }
                         is DetailsRequest -> hhApi.getVacancy(dto.id).apply { resultCode = OK }
+                        is IndustryRequest -> mapper(hhApi.getIndustry()).apply { resultCode = OK }
                         else -> Response().apply { resultCode = NOT_FOUND }
                     }
                 } catch (ex: IOException) {
@@ -30,6 +36,12 @@ class RetrofitNetworkClient(
                 }
             }
         }
+    }
+
+    private fun mapper(array: Array<IndustryList>): IndustryResponse {
+        return IndustryResponse(
+            container = array.asList()
+        )
     }
 
     private fun isConnected(): Boolean {
@@ -53,5 +65,4 @@ class RetrofitNetworkClient(
         private const val NOT_FOUND = 400
         private const val SERVER_ERROR = 500
     }
-
 }
