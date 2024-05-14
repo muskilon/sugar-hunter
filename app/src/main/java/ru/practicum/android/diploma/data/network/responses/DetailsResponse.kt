@@ -1,9 +1,10 @@
-package ru.practicum.android.diploma.data.network
+package ru.practicum.android.diploma.data.network.responses
 
 import com.google.gson.annotations.SerializedName
 import ru.practicum.android.diploma.data.dto.Area
 import ru.practicum.android.diploma.data.dto.Employer
 import ru.practicum.android.diploma.data.dto.Salary
+import ru.practicum.android.diploma.data.network.Response
 
 data class DetailsResponse(
     val id: String,

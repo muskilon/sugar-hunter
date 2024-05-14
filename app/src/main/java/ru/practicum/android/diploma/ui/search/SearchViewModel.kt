@@ -1,17 +1,17 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
-import android.util.Log
 import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 
 class SearchViewModel(
     private val vacanciesInterActor: VacanciesInterActor
@@ -30,21 +30,6 @@ class SearchViewModel(
         private const val TAG = "process"
     }
 
-    fun searchDebounce(changedText: String) {
-        if (latestSearchText == changedText) {
-            return
-        }
-
-        this.latestSearchText = changedText
-
-        searchJob?.cancel()
-
-        searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_DELAY)
-            searchVacancies(changedText)
-        }
-    }
-
     private fun renderState(state: SearchFragmentState) {
         stateLiveData.postValue(state)
     }
@@ -61,13 +46,13 @@ class SearchViewModel(
         return current
     }
 
-    private fun searchVacancies(text: String) {
+    fun searchVacancies(options: Map<String, String>) {
         renderState(
             SearchFragmentState.Loading
         )
         viewModelScope.launch {
             vacanciesInterActor
-                .searchVacancies(text)
+                .searchVacancies(options)
                 .collect { result ->
                     processResult(result)
                 }
@@ -89,7 +74,36 @@ class SearchViewModel(
         }
     }
 
-    private fun processResult(foundVacancies: Resource<List<Vacancy>>) {
+    fun getIndustries() {
+        viewModelScope.launch {
+            vacanciesInterActor.getIndustries().collect {
+                when (it) {
+                    is Resource.ConnectionError -> Log.d(TAG, it.message)
+
+                    is Resource.NotFound -> Log.d(TAG, it.message)
+
+                    is Resource.Data -> Log.d(TAG, it.value.toString())
+                }
+            }
+        }
+    }
+
+    fun searchDebounce(changedText: String, options: Map<String, String>) {
+        if (latestSearchText == changedText) {
+            return
+        }
+
+        this.latestSearchText = changedText
+
+        searchJob?.cancel()
+
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchVacancies(options)
+        }
+    }
+
+    fun processResult(foundVacancies: Resource<List<Vacancy>>) {
         when (foundVacancies) {
             is Resource.ConnectionError -> {
                 renderState(
@@ -116,5 +130,4 @@ class SearchViewModel(
             }
         }
     }
-
 }

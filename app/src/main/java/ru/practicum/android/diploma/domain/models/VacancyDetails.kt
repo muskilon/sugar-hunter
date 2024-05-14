@@ -3,11 +3,10 @@ package ru.practicum.android.diploma.domain.models
 import ru.practicum.android.diploma.data.dto.Area
 import ru.practicum.android.diploma.data.dto.Employer
 import ru.practicum.android.diploma.data.dto.Salary
-import ru.practicum.android.diploma.data.network.Contacts
-import ru.practicum.android.diploma.data.network.Employment
-import ru.practicum.android.diploma.data.network.Experience
-import ru.practicum.android.diploma.data.network.KeySkills
-import ru.practicum.android.diploma.data.network.Schedule
+import ru.practicum.android.diploma.data.network.responses.Contacts
+import ru.practicum.android.diploma.data.network.responses.Employment
+import ru.practicum.android.diploma.data.network.responses.Experience
+import ru.practicum.android.diploma.data.network.responses.Schedule
 
 data class VacancyDetails(
     val id: String,
@@ -19,6 +18,6 @@ data class VacancyDetails(
     val employment: Employment?,
     val schedule: Schedule?,
     val description: String?,
-    val keySkills: List<KeySkills>?,
+    val keySkills: List<String>?,
     val contacts: Contacts?
 )
