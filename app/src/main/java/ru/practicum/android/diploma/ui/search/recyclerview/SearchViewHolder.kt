@@ -13,21 +13,25 @@ class SearchViewHolder(
     private val binding: ItemVacancyBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    companion object{
+        const val RADIUS_IN_DP = 12f
+    }
+
     fun bind(model: Vacancy) {
         Glide.with(binding.vacancyLogo)
             .load(model.imgURL)
             .placeholder(R.drawable.vacancy_no_image_holder)
             .transform(RoundedCorners(dpToPx(itemView.context)))
             .into(binding.vacancyLogo)
-
-        //Тут нужно будт заполнить остальные поля
+        // Тут нужно будт заполнить остальные поля
     }
 
-    private fun dpToPx( context: Context): Int {
+    private fun dpToPx(context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            12f,
-            context.resources.displayMetrics).toInt()
+            RADIUS_IN_DP,
+            context.resources.displayMetrics
+        ).toInt()
     }
 
 }

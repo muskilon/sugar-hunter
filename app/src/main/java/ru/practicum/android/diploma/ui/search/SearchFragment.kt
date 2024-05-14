@@ -22,7 +22,7 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
 
-    private lateinit var searchAdapter: SearchAdapter
+    private var searchAdapter: SearchAdapter? = null
 
     companion object {
         private const val NULL_TEXT = ""
@@ -150,7 +150,7 @@ class SearchFragment : Fragment() {
             somethingWrong.visibility = View.GONE
             noInternet.visibility = View.GONE
         }
-        searchAdapter.setData(vacancy)
+        searchAdapter?.setData(vacancy)
     }
 
     private fun setAdapters() {
