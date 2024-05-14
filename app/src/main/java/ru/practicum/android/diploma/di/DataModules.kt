@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.di
 
 import androidx.room.Room
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -16,10 +18,11 @@ val dataModules = module {
 //    Network
     single<NetworkClient> { RetrofitNetworkClient(androidContext(), hhApi = get()) }
     single<HHApi> {
-        Retrofit.Builder().baseUrl("https://api.hh.ru/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(HHApi::class.java)
+        Retrofit.Builder().baseUrl("https://api.hh.ru/").addConverterFactory(GsonConverterFactory.create()).client(
+            OkHttpClient.Builder().addInterceptor(
+                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+            ).build()
+        ).build().create(HHApi::class.java)
     }
 
     single { ExternalNavigator(context = androidContext()) }
