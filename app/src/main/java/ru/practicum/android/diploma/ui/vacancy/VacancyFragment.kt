@@ -34,6 +34,18 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getVacancyLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            vacancy ->
+            _binding!!.vacancyName.text = vacancy.title
+            // Переделать сделано для теста
+            _binding!!.vacancyCoast.text = vacancy.salary.toString()
+            _binding!!.vacancyCardName.text = vacancy.employer.name
+            _binding!!.vacancyPlace.text = vacancy.area.name
+
+            _binding!!.experienceResponse.text = vacancy.experience?.name
+            _binding!!.requestListResponse.text = vacancy.employment?.name
+        })
+
         viewModel.checkInFavouritesLiveData()
             .observe(viewLifecycleOwner, androidx.lifecycle.Observer { checkInFavourites ->
                 if (checkInFavourites) {
