@@ -5,14 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.db.FavouriteDataBaseInteractor
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
-import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 
 class VacancyViewModel(
     private val vacancyId: String,
@@ -35,7 +32,6 @@ class VacancyViewModel(
         }
     }
 
-
     fun searchVacancyById(vacancyId: String) {
         viewModelScope.launch {
             vacanciesInterActor
@@ -50,19 +46,19 @@ class VacancyViewModel(
     fun processResult(foundVacance: Resource<VacancyDetails>) {
         when (foundVacance) {
             is Resource.ConnectionError -> {
-                //Обработай ошибки
-                        foundVacance.message
+                // Обработай ошибки
+                foundVacance.message
             }
 
             is Resource.NotFound -> {
-                //Обработай ошибки
-                        foundVacance.message
+                // Обработай ошибки
+                foundVacance.message
             }
 
             is Resource.Data -> {
-                //Проверь внимательно
+                // Проверь внимательно
                 Log.d("vacancy", foundVacance.value.toString())
-                        vacancyMutableLiveData.postValue(foundVacance.value as VacancyDetails)
+                vacancyMutableLiveData.postValue(foundVacance.value as VacancyDetails)
             }
         }
     }

@@ -15,7 +15,7 @@ class VacancyFragment : Fragment() {
 
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
-    private val viewModel : VacancyViewModel by viewModel {
+    private val viewModel: VacancyViewModel by viewModel {
         // Здесь должны быть детали вакансии
         parametersOf(vacancyId)
     }

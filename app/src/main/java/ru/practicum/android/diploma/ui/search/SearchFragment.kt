@@ -32,7 +32,8 @@ class SearchFragment : Fragment() {
                 requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
 
                 findNavController().navigate(
-                    R.id.action_searchFragment_to_vacancyFragment, VacancyFragment.createArgs(vacancy.id)
+                    R.id.action_searchFragment_to_vacancyFragment,
+                    VacancyFragment.createArgs(vacancy.id)
                 )
             }
         }.also {
