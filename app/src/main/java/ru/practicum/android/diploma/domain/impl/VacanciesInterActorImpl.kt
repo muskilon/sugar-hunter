@@ -12,6 +12,7 @@ import ru.practicum.android.diploma.domain.models.VacancyDetails
 class VacanciesInterActorImpl(
     private val repository: VacanciesRepository
 ) : VacanciesInterActor {
+
     override fun searchVacancies(
         options: Map<String, String>
     ): Flow<Resource<List<Vacancy>>> {

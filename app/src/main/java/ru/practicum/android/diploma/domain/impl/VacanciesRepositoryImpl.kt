@@ -6,12 +6,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.requests.DetailsRequest
-import ru.practicum.android.diploma.data.network.requests.IndustryRequest
 import ru.practicum.android.diploma.data.network.requests.SearchRequest
 import ru.practicum.android.diploma.data.network.responses.DetailsResponse
-import ru.practicum.android.diploma.data.network.responses.IndustryResponse
 import ru.practicum.android.diploma.data.network.responses.KeySkills
-import ru.practicum.android.diploma.data.network.responses.SearchResponse
 import ru.practicum.android.diploma.domain.VacanciesRepository
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.Resource
@@ -21,14 +18,14 @@ import ru.practicum.android.diploma.domain.models.VacancyDetails
 class VacanciesRepositoryImpl(
     private val networkClient: NetworkClient,
 ) : VacanciesRepository {
+
     override fun searchVacancies(
         options: Map<String, String>
     ): Flow<Resource<List<Vacancy>>> = flow {
-        val response = networkClient.doRequest(SearchRequest(options))
-        when (response.resultCode) {
-            OK -> {
-                with(response as SearchResponse) {
-                    val data = items.map {
+        when (val response = networkClient.searchResponse(SearchRequest(options))) {
+            is Resource.Data -> {
+                with(response) {
+                    val data = this.value.items.map {
                         val vacancy = Vacancy(
                             id = it.id,
                             title = it.name,
@@ -46,9 +43,30 @@ class VacanciesRepositoryImpl(
                     }
                 }
             }
+            is Resource.NotFound -> emit(Resource.NotFound(NOT_FOUND_TEXT))
+            is Resource.ConnectionError -> {
+                emit(Resource.ConnectionError(CONNECTION_ERROR))
+            }
+        }
+    }.flowOn(Dispatchers.IO)
+    override suspend fun getIndustries(): Flow<Resource<List<Industries>>> = flow {
+        when (val response = networkClient.getIndustry()) {
+            is Resource.Data -> {
+                with(response) {
+                    val data = this.value.container.map {
+                        val industries = Industries(
+                            id = it.id,
+                            name = it.name,
+                            industries = it.industries
+                        )
+                        industries
+                    }
+                    emit(Resource.Data(data))
+                }
+            }
 
-            in NOT_FOUND -> emit(Resource.NotFound(NOT_FOUND_TEXT))
-            else -> {
+            is Resource.NotFound -> emit(Resource.NotFound(NOT_FOUND_TEXT))
+            is Resource.ConnectionError -> {
                 emit(Resource.ConnectionError(CONNECTION_ERROR))
             }
         }
@@ -74,30 +92,6 @@ class VacanciesRepositoryImpl(
                         keySkills = skillsMapper(this.keySkills),
                         contacts = this.contacts
                     )
-                    emit(Resource.Data(data))
-                }
-            }
-
-            in NOT_FOUND -> emit(Resource.NotFound(NOT_FOUND_TEXT))
-            else -> {
-                emit(Resource.ConnectionError(CONNECTION_ERROR))
-            }
-        }
-    }.flowOn(Dispatchers.IO)
-
-    override suspend fun getIndustries(): Flow<Resource<List<Industries>>> = flow {
-        val response = networkClient.doRequest(IndustryRequest())
-        when (response.resultCode) {
-            OK -> {
-                with(response as IndustryResponse) {
-                    val data = container.map {
-                        val industries = Industries(
-                            id = it.id,
-                            name = it.name,
-                            industries = it.industries
-                        )
-                        industries
-                    }
                     emit(Resource.Data(data))
                 }
             }

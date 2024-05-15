@@ -6,11 +6,12 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.practicum.android.diploma.data.dto.DTOVacancies
+import ru.practicum.android.diploma.data.dto.IndustryDTO
+import ru.practicum.android.diploma.data.dto.IndustryList
 import ru.practicum.android.diploma.data.network.requests.DetailsRequest
-import ru.practicum.android.diploma.data.network.requests.IndustryRequest
 import ru.practicum.android.diploma.data.network.requests.SearchRequest
-import ru.practicum.android.diploma.data.network.responses.IndustryList
-import ru.practicum.android.diploma.data.network.responses.IndustryResponse
+import ru.practicum.android.diploma.domain.models.Resource
 import java.io.IOException
 
 class RetrofitNetworkClient(
@@ -18,29 +19,37 @@ class RetrofitNetworkClient(
     private val hhApi: HHApi
 ) : NetworkClient {
     private var response = Response()
+
+    override suspend fun searchResponse(request: SearchRequest): Resource<DTOVacancies> {
+        return withContext(Dispatchers.IO) {
+            try {
+                return@withContext hhApi.getSearch(request.options).body()?.let { Resource.Data(it) } ?: Resource.NotFound("NOT_FOUND")
+            } catch (ex: IOException) {
+                Log.e(REQUEST_ERROR_TAG, ex.toString())
+                return@withContext Resource.ConnectionError("ERROR")
+            }
+        }
+    }
+
+    override suspend fun getIndustry(): Resource<IndustryDTO> {
+        return withContext(Dispatchers.IO) {
+            try {
+                return@withContext hhApi.getIndustry().body()?.let { Resource.Data(industryMapper(it)) } ?: Resource.NotFound("NOT_FOUND")
+            } catch (ex: IOException) {
+                Log.e(REQUEST_ERROR_TAG, ex.toString())
+                return@withContext Resource.ConnectionError("ERROR")
+            }
+        }
+    }
     override suspend fun doRequest(dto: Any): Response {
         return if (!isConnected()) {
             Response().apply { resultCode = SERVER_ERROR }
         } else {
             when (dto) {
-                is SearchRequest -> getSearchResponse(dto)
                 is DetailsRequest -> getDetailsResponse(dto)
-                is IndustryRequest -> getIndustryResponse()
                 else -> Response().apply { resultCode = NOT_FOUND }
             }
         }
-    }
-
-    private suspend fun getSearchResponse(dto: SearchRequest): Response {
-        withContext(Dispatchers.IO) {
-            try {
-                response = hhApi.getSearch(dto.options).apply { resultCode = OK }
-            } catch (ex: IOException) {
-                Log.e(REQUEST_ERROR_TAG, ex.toString())
-                response = Response().apply { resultCode = NOT_FOUND }
-            }
-        }
-        return response
     }
 
     private suspend fun getDetailsResponse(dto: DetailsRequest): Response {
@@ -55,20 +64,8 @@ class RetrofitNetworkClient(
         return response
     }
 
-    private suspend fun getIndustryResponse(): Response {
-        withContext(Dispatchers.IO) {
-            try {
-                response = industryMapper(hhApi.getIndustry()).apply { resultCode = OK }
-            } catch (ex: IOException) {
-                Log.e(REQUEST_ERROR_TAG, ex.toString())
-                response = Response().apply { resultCode = NOT_FOUND }
-            }
-        }
-        return response
-    }
-
-    private fun industryMapper(array: Array<IndustryList>): IndustryResponse {
-        return IndustryResponse(
+    private fun industryMapper(array: Array<IndustryList>): IndustryDTO {
+        return IndustryDTO(
             container = array.asList()
         )
     }

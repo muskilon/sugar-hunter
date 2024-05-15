@@ -62,12 +62,12 @@ class SearchFragment : Fragment() {
         //       Для тестирования!!! Можно удалять
 //       Пример формирования options для @QueryMap
         val options: HashMap<String, String> = HashMap()
-        options["text"] = "VisualBasic"
-        viewModel.searchVacancies(options)
-
-        viewModel.getVacancy("98561017")
-        viewModel.getVacancy("98899447")
-        viewModel.getIndustries()
+//        options["text"] = "VisualBasic"
+//        viewModel.searchTestVacancies(options)
+//
+//        viewModel.getVacancy("98561017")
+//        viewModel.getVacancy("98899447")
+//        viewModel.getIndustries()
 
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(NULL_TEXT)
