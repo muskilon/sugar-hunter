@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 
@@ -13,7 +15,10 @@ class VacancyFragment : Fragment() {
 
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModel<VacancyViewModel>()
+    private val viewModel : VacancyViewModel by viewModel {
+        // Здесь должны быть детали вакансии
+        parametersOf(vacancy)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +50,8 @@ class VacancyFragment : Fragment() {
 
     companion object {
         const val ARGS_VACANCY = "args_vacancy"
+        fun createArgs(id: String): Bundle =
+            bundleOf(ARGS_VACANCY to id)
     }
 
     override fun onDestroyView() {
