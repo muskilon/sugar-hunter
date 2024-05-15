@@ -25,12 +25,12 @@ class FavouriteAdapter(private val clickListener: VacancyClickListener) :
     override fun onBindViewHolder(holder: FavouriteViewHolder, position: Int) {
         holder.bind(favoriteList[position])
         holder.itemView.setOnClickListener {
-            clickListener.onAlbumClick(favoriteList[position])
+            clickListener.onVacancyClick(favoriteList[position])
         }
     }
 
     fun interface VacancyClickListener {
-        fun onAlbumClick(vacancy: Vacancy)
+        fun onVacancyClick(vacancy: Vacancy)
     }
 
 }
