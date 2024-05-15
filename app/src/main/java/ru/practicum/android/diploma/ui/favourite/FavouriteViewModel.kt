@@ -8,10 +8,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.domain.db.FavouriteDataBaseInteractor
+import ru.practicum.android.diploma.domain.db.FavouriteDataBaseInteractorImpl
 import ru.practicum.android.diploma.domain.models.FavouritesState
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class FavouriteViewModel(private val favouriteDataBaseInteractor: FavouriteDataBaseInteractor) : ViewModel() {
+class FavouriteViewModel(
+    private val favouriteDataBaseInteractor: FavouriteDataBaseInteractor
+) : ViewModel() {
 
     private var stateMutableLiveData = MutableLiveData<FavouritesState>()
     fun checkStateLiveData(): LiveData<FavouritesState> = stateMutableLiveData

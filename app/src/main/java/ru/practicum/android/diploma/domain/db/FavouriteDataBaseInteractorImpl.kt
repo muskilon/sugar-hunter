@@ -1,10 +1,12 @@
 package ru.practicum.android.diploma.domain.db
 
 import kotlinx.coroutines.flow.Flow
+import ru.practicum.android.diploma.data.db.FavouriteDataBaseRepositoryImpl
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class FavouriteDataBaseInteractorImpl(private val favouriteDataBaseRepository: FavouriteDataBaseRepository) :
-    FavouriteDataBaseInteractor {
+class FavouriteDataBaseInteractorImpl(
+    private val favouriteDataBaseRepository: FavouriteDataBaseRepository
+) : FavouriteDataBaseInteractor {
     override suspend fun addFavouriteVacancy(vacancy: Vacancy) {
         favouriteDataBaseRepository.addFavouriteVacancy(vacancy)
     }

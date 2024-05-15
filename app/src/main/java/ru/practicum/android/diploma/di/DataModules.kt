@@ -31,6 +31,7 @@ val dataModules = module {
 
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "favourite_vacancy.db")
+            .build()
     }
 
 }

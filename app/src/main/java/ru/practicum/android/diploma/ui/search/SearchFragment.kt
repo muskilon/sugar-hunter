@@ -81,6 +81,7 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.visibility = clearButtonVisibility(s)
                 binding.searchIcon.visibility = searchButtonVisibility(s)
+                options["text"] = s.toString()
                 viewModel.searchDebounce(changedText = s?.toString() ?: "", options = options)
             }
 
