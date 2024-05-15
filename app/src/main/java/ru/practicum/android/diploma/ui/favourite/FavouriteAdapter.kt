@@ -2,10 +2,12 @@ package ru.practicum.android.diploma.ui.favourite
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.util.DiffUtilCallback
 
 class FavouriteAdapter(private val clickListener: VacancyClickListener) :
     RecyclerView.Adapter<FavouriteViewHolder>() {
@@ -27,6 +29,14 @@ class FavouriteAdapter(private val clickListener: VacancyClickListener) :
         holder.itemView.setOnClickListener {
             clickListener.onVacancyClick(favoriteList[position])
         }
+    }
+
+    fun setData(newVacancies: List<Vacancy>) {
+        val diffCallback = DiffUtilCallback(favoriteList, newVacancies)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        favoriteList.clear()
+        favoriteList.addAll(newVacancies)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun interface VacancyClickListener {

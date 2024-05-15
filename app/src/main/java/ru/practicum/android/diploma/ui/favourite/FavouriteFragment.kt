@@ -48,7 +48,7 @@ class FavouriteFragment : Fragment() {
             } else if (vacancyList.isNotEmpty()) {
                 viewModel.setStateContent()
                 adapter.favoriteList = vacancyList
-                adapter.notifyDataSetChanged()
+                adapter.setData(vacancyList)
             } else {
                 viewModel.setStateError()
             }
