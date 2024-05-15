@@ -43,13 +43,13 @@ class FavouriteFragment : Fragment() {
 
         viewModel.favoriteListLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer { vacancyList ->
             if (vacancyList.isEmpty()) {
-                viewModel.setStateError()
+                viewModel.setStateEmpty()
             } else if (vacancyList.isNotEmpty()) {
                 viewModel.setStateContent()
                 adapter.favoriteDetailsList = vacancyList
                 adapter.setData(vacancyList)
             } else {
-                viewModel.setStateEmpty()
+                viewModel.setStateError()
             }
         })
 
@@ -111,8 +111,8 @@ class FavouriteFragment : Fragment() {
     }
 
     private fun showEmpty() {
-        binding.favoriteNetworkErrorHolder.isVisible = true
-        binding.favoriteEmptyListHolder.isVisible = false
+        binding.favoriteNetworkErrorHolder.isVisible = false
+        binding.favoriteEmptyListHolder.isVisible = true
         binding.favoriteRecyclerView.isVisible = false
     }
 
