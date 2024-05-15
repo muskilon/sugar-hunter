@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.practicum.android.diploma.data.dto.Area
 import ru.practicum.android.diploma.data.dto.Employer
-import ru.practicum.android.diploma.data.dto.LogoUrls
 import ru.practicum.android.diploma.data.dto.Salary
 import ru.practicum.android.diploma.data.network.responses.Contacts
 import ru.practicum.android.diploma.data.network.responses.Employment
