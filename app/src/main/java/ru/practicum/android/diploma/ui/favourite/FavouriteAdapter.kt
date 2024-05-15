@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 
 class FavouriteAdapter(private val clickListener: VacancyClickListener) :
@@ -13,7 +14,8 @@ class FavouriteAdapter(private val clickListener: VacancyClickListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouriteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_vacancy, parent, false)
-        return FavouriteViewHolder(view)
+        val layoutInspector = LayoutInflater.from(parent.context)
+        return FavouriteViewHolder(view, ItemVacancyBinding.inflate(layoutInspector, parent, false))
     }
 
     override fun getItemCount(): Int {
