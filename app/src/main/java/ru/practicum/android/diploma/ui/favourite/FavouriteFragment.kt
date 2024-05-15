@@ -43,13 +43,13 @@ class FavouriteFragment : Fragment() {
 
         viewModel.favoriteListLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer { vacancyList ->
             if (vacancyList.isEmpty()) {
-                viewModel.setStateEmpty()
+                viewModel.setStateError()
             } else if (vacancyList.isNotEmpty()) {
                 viewModel.setStateContent()
                 adapter.favoriteDetailsList = vacancyList
                 adapter.setData(vacancyList)
             } else {
-                viewModel.setStateError()
+                viewModel.setStateEmpty()
             }
         })
 
