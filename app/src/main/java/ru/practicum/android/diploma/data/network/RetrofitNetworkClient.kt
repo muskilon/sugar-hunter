@@ -18,36 +18,41 @@ class RetrofitNetworkClient(
     private val hhApi: HHApi
 ) : NetworkClient {
 
-    //TODO СДЕЛАТЬ ПРОВЕРКУ НА НАЛИЧИЕ СЕТИ!!!
     override suspend fun searchResponse(request: Map<String, String>): Resource<VacanciesDTO> {
+        if(!isConnected()) return Resource.ConnectionError(OFFLINE)
         return withContext(Dispatchers.IO) {
             try {
-                return@withContext hhApi.getSearch(request).body()?.let { Resource.Data(it) } ?: Resource.NotFound("NOT_FOUND")
+                return@withContext hhApi.getSearch(request).body()?.let { Resource.Data(it) } ?: Resource.NotFound(
+                    OFFLINE)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
-                return@withContext Resource.ConnectionError("ERROR")
+                return@withContext Resource.ConnectionError(REQUEST_ERROR_TAG)
             }
         }
     }
 
     override suspend fun getIndustry(): Resource<IndustryDTO> {
+        if(!isConnected()) return Resource.ConnectionError(OFFLINE)
         return withContext(Dispatchers.IO) {
             try {
-                return@withContext hhApi.getIndustry().body()?.let { Resource.Data(industryMapper(it)) } ?: Resource.NotFound("NOT_FOUND")
+                return@withContext hhApi.getIndustry().body()?.let { Resource.Data(industryMapper(it)) } ?: Resource.NotFound(
+                    NOT_FOUND)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
-                return@withContext Resource.ConnectionError("ERROR")
+                return@withContext Resource.ConnectionError(REQUEST_ERROR_TAG)
             }
         }
     }
 
     override suspend fun getVacancyDetails(id: String): Resource<DetailsVacancyDTO> {
+        if(!isConnected()) return Resource.ConnectionError(OFFLINE)
         return withContext(Dispatchers.IO) {
             try {
-                return@withContext hhApi.getVacancyDetails(id).body()?.let { Resource.Data(it) } ?: Resource.NotFound("NOT_FOUND")
+                return@withContext hhApi.getVacancyDetails(id).body()?.let { Resource.Data(it) } ?: Resource.NotFound(
+                    NOT_FOUND)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
-                return@withContext Resource.ConnectionError("ERROR")
+                return@withContext Resource.ConnectionError(REQUEST_ERROR_TAG)
             }
         }
     }
@@ -75,8 +80,7 @@ class RetrofitNetworkClient(
 
     companion object {
         private const val REQUEST_ERROR_TAG = "NetworkRequestError"
-        private const val OK = 200
-        private const val NOT_FOUND = 400
-        private const val SERVER_ERROR = 500
+        private const val NOT_FOUND = "not found"
+        private const val OFFLINE = "no internet"
     }
 }
