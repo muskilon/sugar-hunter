@@ -27,16 +27,17 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.checkInFavouritesLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it) {
-                binding.favoriteButton.setImageResource(R.drawable.favorite_active)
-            } else {
-                binding.favoriteButton.setImageResource(R.drawable.favorite_inactive)
-            }
+        viewModel.checkInFavouritesLiveData()
+            .observe(viewLifecycleOwner, androidx.lifecycle.Observer { checkInFavourites ->
+                if (checkInFavourites) {
+                    binding.favoriteButton.setImageResource(R.drawable.favorite_active)
+                } else {
+                    binding.favoriteButton.setImageResource(R.drawable.favorite_inactive)
+                }
 
-            // нужен метод для сетонкликлистенера на favoriteButton (сейчас нет вакансии, чтобы реализовать)
+                // нужен метод для сетонкликлистенера на favoriteButton (сейчас нет вакансии, чтобы реализовать)
 
-        })
+            })
 
     }
 

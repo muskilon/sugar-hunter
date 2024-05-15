@@ -34,20 +34,20 @@ class FavouriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.favoriteListLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it.isEmpty()) {
+        viewModel.favoriteListLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer { vacancyList ->
+            if (vacancyList.isEmpty()) {
                 viewModel.setStateEmpty()
-            } else if (it.isNotEmpty()) {
+            } else if (vacancyList.isNotEmpty()) {
                 viewModel.setStateContent()
-                adapter.favoriteList = it
+                adapter.favoriteList = vacancyList
                 adapter.notifyDataSetChanged()
             } else {
                 viewModel.setStateError()
             }
         })
 
-        viewModel.checkStateLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            render(it)
+        viewModel.checkStateLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer { favouriteState ->
+            render(favouriteState)
         })
 
         viewModel.viewModelScope.launch {
