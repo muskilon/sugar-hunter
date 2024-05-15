@@ -5,10 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.data.network.NetworkClient
-import ru.practicum.android.diploma.data.network.requests.DetailsRequest
-import ru.practicum.android.diploma.data.network.requests.SearchRequest
-import ru.practicum.android.diploma.data.network.responses.DetailsResponse
-import ru.practicum.android.diploma.data.network.responses.KeySkills
+import ru.practicum.android.diploma.data.dto.KeySkills
 import ru.practicum.android.diploma.domain.VacanciesRepository
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.Resource
@@ -22,7 +19,7 @@ class VacanciesRepositoryImpl(
     override fun searchVacancies(
         options: Map<String, String>
     ): Flow<Resource<List<Vacancy>>> = flow {
-        when (val response = networkClient.searchResponse(SearchRequest(options))) {
+        when (val response = networkClient.searchResponse(options)) {
             is Resource.Data -> {
                 with(response) {
                     val data = this.value.items.map {
@@ -72,32 +69,30 @@ class VacanciesRepositoryImpl(
         }
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getVacancy(
+    override suspend fun getVacancyDetails(
         id: String
     ): Flow<Resource<VacancyDetails>> = flow {
-        val response = networkClient.doRequest(DetailsRequest(id))
-        when (response.resultCode) {
-            OK -> {
-                with(response as DetailsResponse) {
+        when (val response = networkClient.getVacancyDetails(id)) {
+            is Resource.Data -> {
+                with(response) {
                     val data = VacancyDetails(
-                        id = this.id,
-                        title = this.name,
-                        area = this.area,
-                        employer = this.employer,
-                        salary = this.salary,
-                        experience = this.experience,
-                        employment = this.employment,
-                        schedule = this.schedule,
-                        description = this.description,
-                        keySkills = skillsMapper(this.keySkills),
-                        contacts = this.contacts
+                        id = this.value.id,
+                        title = this.value.name,
+                        area = this.value.area,
+                        employer = this.value.employer,
+                        salary = this.value.salary,
+                        experience = this.value.experience,
+                        employment = this.value.employment,
+                        schedule = this.value.schedule,
+                        description = this.value.description,
+                        keySkills = skillsMapper(this.value.keySkills),
+                        contacts = this.value.contacts
                     )
                     emit(Resource.Data(data))
                 }
             }
-
-            in NOT_FOUND -> emit(Resource.NotFound(NOT_FOUND_TEXT))
-            else -> {
+            is Resource.NotFound -> emit(Resource.NotFound(NOT_FOUND_TEXT))
+            is Resource.ConnectionError -> {
                 emit(Resource.ConnectionError(CONNECTION_ERROR))
             }
         }

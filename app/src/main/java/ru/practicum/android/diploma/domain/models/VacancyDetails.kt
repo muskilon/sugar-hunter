@@ -3,10 +3,10 @@ package ru.practicum.android.diploma.domain.models
 import ru.practicum.android.diploma.data.dto.Area
 import ru.practicum.android.diploma.data.dto.Employer
 import ru.practicum.android.diploma.data.dto.Salary
-import ru.practicum.android.diploma.data.network.responses.Contacts
-import ru.practicum.android.diploma.data.network.responses.Employment
-import ru.practicum.android.diploma.data.network.responses.Experience
-import ru.practicum.android.diploma.data.network.responses.Schedule
+import ru.practicum.android.diploma.data.dto.Contacts
+import ru.practicum.android.diploma.data.dto.Employment
+import ru.practicum.android.diploma.data.dto.Experience
+import ru.practicum.android.diploma.data.dto.Schedule
 
 data class VacancyDetails(
     val id: String,

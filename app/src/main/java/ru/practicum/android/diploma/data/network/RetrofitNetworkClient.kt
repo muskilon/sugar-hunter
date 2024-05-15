@@ -6,11 +6,10 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.data.dto.DTOVacancies
+import ru.practicum.android.diploma.data.dto.VacanciesDTO
+import ru.practicum.android.diploma.data.dto.DetailsVacancyDTO
 import ru.practicum.android.diploma.data.dto.IndustryDTO
 import ru.practicum.android.diploma.data.dto.IndustryList
-import ru.practicum.android.diploma.data.network.requests.DetailsRequest
-import ru.practicum.android.diploma.data.network.requests.SearchRequest
 import ru.practicum.android.diploma.domain.models.Resource
 import java.io.IOException
 
@@ -18,12 +17,12 @@ class RetrofitNetworkClient(
     private val context: Context,
     private val hhApi: HHApi
 ) : NetworkClient {
-    private var response = Response()
 
-    override suspend fun searchResponse(request: SearchRequest): Resource<DTOVacancies> {
+    //TODO СДЕЛАТЬ ПРОВЕРКУ НА НАЛИЧИЕ СЕТИ!!!
+    override suspend fun searchResponse(request: Map<String, String>): Resource<VacanciesDTO> {
         return withContext(Dispatchers.IO) {
             try {
-                return@withContext hhApi.getSearch(request.options).body()?.let { Resource.Data(it) } ?: Resource.NotFound("NOT_FOUND")
+                return@withContext hhApi.getSearch(request).body()?.let { Resource.Data(it) } ?: Resource.NotFound("NOT_FOUND")
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
                 return@withContext Resource.ConnectionError("ERROR")
@@ -41,27 +40,16 @@ class RetrofitNetworkClient(
             }
         }
     }
-    override suspend fun doRequest(dto: Any): Response {
-        return if (!isConnected()) {
-            Response().apply { resultCode = SERVER_ERROR }
-        } else {
-            when (dto) {
-                is DetailsRequest -> getDetailsResponse(dto)
-                else -> Response().apply { resultCode = NOT_FOUND }
-            }
-        }
-    }
 
-    private suspend fun getDetailsResponse(dto: DetailsRequest): Response {
-        withContext(Dispatchers.IO) {
+    override suspend fun getVacancyDetails(id: String): Resource<DetailsVacancyDTO> {
+        return withContext(Dispatchers.IO) {
             try {
-                response = hhApi.getVacancy(dto.id).apply { resultCode = OK }
+                return@withContext hhApi.getVacancyDetails(id).body()?.let { Resource.Data(it) } ?: Resource.NotFound("NOT_FOUND")
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
-                response = Response().apply { resultCode = NOT_FOUND }
+                return@withContext Resource.ConnectionError("ERROR")
             }
         }
-        return response
     }
 
     private fun industryMapper(array: Array<IndustryList>): IndustryDTO {

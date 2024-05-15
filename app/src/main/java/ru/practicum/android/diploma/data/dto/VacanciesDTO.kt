@@ -3,6 +3,9 @@ package ru.practicum.android.diploma.data.dto
 import com.google.gson.annotations.SerializedName
 
 data class VacanciesDTO(
+    val items: List<VacanciesItem>
+)
+data class VacanciesItem(
     val id: String,
     val name: String,
     val area: Area,

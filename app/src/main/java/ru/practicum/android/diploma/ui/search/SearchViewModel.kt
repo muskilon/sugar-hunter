@@ -45,20 +45,6 @@ class SearchViewModel(
         }
         return current
     }
-//    ДЛЯ ТЕСТИРОВАНИЯ
-    fun searchTestVacancies(options: Map<String, String>) {
-        renderState(
-            SearchFragmentState.Loading
-        )
-        viewModelScope.launch {
-            vacanciesInterActor
-                .searchVacancies(options)
-                .collect { result ->
-                    processResult(result)
-                }
-        }
-    }
-//    ДЛЯ ТЕСТИРОВАНИЯ!!!
 
     fun searchVacancies(options: Map<String, String>) {
         renderState(

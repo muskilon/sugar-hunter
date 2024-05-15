@@ -28,7 +28,7 @@ class VacanciesInterActorImpl(
     override suspend fun getVacancy(
         id: String
     ): Flow<Resource<VacancyDetails>> {
-        return repository.getVacancy(id).map { result ->
+        return repository.getVacancyDetails(id).map { result ->
             when (result) {
                 is Resource.Data -> result
                 is Resource.NotFound -> Resource.NotFound(EMPTY)

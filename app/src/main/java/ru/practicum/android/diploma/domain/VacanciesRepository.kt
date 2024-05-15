@@ -8,6 +8,6 @@ import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 interface VacanciesRepository {
     fun searchVacancies(options: Map<String, String>): Flow<Resource<List<Vacancy>>>
-    suspend fun getVacancy(id: String): Flow<Resource<VacancyDetails>>
+    suspend fun getVacancyDetails(id: String): Flow<Resource<VacancyDetails>>
     suspend fun getIndustries(): Flow<Resource<List<Industries>>>
 }
