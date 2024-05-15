@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -18,6 +17,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
 import ru.practicum.android.diploma.domain.models.FavouritesState
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 
 class FavouriteFragment : Fragment() {
@@ -47,7 +47,7 @@ class FavouriteFragment : Fragment() {
                 viewModel.setStateEmpty()
             } else if (vacancyList.isNotEmpty()) {
                 viewModel.setStateContent()
-                adapter.favoriteList = vacancyList
+                adapter.favoriteDetailsList = vacancyList
                 adapter.setData(vacancyList)
             } else {
                 viewModel.setStateError()
@@ -83,7 +83,7 @@ class FavouriteFragment : Fragment() {
         return current
     }
 
-    private fun goToVacancy(vacancy: Vacancy) {
+    private fun goToVacancy(vacancy: VacancyDetails) {
         lifecycleScope.launch {
             if (clickDebounce()) {
                 val bundle = Bundle().apply {
