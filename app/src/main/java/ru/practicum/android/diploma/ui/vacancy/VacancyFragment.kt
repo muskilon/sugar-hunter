@@ -27,6 +27,8 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val vacancyId = requireArguments().getString(ARGS_VACANCY)
+
         viewModel.checkInFavouritesLiveData()
             .observe(viewLifecycleOwner, androidx.lifecycle.Observer { checkInFavourites ->
                 if (checkInFavourites) {
@@ -39,6 +41,10 @@ class VacancyFragment : Fragment() {
 
             })
 
+    }
+
+    companion object {
+        const val ARGS_VACANCY = "args_vacancy"
     }
 
     override fun onDestroyView() {

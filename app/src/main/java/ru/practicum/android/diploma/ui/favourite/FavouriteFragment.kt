@@ -6,21 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
 import ru.practicum.android.diploma.domain.models.FavouritesState
+import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 
 class FavouriteFragment : Fragment() {
 
     private var _binding: FragmentFavouriteBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<FavouriteViewModel>()
-    private val adapter = FavouriteAdapter {
-        // переход на экран вакансия
+    private val adapter = FavouriteAdapter {vacancy ->
+        goToVacancy(vacancy)
     }
+    private var isClickAllowed = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +66,35 @@ class FavouriteFragment : Fragment() {
         binding.favoriteRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
+    }
+
+    companion object {
+        fun newInstance(): Fragment = FavouriteFragment()
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
+
+    private suspend fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            delay(CLICK_DEBOUNCE_DELAY)
+            isClickAllowed = true
+        }
+        return current
+    }
+
+    private fun goToVacancy(vacancy: Vacancy) {
+        lifecycleScope.launch {
+            if (clickDebounce()) {
+                val bundle = Bundle().apply {
+                    putString(VacancyFragment.ARGS_VACANCY, vacancy.id)
+                }
+                findNavController().navigate(
+                    R.id.action_favouriteFragment_to_vacancyFragment,
+                    bundle
+                )
+            }
+        }
     }
 
     private fun render(state: FavouritesState) {
