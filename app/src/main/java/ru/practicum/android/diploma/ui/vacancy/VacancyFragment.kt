@@ -17,8 +17,10 @@ class VacancyFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel : VacancyViewModel by viewModel {
         // Здесь должны быть детали вакансии
-        parametersOf(vacancy)
+        parametersOf(vacancyId)
     }
+
+    val vacancyId by lazy { requireArguments().getString(ARGS_VACANCY) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,8 +33,6 @@ class VacancyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val vacancyId = requireArguments().getString(ARGS_VACANCY)
 
         viewModel.checkInFavouritesLiveData()
             .observe(viewLifecycleOwner, androidx.lifecycle.Observer { checkInFavourites ->

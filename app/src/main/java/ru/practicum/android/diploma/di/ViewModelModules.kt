@@ -43,7 +43,7 @@ val viewModelModules = module {
         TeamViewModel()
     }
     viewModel {
-            (vacancy: VacancyDetails) ->
-        VacancyViewModel(vacancy = vacancy, get())
+            (id: String) ->
+        VacancyViewModel(vacancyId = id, favouriteDataBaseInteractor = get(), vacanciesInterActor = get())
     }
 }
