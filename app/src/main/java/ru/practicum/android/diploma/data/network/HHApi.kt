@@ -10,7 +10,9 @@ import ru.practicum.android.diploma.domain.models.IndustryList
 
 interface HHApi {
     @GET("vacancies/{vacancy_id}")
-    suspend fun getVacancyDetails(@Path("vacancy_id") id: String): Response<DetailsVacancyDTO>
+    suspend fun getVacancyDetails(
+        @Path("vacancy_id") id: String
+    ): Response<DetailsVacancyDTO>
 
     @GET("industries")
     suspend fun getIndustry(): Response<Array<IndustryList>>

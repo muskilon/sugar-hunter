@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.domain.db.FavouriteDataBaseInteractor
 import ru.practicum.android.diploma.domain.db.FavouriteDataBaseInteractorImpl
 import ru.practicum.android.diploma.domain.db.FavouriteDataBaseRepository
 import ru.practicum.android.diploma.domain.impl.VacanciesInterActorImpl
-import ru.practicum.android.diploma.domain.impl.VacanciesRepositoryImpl
+import ru.practicum.android.diploma.data.VacanciesRepositoryImpl
 
 val domainModules = module {
     factory<VacanciesInterActor> { VacanciesInterActorImpl(repository = get()) }

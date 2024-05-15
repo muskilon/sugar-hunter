@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.domain.impl
+package ru.practicum.android.diploma.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -34,15 +34,15 @@ class VacanciesRepositoryImpl(
                         vacancy
                     }
                     if (data.isEmpty()) {
-                        emit(Resource.NotFound(NOT_FOUND_TEXT))
+                        emit(Resource.NotFound(EMPTY))
                     } else {
                         emit(Resource.Data(data))
                     }
                 }
             }
-            is Resource.NotFound -> emit(Resource.NotFound(NOT_FOUND_TEXT))
+            is Resource.NotFound -> emit(Resource.NotFound(response.message))
             is Resource.ConnectionError -> {
-                emit(Resource.ConnectionError(CONNECTION_ERROR))
+                emit(Resource.ConnectionError(response.message))
             }
         }
     }.flowOn(Dispatchers.IO)
@@ -62,9 +62,9 @@ class VacanciesRepositoryImpl(
                 }
             }
 
-            is Resource.NotFound -> emit(Resource.NotFound(NOT_FOUND_TEXT))
+            is Resource.NotFound -> emit(Resource.NotFound(response.message))
             is Resource.ConnectionError -> {
-                emit(Resource.ConnectionError(CONNECTION_ERROR))
+                emit(Resource.ConnectionError(response.message))
             }
         }
     }.flowOn(Dispatchers.IO)
@@ -91,9 +91,9 @@ class VacanciesRepositoryImpl(
                     emit(Resource.Data(data))
                 }
             }
-            is Resource.NotFound -> emit(Resource.NotFound(NOT_FOUND_TEXT))
+            is Resource.NotFound -> emit(Resource.NotFound(response.message))
             is Resource.ConnectionError -> {
-                emit(Resource.ConnectionError(CONNECTION_ERROR))
+                emit(Resource.ConnectionError(response.message))
             }
         }
     }.flowOn(Dispatchers.IO)
@@ -106,9 +106,6 @@ class VacanciesRepositoryImpl(
     }
 
     companion object {
-        private const val OK = 200
-        private val NOT_FOUND = listOf(400, 404)
-        private const val CONNECTION_ERROR = "connection_error"
-        private const val NOT_FOUND_TEXT = "not_found"
+        private const val EMPTY = "EMPTY"
     }
 }
