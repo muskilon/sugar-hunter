@@ -19,7 +19,7 @@ class VacanciesRepositoryImpl(
     override fun searchVacancies(
         options: Map<String, String>
     ): Flow<Resource<List<Vacancy>>> = flow {
-        when (val response = networkClient.searchResponse(options)) {
+        when (val response = networkClient.getVacancies(options)) {
             is Resource.Data -> {
                 with(response) {
                     val data = this.value.items.map {

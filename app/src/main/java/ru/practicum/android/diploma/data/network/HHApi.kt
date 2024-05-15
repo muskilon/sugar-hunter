@@ -4,9 +4,9 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
-import ru.practicum.android.diploma.data.dto.VacanciesDTO
 import ru.practicum.android.diploma.data.dto.DetailsVacancyDTO
-import ru.practicum.android.diploma.data.dto.IndustryList
+import ru.practicum.android.diploma.data.dto.VacanciesDTO
+import ru.practicum.android.diploma.domain.models.IndustryList
 
 interface HHApi {
     @GET("vacancies/{vacancy_id}")

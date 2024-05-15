@@ -6,10 +6,9 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.data.dto.VacanciesDTO
 import ru.practicum.android.diploma.data.dto.DetailsVacancyDTO
 import ru.practicum.android.diploma.data.dto.IndustryDTO
-import ru.practicum.android.diploma.data.dto.IndustryList
+import ru.practicum.android.diploma.data.dto.VacanciesDTO
 import ru.practicum.android.diploma.domain.models.Resource
 import java.io.IOException
 
@@ -18,49 +17,51 @@ class RetrofitNetworkClient(
     private val hhApi: HHApi
 ) : NetworkClient {
 
-    override suspend fun searchResponse(request: Map<String, String>): Resource<VacanciesDTO> {
-        if(!isConnected()) return Resource.ConnectionError(OFFLINE)
-        return withContext(Dispatchers.IO) {
-            try {
-                return@withContext hhApi.getSearch(request).body()?.let { Resource.Data(it) } ?: Resource.NotFound(
+    override suspend fun getVacancies(request: Map<String, String>): Resource<VacanciesDTO> {
+        var vacancies: Resource<VacanciesDTO>
+        if (!isConnected()) return Resource.ConnectionError(OFFLINE)
+        withContext(Dispatchers.IO) {
+            vacancies = try {
+                hhApi.getSearch(request).body()?.let { Resource.Data(it) } ?: Resource.NotFound(
                     OFFLINE)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
-                return@withContext Resource.ConnectionError(REQUEST_ERROR_TAG)
+                Resource.ConnectionError(REQUEST_ERROR_TAG)
             }
         }
+        return vacancies
     }
 
     override suspend fun getIndustry(): Resource<IndustryDTO> {
-        if(!isConnected()) return Resource.ConnectionError(OFFLINE)
-        return withContext(Dispatchers.IO) {
-            try {
-                return@withContext hhApi.getIndustry().body()?.let { Resource.Data(industryMapper(it)) } ?: Resource.NotFound(
+        var industry: Resource<IndustryDTO>
+        if (!isConnected()) return Resource.ConnectionError(OFFLINE)
+        withContext(Dispatchers.IO) {
+            industry = try {
+                hhApi.getIndustry().body()?.let {
+                    Resource.Data(IndustryDTO(it.asList()))
+                } ?: Resource.NotFound(
                     NOT_FOUND)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
-                return@withContext Resource.ConnectionError(REQUEST_ERROR_TAG)
+                Resource.ConnectionError(REQUEST_ERROR_TAG)
             }
         }
+        return industry
     }
 
     override suspend fun getVacancyDetails(id: String): Resource<DetailsVacancyDTO> {
-        if(!isConnected()) return Resource.ConnectionError(OFFLINE)
-        return withContext(Dispatchers.IO) {
-            try {
-                return@withContext hhApi.getVacancyDetails(id).body()?.let { Resource.Data(it) } ?: Resource.NotFound(
+        var details: Resource<DetailsVacancyDTO>
+        if (!isConnected()) return Resource.ConnectionError(OFFLINE)
+        withContext(Dispatchers.IO) {
+            details = try {
+                hhApi.getVacancyDetails(id).body()?.let { Resource.Data(it) } ?: Resource.NotFound(
                     NOT_FOUND)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
-                return@withContext Resource.ConnectionError(REQUEST_ERROR_TAG)
+                Resource.ConnectionError(REQUEST_ERROR_TAG)
             }
         }
-    }
-
-    private fun industryMapper(array: Array<IndustryList>): IndustryDTO {
-        return IndustryDTO(
-            container = array.asList()
-        )
+        return details
     }
 
     private fun isConnected(): Boolean {

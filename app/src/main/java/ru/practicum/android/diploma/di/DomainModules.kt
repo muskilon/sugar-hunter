@@ -14,5 +14,5 @@ val domainModules = module {
     factory<VacanciesInterActor> { VacanciesInterActorImpl(repository = get()) }
     single<VacanciesRepository> { VacanciesRepositoryImpl(networkClient = get()) }
     single<FavouriteDataBaseRepository> { FavouriteDataBaseRepositoryImpl(database = get(), convertor = get()) }
-    factory<FavouriteDataBaseInteractor> {FavouriteDataBaseInteractorImpl(favouriteDataBaseRepository = get())  }
+    factory<FavouriteDataBaseInteractor> { FavouriteDataBaseInteractorImpl(favouriteDataBaseRepository = get()) }
 }

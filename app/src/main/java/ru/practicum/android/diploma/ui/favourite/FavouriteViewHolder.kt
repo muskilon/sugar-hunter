@@ -41,6 +41,4 @@ class FavouriteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 ),
             ).into(vacancyLogo)
     }
-
 }
-
