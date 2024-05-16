@@ -9,5 +9,5 @@ data class Vacancy(
     val city: String,
     val employer: String,
     val logos: LogoUrls?,
-    val salary: Salary?
+    val salary: Salary?,
 )
