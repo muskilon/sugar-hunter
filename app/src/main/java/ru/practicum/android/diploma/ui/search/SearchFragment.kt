@@ -69,7 +69,8 @@ class SearchFragment : Fragment() {
         //       Для тестирования!!! Можно удалять
 //       Пример формирования options для @QueryMap
         val options: HashMap<String, String> = HashMap()
-        options["text"] = "VisualBasic"
+        options["text"] = "VisualBasic" // Как передавать поисковый запрос
+        options["page"] = "3" // Как передавать номер нужной страницы
 //        viewModel.searchVacancies(options)
 //
 //        viewModel.getVacancy("98561017")
@@ -110,8 +111,11 @@ class SearchFragment : Fragment() {
             is SearchFragmentState.Start -> showStart()
             is SearchFragmentState.Content -> {
                 showContent(state.vacancy.items)
+//                 Как получить количество найденных вакансий
                 Log.d("Найдено вакансий: ", "Найдено вакансий: ${state.vacancy.found}")
+//                 Как получить количество найденных вакансий
                 Log.d("Всего страниц: ", "Всего страниц: ${state.vacancy.pages}")
+//                 Как получить номер текущей страницы
                 Log.d("Текущая страница: ", "Текущая страница: ${state.vacancy.page}")
             }
             is SearchFragmentState.Empty -> showEmpty(state.message)
