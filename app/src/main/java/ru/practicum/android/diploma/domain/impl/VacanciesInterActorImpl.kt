@@ -6,16 +6,15 @@ import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.VacanciesRepository
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.domain.models.VacancyDetails
-import ru.practicum.android.diploma.domain.models.VacansiesResponse
 
 class VacanciesInterActorImpl(
     private val repository: VacanciesRepository
 ) : VacanciesInterActor {
     override fun searchVacancies(
         options: Map<String, String>
-    ): Flow<Resource<VacansiesResponse>> {
+    ): Flow<Resource<VacanciesResponse>> {
         return repository.searchVacancies(options).map { result ->
             when (result) {
                 is Resource.Data -> result
