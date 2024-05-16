@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacansiesResponse
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 
 class SearchViewModel(
@@ -103,7 +104,7 @@ class SearchViewModel(
         }
     }
 
-    fun processResult(foundVacancies: Resource<List<Vacancy>>) {
+    fun processResult(foundVacancies: Resource<VacansiesResponse>) {
         when (foundVacancies) {
             is Resource.ConnectionError -> {
                 renderState(

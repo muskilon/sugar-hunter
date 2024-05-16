@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import ru.practicum.android.diploma.data.dto.VacanciesDTO
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.requests.DetailsRequest
 import ru.practicum.android.diploma.data.network.requests.IndustryRequest
@@ -14,35 +15,44 @@ import ru.practicum.android.diploma.data.network.responses.KeySkills
 import ru.practicum.android.diploma.data.network.responses.SearchResponse
 import ru.practicum.android.diploma.domain.VacanciesRepository
 import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.PageInfo
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
+import ru.practicum.android.diploma.domain.models.VacansiesResponse
 
 class VacanciesRepositoryImpl(
     private val networkClient: NetworkClient,
 ) : VacanciesRepository {
+
     override fun searchVacancies(
         options: Map<String, String>
-    ): Flow<Resource<List<Vacancy>>> = flow {
+    ): Flow<Resource<VacansiesResponse>> = flow {
         val response = networkClient.doRequest(SearchRequest(options))
         when (response.resultCode) {
             OK -> {
                 with(response as SearchResponse) {
-                    val data = items.map {
-                        val vacancy = Vacancy(
-                            id = it.id,
-                            title = it.name,
-                            city = it.area.name,
-                            employer = it.employer.name,
-                            logos = it.employer.logoUrls,
-                            salary = it.salary
+                        val vacancyResponse = VacansiesResponse(
+                            page = page,
+                            pages = pages,
+                            found = found,
+                            items = items.map {
+                                val vacancy = Vacancy(
+                                    id = it.id,
+                                    title = it.name,
+                                    city = it.area.name,
+                                    employer = it.employer.name,
+                                    logos = it.employer.logoUrls,
+                                    salary = it.salary
+                                )
+                                vacancy
+                            }
                         )
-                        vacancy
-                    }
-                    if (data.isEmpty()) {
+
+                    if (vacancyResponse.items.isEmpty()) {
                         emit(Resource.NotFound(NOT_FOUND_TEXT))
                     } else {
-                        emit(Resource.Data(data))
+                        emit(Resource.Data(vacancyResponse))
                     }
                 }
             }

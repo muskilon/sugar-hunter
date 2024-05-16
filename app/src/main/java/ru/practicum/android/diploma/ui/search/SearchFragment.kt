@@ -101,7 +101,12 @@ class SearchFragment : Fragment() {
     private fun render(state: SearchFragmentState) {
         when (state) {
             is SearchFragmentState.Start -> showStart()
-            is SearchFragmentState.Content -> showContent(state.vacancy)
+            is SearchFragmentState.Content -> {
+                showContent(state.vacancy.items)
+                Log.d("Найдено вакансий: ", "Найдено вакансий: ${state.vacancy.found}")
+                Log.d("Всего страниц: ", "Всего страниц: ${state.vacancy.pages}")
+                Log.d("Текущая страница: ", "Текущая страница: ${state.vacancy.page}")
+            }
             is SearchFragmentState.Empty -> showEmpty(state.message)
             is SearchFragmentState.Error -> showError(state.errorMessage)
             is SearchFragmentState.Loading -> showLoading()
