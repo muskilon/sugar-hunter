@@ -8,7 +8,7 @@ class Convertor {
         return FavouriteVacancy(
             vacancy.id,
             vacancy.title,
-            vacancy.area,
+            vacancy.city,
             vacancy.employer,
             vacancy.salary,
             vacancy.experience,
@@ -16,7 +16,8 @@ class Convertor {
             vacancy.schedule,
             vacancy.description,
             vacancy.keySkills,
-            vacancy.contacts
+            vacancy.contacts,
+            vacancy.logoUrls
         )
     }
 
@@ -24,7 +25,7 @@ class Convertor {
         return VacancyDetails(
             vacancy.id,
             vacancy.title,
-            vacancy.area,
+            vacancy.city,
             vacancy.employer,
             vacancy.salary,
             vacancy.experience,
@@ -32,7 +33,8 @@ class Convertor {
             vacancy.schedule,
             vacancy.description,
             vacancy.keySkills,
-            vacancy.contacts
+            vacancy.contacts,
+            vacancy.logoUrls
         )
     }
 

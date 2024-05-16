@@ -55,11 +55,11 @@ class FavouriteAdapter(private val clickListener: VacancyClickListener) :
             val vacancy = Vacancy(
                 id = vacancyDetails.id,
                 title = vacancyDetails.title,
-                city = vacancyDetails.area.name,
-                employer = vacancyDetails.employer.name,
+                city = vacancyDetails.city,
+                employer = vacancyDetails.employer,
                 logos = LogoUrls(
-                    logo90 = vacancyDetails.employer.logoUrls?.logo90,
-                    logo240 = vacancyDetails.employer.logoUrls?.logo240
+                    logo90 = vacancyDetails.logoUrls.logo90,
+                    logo240 = vacancyDetails.logoUrls.logo240
                 ),
                 salary = Salary(
                     from = vacancyDetails.salary?.from,
@@ -68,7 +68,6 @@ class FavouriteAdapter(private val clickListener: VacancyClickListener) :
                     gross = vacancyDetails.salary?.gross
                 )
             )
-
             vacancyList.add(vacancy)
         }
 
