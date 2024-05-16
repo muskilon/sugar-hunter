@@ -8,6 +8,9 @@ data class VacanciesDTO(
     val area: Area,
     val employer: Employer,
     val salary: Salary?,
+    val page: Int,
+    val pages: Int,
+    val found: Int
 )
 
 data class Area(
