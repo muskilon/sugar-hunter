@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.ui.vacancy.presenter
 import android.content.Context
 import android.util.Log
 import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
 import ru.practicum.android.diploma.data.dto.Salary
 import ru.practicum.android.diploma.data.network.responses.Contacts
