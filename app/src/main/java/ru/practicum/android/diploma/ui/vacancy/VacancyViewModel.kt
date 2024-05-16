@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.db.FavouriteDataBaseInteractor
-import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 class VacancyViewModel(
-    private val vacancy: Vacancy,
+    private val vacancy: VacancyDetails,
     private val favouriteDataBaseInteractor: FavouriteDataBaseInteractor
 ) : ViewModel() {
 
@@ -22,18 +22,18 @@ class VacancyViewModel(
         }
     }
 
-    suspend fun checkIdInFavourites(vacancy: Vacancy) {
+    suspend fun checkIdInFavourites(vacancy: VacancyDetails) {
         viewModelScope.launch {
             checkInFavouritesMutableLiveData.postValue(favouriteDataBaseInteractor.checkIdInFavourites(vacancy.id))
         }
     }
 
-    suspend fun addFavouriteVacancy(vacancy: Vacancy) {
+    suspend fun addFavouriteVacancy(vacancy: VacancyDetails) {
         checkIdInFavourites(vacancy)
         favouriteDataBaseInteractor.addFavouriteVacancy(vacancy)
     }
 
-    suspend fun deleteFavouriteVacancy(vacancy: Vacancy) {
+    suspend fun deleteFavouriteVacancy(vacancy: VacancyDetails) {
         checkIdInFavourites(vacancy)
         favouriteDataBaseInteractor.deleteFavouriteVacancy(vacancy)
     }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.domain.db.FavouriteDataBaseInteractor
 import ru.practicum.android.diploma.domain.models.FavouritesState
-import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 class FavouriteViewModel(
     private val favouriteDataBaseInteractor: FavouriteDataBaseInteractor
@@ -18,8 +18,8 @@ class FavouriteViewModel(
     private var stateMutableLiveData = MutableLiveData<FavouritesState>()
     fun checkStateLiveData(): LiveData<FavouritesState> = stateMutableLiveData
 
-    private var favoriteMutableListLiveData = MutableLiveData<ArrayList<Vacancy>>()
-    fun favoriteListLiveData(): LiveData<ArrayList<Vacancy>> = favoriteMutableListLiveData
+    private var favoriteMutableListLiveData = MutableLiveData<ArrayList<VacancyDetails>>()
+    fun favoriteListLiveData(): LiveData<ArrayList<VacancyDetails>> = favoriteMutableListLiveData
 
     init {
         viewModelScope.launch {
@@ -33,10 +33,10 @@ class FavouriteViewModel(
         }
     }
 
-    private suspend fun readFavoriteList(): ArrayList<Vacancy> {
+    private suspend fun readFavoriteList(): ArrayList<VacancyDetails> {
         return withContext(Dispatchers.IO) {
             val flowList = favouriteDataBaseInteractor.getFavouritesVacancies()
-            val favoriteList = ArrayList<Vacancy>()
+            val favoriteList = ArrayList<VacancyDetails>()
             flowList.collect { vacansies ->
                 favoriteList.addAll(vacansies)
             }

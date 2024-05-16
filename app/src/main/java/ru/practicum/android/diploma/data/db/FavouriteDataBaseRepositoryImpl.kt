@@ -5,18 +5,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.domain.db.FavouriteDataBaseRepository
-import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 
-class FavouriteDataBaseRepositoryImpl(
-    private val database: AppDatabase,
-    private val convertor: Convertor
-) : FavouriteDataBaseRepository {
-    override suspend fun addFavouriteVacancy(vacancy: Vacancy) {
+class FavouriteDataBaseRepositoryImpl(private val database: AppDatabase, private val convertor: Convertor) :
+    FavouriteDataBaseRepository {
+    override suspend fun addFavouriteVacancy(vacancy: VacancyDetails) {
         val favouriteVacancy = convertor.mapFromVacancy(vacancy)
         database.favouritesVacanciesDao().insertVacancy(favouriteVacancy)
     }
 
-    override suspend fun deleteFavouriteVacancy(vacancy: Vacancy) {
+    override suspend fun deleteFavouriteVacancy(vacancy: VacancyDetails) {
         val favouriteVacancy = convertor.mapFromVacancy(vacancy)
         database.favouritesVacanciesDao().deleteVacancy(favouriteVacancy)
     }
@@ -28,12 +26,12 @@ class FavouriteDataBaseRepositoryImpl(
         }
     }
 
-    override fun getFavouritesVacancies(): Flow<List<Vacancy>> = flow {
+    override fun getFavouritesVacancies(): Flow<List<VacancyDetails>> = flow {
         val favouritesVacancies = database.favouritesVacanciesDao().getVacancies()
         emit(convertFromFavouriteVacancy(favouritesVacancies))
     }
 
-    private fun convertFromFavouriteVacancy(vacancies: List<FavouriteVacancy>): List<Vacancy> {
+    private fun convertFromFavouriteVacancy(vacancies: List<FavouriteVacancy>): List<VacancyDetails> {
         return vacancies.map { convertor.mapFromFavourite(it) }
     }
 
