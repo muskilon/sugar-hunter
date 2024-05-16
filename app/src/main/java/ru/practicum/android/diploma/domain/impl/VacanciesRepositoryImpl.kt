@@ -10,11 +10,14 @@ import ru.practicum.android.diploma.data.network.requests.IndustryRequest
 import ru.practicum.android.diploma.data.network.requests.SearchRequest
 import ru.practicum.android.diploma.data.network.responses.DetailsResponse
 import ru.practicum.android.diploma.data.network.responses.IndustryResponse
-import ru.practicum.android.diploma.data.network.responses.KeySkills
+import ru.practicum.android.diploma.data.network.responses.KeySkillsDTO
 import ru.practicum.android.diploma.data.network.responses.SearchResponse
 import ru.practicum.android.diploma.domain.VacanciesRepository
 import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.LogoUrls
 import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.domain.models.Salary
 import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
@@ -41,8 +44,16 @@ class VacanciesRepositoryImpl(
                                     title = it.name,
                                     city = it.area.name,
                                     employer = it.employer.name,
-                                    logos = it.employer.logoUrls,
-                                    salary = it.salary
+                                    logos = LogoUrls(
+                                        logo90 = it.employer.logoUrls?.logo90,
+                                        logo240 = it.employer.logoUrls?.logo240
+                                    ),
+                                    salary = Salary(
+                                        from = it.salary?.from,
+                                        to = it.salary?.to,
+                                        currency = it.salary?.currency,
+                                        gross = it.salary?.gross
+                                    )
                                 )
                                 vacancy
                             }
@@ -103,7 +114,13 @@ class VacanciesRepositoryImpl(
                         val industries = Industries(
                             id = it.id,
                             name = it.name,
-                            industries = it.industries
+                            industries = it.industries.map {sub ->
+                                val subIndustry = Industry(
+                                    id = sub.id,
+                                    name = sub.name
+                                )
+                                subIndustry
+                            }
                         )
                         industries
                     }
@@ -118,7 +135,7 @@ class VacanciesRepositoryImpl(
         }
     }.flowOn(Dispatchers.IO)
 
-    private fun skillsMapper(list: List<KeySkills>?): List<String>? {
+    private fun skillsMapper(list: List<KeySkillsDTO>?): List<String>? {
         if (list.isNullOrEmpty()) {
             return null
         }

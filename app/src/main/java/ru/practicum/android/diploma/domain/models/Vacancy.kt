@@ -1,8 +1,5 @@
 package ru.practicum.android.diploma.domain.models
 
-import ru.practicum.android.diploma.data.dto.LogoUrls
-import ru.practicum.android.diploma.data.dto.Salary
-
 data class Vacancy(
     val id: String,
     val title: String,
@@ -10,4 +7,14 @@ data class Vacancy(
     val employer: String,
     val logos: LogoUrls?,
     val salary: Salary?,
+)
+data class Salary(
+    val from: Long?,
+    val to: Long?,
+    val currency: String?,
+    val gross: Boolean?
+)
+data class LogoUrls(
+    val logo90: String?,
+    val logo240: String?
 )

@@ -1,23 +1,23 @@
 package ru.practicum.android.diploma.domain.models
 
-import ru.practicum.android.diploma.data.dto.Area
-import ru.practicum.android.diploma.data.dto.Employer
-import ru.practicum.android.diploma.data.dto.Salary
-import ru.practicum.android.diploma.data.network.responses.Contacts
-import ru.practicum.android.diploma.data.network.responses.Employment
-import ru.practicum.android.diploma.data.network.responses.Experience
-import ru.practicum.android.diploma.data.network.responses.Schedule
+import ru.practicum.android.diploma.data.dto.AreaDTO
+import ru.practicum.android.diploma.data.dto.EmployerDTO
+import ru.practicum.android.diploma.data.dto.SalaryDTO
+import ru.practicum.android.diploma.data.network.responses.ContactsDTO
+import ru.practicum.android.diploma.data.network.responses.EmploymentDTO
+import ru.practicum.android.diploma.data.network.responses.ExperienceDTO
+import ru.practicum.android.diploma.data.network.responses.ScheduleDTO
 
 data class VacancyDetails(
     val id: String,
     val title: String,
-    val area: Area,
-    val employer: Employer,
-    val salary: Salary?,
-    val experience: Experience?,
-    val employment: Employment?,
-    val schedule: Schedule?,
+    val area: AreaDTO,
+    val employer: EmployerDTO,
+    val salary: SalaryDTO?,
+    val experience: ExperienceDTO?,
+    val employment: EmploymentDTO?,
+    val schedule: ScheduleDTO?,
     val description: String?,
     val keySkills: List<String>?,
-    val contacts: Contacts?
+    val contacts: ContactsDTO?
 )
