@@ -3,12 +3,12 @@ package ru.practicum.android.diploma.data.db
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import ru.practicum.android.diploma.data.dto.AreaDTO
-import ru.practicum.android.diploma.data.dto.EmployerDTO
-import ru.practicum.android.diploma.data.dto.SalaryDTO
-import ru.practicum.android.diploma.data.network.responses.ContactsDTO
-import ru.practicum.android.diploma.data.network.responses.EmploymentDTO
-import ru.practicum.android.diploma.data.network.responses.ExperienceDTO
-import ru.practicum.android.diploma.data.network.responses.ScheduleDTO
+import ru.practicum.android.diploma.domain.models.Contacts
+import ru.practicum.android.diploma.domain.models.Employment
+import ru.practicum.android.diploma.domain.models.Experience
+import ru.practicum.android.diploma.domain.models.LogoUrls
+import ru.practicum.android.diploma.domain.models.Salary
+import ru.practicum.android.diploma.domain.models.Schedule
 
 class ConvertType {
 
@@ -23,62 +23,62 @@ class ConvertType {
     }
 
     @TypeConverter
-    fun stringToLogoUrls(value: String): EmployerDTO? {
-        return Gson().fromJson(value, EmployerDTO::class.java)
+    fun stringToLogoUrls(value: String): LogoUrls? {
+        return Gson().fromJson(value, LogoUrls::class.java)
     }
 
     @TypeConverter
-    fun logoUrlsToString(employer: EmployerDTO?): String {
+    fun logoUrlsToString(employer: LogoUrls?): String {
         return Gson().toJson(employer)
     }
 
     @TypeConverter
-    fun fromString(value: String): SalaryDTO? {
-        return Gson().fromJson(value, SalaryDTO::class.java)
+    fun fromString(value: String): Salary? {
+        return Gson().fromJson(value, Salary::class.java)
     }
 
     @TypeConverter
-    fun salaryToString(salary: SalaryDTO?): String {
+    fun salaryToString(salary: Salary?): String {
         return Gson().toJson(salary)
     }
 
     @TypeConverter
-    fun stringToExperience(value: String): ExperienceDTO? {
-        return Gson().fromJson(value, ExperienceDTO::class.java)
+    fun stringToExperience(value: String): Experience? {
+        return Gson().fromJson(value, Experience::class.java)
     }
 
     @TypeConverter
-    fun experienceToString(experience: ExperienceDTO?): String {
+    fun experienceToString(experience: Experience?): String {
         return Gson().toJson(experience)
     }
 
     @TypeConverter
-    fun stringToEmployment(value: String): EmploymentDTO? {
-        return Gson().fromJson(value, EmploymentDTO::class.java)
+    fun stringToEmployment(value: String): Employment? {
+        return Gson().fromJson(value, Employment::class.java)
     }
 
     @TypeConverter
-    fun employmentToString(employment: EmploymentDTO?): String {
+    fun employmentToString(employment: Employment?): String {
         return Gson().toJson(employment)
     }
 
     @TypeConverter
-    fun stringToSchedule(value: String): ScheduleDTO? {
-        return Gson().fromJson(value, ScheduleDTO::class.java)
+    fun stringToSchedule(value: String): Schedule? {
+        return Gson().fromJson(value, Schedule::class.java)
     }
 
     @TypeConverter
-    fun scheduleToString(schedule: ScheduleDTO?): String {
+    fun scheduleToString(schedule: Schedule?): String {
         return Gson().toJson(schedule)
     }
 
     @TypeConverter
-    fun stringToContacts(value: String): ContactsDTO? {
-        return Gson().fromJson(value, ContactsDTO::class.java)
+    fun stringToContacts(value: String): Contacts? {
+        return Gson().fromJson(value, Contacts::class.java)
     }
 
     @TypeConverter
-    fun contactsToString(contacts: ContactsDTO?): String {
+    fun contactsToString(contacts: Contacts?): String {
         return Gson().toJson(contacts)
     }
 

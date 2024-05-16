@@ -11,5 +11,4 @@ import androidx.room.TypeConverters
 @TypeConverters(ConvertType::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun favouritesVacanciesDao(): FavouritesVacanciesDao
-
 }

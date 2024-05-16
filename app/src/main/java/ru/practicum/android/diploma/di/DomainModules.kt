@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.domain.impl.VacanciesRepositoryImpl
 
 val domainModules = module {
     factory<VacanciesInterActor> { VacanciesInterActorImpl(repository = get()) }
-    single<VacanciesRepository> { VacanciesRepositoryImpl(networkClient = get()) }
+    single<VacanciesRepository> { VacanciesRepositoryImpl(networkClient = get(), mapper = get()) }
     single<FavouriteDataBaseRepository> { FavouriteDataBaseRepositoryImpl(database = get(), convertor = get()) }
     single<FavouriteDataBaseInteractor> { FavouriteDataBaseInteractorImpl(favouriteDataBaseRepository = get()) }
 }
