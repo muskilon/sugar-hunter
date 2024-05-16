@@ -1,47 +1,47 @@
 package ru.practicum.android.diploma.data.network.responses
 
 import com.google.gson.annotations.SerializedName
-import ru.practicum.android.diploma.data.dto.Area
-import ru.practicum.android.diploma.data.dto.Employer
-import ru.practicum.android.diploma.data.dto.Salary
+import ru.practicum.android.diploma.data.dto.AreaDTO
+import ru.practicum.android.diploma.data.dto.EmployerDTO
+import ru.practicum.android.diploma.data.dto.SalaryDTO
 import ru.practicum.android.diploma.data.network.Response
 
 data class DetailsResponse(
     val id: String,
     val name: String,
-    val area: Area,
-    val employer: Employer,
-    val salary: Salary?,
+    val area: AreaDTO,
+    val employer: EmployerDTO,
+    val salary: SalaryDTO?,
     val url: String,
-    val experience: Experience?,
-    val employment: Employment?,
-    val schedule: Schedule?,
+    val experience: ExperienceDTO?,
+    val employment: EmploymentDTO?,
+    val schedule: ScheduleDTO?,
     val description: String?,
-    @SerializedName("key_skills") val keySkills: List<KeySkills>?,
-    val contacts: Contacts?
+    @SerializedName("key_skills") val keySkills: List<KeySkillsDTO>?,
+    val contacts: ContactsDTO?
 ) : Response()
 
-data class Experience(
+data class ExperienceDTO(
     val id: String,
     val name: String
 )
 
-data class Employment(
+data class EmploymentDTO(
     val id: String,
     val name: String
 )
-data class Schedule(
+data class ScheduleDTO(
     val id: String,
     val name: String
 )
 
-data class Contacts(
+data class ContactsDTO(
     val email: String?,
     val name: String?,
-    val phones: List<Phones>?
+    val phones: List<PhonesDTO>?
 )
 
-data class Phones(
+data class PhonesDTO(
     val city: String?,
     val comment: String?,
     val country: String?,
@@ -49,6 +49,6 @@ data class Phones(
     val formatted: String?
 )
 
-data class KeySkills(
+data class KeySkillsDTO(
     val name: String?
 )

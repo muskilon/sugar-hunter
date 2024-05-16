@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
+import ru.practicum.android.diploma.domain.models.LogoUrls
+import ru.practicum.android.diploma.domain.models.Salary
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.DiffUtilCallback
@@ -55,8 +57,16 @@ class FavouriteAdapter(private val clickListener: VacancyClickListener) :
                 title = vacancyDetails.title,
                 city = vacancyDetails.area.name,
                 employer = vacancyDetails.employer.name,
-                logos = vacancyDetails.employer.logoUrls,
-                salary = vacancyDetails.salary
+                logos = LogoUrls(
+                    logo90 = vacancyDetails.employer.logoUrls?.logo90,
+                    logo240 = vacancyDetails.employer.logoUrls?.logo240
+                ),
+                salary = Salary(
+                    from = vacancyDetails.salary?.from,
+                    to = vacancyDetails.salary?.to,
+                    currency = vacancyDetails.salary?.currency,
+                    gross = vacancyDetails.salary?.gross
+                )
             )
 
             vacancyList.add(vacancy)

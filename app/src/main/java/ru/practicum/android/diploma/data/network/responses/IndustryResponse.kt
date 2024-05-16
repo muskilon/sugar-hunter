@@ -3,14 +3,14 @@ package ru.practicum.android.diploma.data.network.responses
 import ru.practicum.android.diploma.data.network.Response
 
 data class IndustryResponse(
-    val container: List<IndustryList>
+    val container: List<IndustryListDTO>
 ) : Response()
-class IndustryList(
+class IndustryListDTO(
     val id: String,
-    val industries: List<Industry>,
+    val industries: List<IndustryDTO>,
     val name: String
 )
-data class Industry(
+data class IndustryDTO(
     val id: String,
     val name: String
 )

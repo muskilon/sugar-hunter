@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.data.dto.Salary
+import ru.practicum.android.diploma.data.dto.SalaryDTO
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
@@ -28,7 +28,7 @@ class FavouriteViewHolder(view: View, private val binding: ItemVacancyBinding) :
             ).into(binding.vacancyLogo)
     }
 
-    private fun getTextFromFinanceCount(salary: Salary?): String {
+    private fun getTextFromFinanceCount(salary: SalaryDTO?): String {
         return when {
             salary?.from != null && salary.to != null -> "от ${salary.from} до ${salary.to} ${salary.currency}"
             salary?.from != null -> "от ${salary.from} ${salary.currency}"
