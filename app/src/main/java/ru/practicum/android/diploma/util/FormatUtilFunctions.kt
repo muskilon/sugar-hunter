@@ -1,11 +1,15 @@
 package ru.practicum.android.diploma.util
 
 import android.content.Context
+import android.util.Log
 import android.util.TypedValue
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.data.dto.Salary
 import ru.practicum.android.diploma.ui.search.recyclerview.SearchViewHolder
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 
@@ -60,5 +64,32 @@ object FormatUtilFunctions {
             SearchViewHolder.VacancyViewHolder.RADIUS_IN_DP,
             context.resources.displayMetrics
         ).toInt()
+    }
+
+    fun showSalaryString(salary: Salary?, textView: TextView) {
+        if (salary == null) {
+            textView.isVisible = false
+            Log.d("return", "true")
+        } else {
+            var salaryText: String = ""
+
+            if (salary.from != null) {
+                salaryText =
+
+                    "от ${FormatUtilFunctions.formatLongNumber(salary.from)} " +
+                    "${FormatUtilFunctions.getCurrency(salary.currency)} "
+            }
+
+            if (salary.to != null) {
+                salaryText = salaryText.plus(
+                    "до ${FormatUtilFunctions.formatLongNumber(salary.to)} ${
+                        FormatUtilFunctions.getCurrency(salary.currency)
+                    }"
+                )
+            }
+
+            textView.isVisible = true
+            textView.text = salaryText
+        }
     }
 }

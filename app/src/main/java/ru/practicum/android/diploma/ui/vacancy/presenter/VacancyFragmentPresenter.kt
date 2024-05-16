@@ -1,10 +1,8 @@
 package ru.practicum.android.diploma.ui.vacancy.presenter
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
-import ru.practicum.android.diploma.data.dto.Salary
 import ru.practicum.android.diploma.data.network.responses.Contacts
 import ru.practicum.android.diploma.data.network.responses.Schedule
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
@@ -24,7 +22,6 @@ class VacancyFragmentPresenter(val binding: FragmentVacancyBinding, val context:
                     binding.vacancyImage,
                     context
                 )
-
             }
 
             is VacancyFragmentState.Empty -> showEmpty()
@@ -41,16 +38,6 @@ class VacancyFragmentPresenter(val binding: FragmentVacancyBinding, val context:
         with(binding) {
             updateVisibility(
                 progressBar to true,
-                vacancyHeader to false,
-                employerCard to false,
-                aboutJobGroup to false,
-                aboutJobHeader to false,
-                responsibilitiesGroup to false,
-                requirementsGroup to false,
-                conditionsGroup to false,
-                skillsGroup to false,
-                contactsGroup to false,
-                conditionsGroup to false
             )
         }
     }
@@ -59,15 +46,6 @@ class VacancyFragmentPresenter(val binding: FragmentVacancyBinding, val context:
         with(binding) {
             updateVisibility(
                 progressBar to false,
-                vacancyHeader to false,
-                employerCard to false,
-                aboutJobGroup to false,
-                aboutJobHeader to false,
-                responsibilitiesGroup to false,
-                requirementsGroup to false,
-                conditionsGroup to false,
-                skillsGroup to false,
-                contactsGroup to false,
                 errorPlaceholder to true
             )
         }
@@ -77,15 +55,6 @@ class VacancyFragmentPresenter(val binding: FragmentVacancyBinding, val context:
         with(binding) {
             updateVisibility(
                 progressBar to false,
-                vacancyHeader to false,
-                employerCard to false,
-                aboutJobGroup to false,
-                aboutJobHeader to false,
-                responsibilitiesGroup to false,
-                requirementsGroup to false,
-                conditionsGroup to false,
-                skillsGroup to false,
-                contactsGroup to false,
                 errorPlaceholder to true
             )
         }
@@ -94,67 +63,30 @@ class VacancyFragmentPresenter(val binding: FragmentVacancyBinding, val context:
     private fun showStart() {
         with(binding) {
             updateVisibility(
-                progressBar to false,
-                vacancyHeader to false,
-                employerCard to false,
-                aboutJobGroup to false,
-                aboutJobHeader to false,
-                responsibilitiesGroup to false,
-                requirementsGroup to false,
-                conditionsGroup to false,
-                skillsGroup to false,
-                contactsGroup to false,
-                errorPlaceholder to false
+                scrollView to false
             )
         }
     }
 
     private fun showContent(vacancy: VacancyDetails) {
         with(binding) {
+            scrollView.isVisible = true
+            // Буду переделывать
             progressBar.isVisible = false
-            vacancyHeader.isVisible = true
+
+//            vacancyHeader.isVisible = true
             vacancyName.text = vacancy.title
-            showSalaryString(vacancy.salary)
-            employerCard.isVisible = true
+            FormatUtilFunctions.showSalaryString(vacancy.salary, binding.vacancyCoast)
+
             vacancyCardName.text = vacancy.employer.name
             vacancyPlace.text = vacancy.area.name
-            aboutJobGroup.isVisible = true
+
             showExperience(vacancy)
             showSchedule(vacancy.schedule)
-            vacancy.employment
+
             aboutJobHeader.isVisible = true
-            responsibilitiesGroup.isVisible = true
-            requirementsGroup.isVisible = true
-            conditionsGroup.isVisible = true
-            skillsGroup.isVisible = true
+
             showContacts(vacancy.contacts)
-
-        }
-    }
-
-    fun showSalaryString(salary: Salary?) {
-        if (salary == null) {
-            binding.vacancyCoast.isVisible = false
-            Log.d("return", "true")
-        } else {
-            var salaryText: String = ""
-
-            if (salary.from != null) {
-                salaryText =
-                    "от ${FormatUtilFunctions.formatLongNumber(salary.from)} " +
-                    "${FormatUtilFunctions.getCurrency(salary.currency)} "
-            }
-
-            if (salary.to != null) {
-                salaryText = salaryText.plus(
-                    "до ${FormatUtilFunctions.formatLongNumber(salary.to)} ${
-                        FormatUtilFunctions.getCurrency(salary.currency)
-                    }"
-                )
-            }
-
-            binding.vacancyCoast.isVisible = true
-            binding.vacancyCoast.text = salaryText
         }
     }
 
