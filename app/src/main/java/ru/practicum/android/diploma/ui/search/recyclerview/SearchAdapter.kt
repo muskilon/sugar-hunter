@@ -45,7 +45,7 @@ class SearchAdapter(
             is SearchViewHolder.VacancyViewHolder -> {
                 holder.bind(vacancy[position - 1])
                 holder.itemView.setOnClickListener {
-                    onItemClick.invoke(vacancy[holder.adapterPosition])
+                    onItemClick.invoke(vacancy[holder.adapterPosition - 1])
                 }
             }
         }

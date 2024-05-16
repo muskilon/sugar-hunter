@@ -10,6 +10,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.ui.vacancy.presenter.VacancyFragmentPresenter
 
 class VacancyFragment : Fragment() {
 
@@ -33,16 +34,10 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getVacancyLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            vacancy ->
-            _binding!!.vacancyName.text = vacancy.title
-            // Переделать сделано для теста
-            _binding!!.vacancyCoast.text = vacancy.salary.toString()
-            _binding!!.vacancyCardName.text = vacancy.employer.name
-            _binding!!.vacancyPlace.text = vacancy.area.name
+        val vacancyFragmentPresenter = VacancyFragmentPresenter(binding, requireContext())
 
-            _binding!!.experienceResponse.text = vacancy.experience?.name
-            _binding!!.requestListResponse.text = vacancy.employment?.name
+        viewModel.getVacancyScreenStateLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer { state ->
+            vacancyFragmentPresenter.render(state)
         })
 
         viewModel.checkInFavouritesLiveData()
@@ -56,11 +51,11 @@ class VacancyFragment : Fragment() {
                 // нужен метод для сетонкликлистенера на favoriteButton (сейчас нет вакансии, чтобы реализовать)
 
             })
-
     }
 
     companion object {
         const val ARGS_VACANCY = "args_vacancy"
+        const val THREE_DIGITS_FOR_SPACE = 3
         fun createArgs(id: String): Bundle =
             bundleOf(ARGS_VACANCY to id)
     }

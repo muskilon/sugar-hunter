@@ -37,6 +37,7 @@
     <string name="contactEmailHeader">E-mail</string>
     <string name="contactPhoneHeader">Телефон</string>
     <string name="contactCommentsHeader">Комментарий</string>
+    <string name="vacancy_fragment_placeholder_text">Ошибка сервера</string>
 
 
 </resources>

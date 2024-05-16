@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.vacancy
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +9,7 @@ import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.db.FavouriteDataBaseInteractor
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacancyDetails
+import ru.practicum.android.diploma.ui.vacancy.models.VacancyFragmentState
 
 class VacancyViewModel(
     private val vacancyId: String,
@@ -20,8 +20,8 @@ class VacancyViewModel(
     private var checkInFavouritesMutableLiveData = MutableLiveData<Boolean>()
     fun checkInFavouritesLiveData(): LiveData<Boolean> = checkInFavouritesMutableLiveData
 
-    private var vacancyMutableLiveData = MutableLiveData<VacancyDetails>()
-    fun getVacancyLiveData(): LiveData<VacancyDetails> = vacancyMutableLiveData
+    private var vacancyScreenState = MutableLiveData<VacancyFragmentState>(VacancyFragmentState.Start)
+    fun getVacancyScreenStateLiveData(): LiveData<VacancyFragmentState> = vacancyScreenState
 
     init {
         viewModelScope.launch {
@@ -34,6 +34,7 @@ class VacancyViewModel(
 
     fun searchVacancyById(vacancyId: String) {
         viewModelScope.launch {
+            vacancyScreenState.postValue(VacancyFragmentState.Loading)
             vacanciesInterActor
                 .getVacancy(vacancyId)
                 .collect { result ->
@@ -43,22 +44,18 @@ class VacancyViewModel(
         }
     }
 
-    fun processResult(foundVacance: Resource<VacancyDetails>) {
-        when (foundVacance) {
+    fun processResult(foundVacancy: Resource<VacancyDetails>) {
+        when (foundVacancy) {
             is Resource.ConnectionError -> {
-                // Обработай ошибки
-                foundVacance.message
+                vacancyScreenState.postValue(VacancyFragmentState.Error)
             }
 
             is Resource.NotFound -> {
-                // Обработай ошибки
-                foundVacance.message
+                vacancyScreenState.postValue(VacancyFragmentState.Empty)
             }
 
             is Resource.Data -> {
-                // Проверь внимательно
-                Log.d("vacancy", foundVacance.value.toString())
-                vacancyMutableLiveData.postValue(foundVacance.value as VacancyDetails)
+                vacancyScreenState.postValue(VacancyFragmentState.Content(foundVacancy.value as VacancyDetails))
             }
         }
     }
