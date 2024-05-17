@@ -3,9 +3,9 @@ package ru.practicum.android.diploma.ui.vacancy.presenter
 import android.content.Context
 import android.view.View
 import androidx.core.view.isVisible
-import ru.practicum.android.diploma.data.network.responses.Contacts
-import ru.practicum.android.diploma.data.network.responses.Schedule
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.domain.models.Contacts
+import ru.practicum.android.diploma.domain.models.Schedule
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.ui.vacancy.models.VacancyFragmentState
 import ru.practicum.android.diploma.util.FormatUtilFunctions
@@ -18,7 +18,7 @@ class VacancyFragmentPresenter(val binding: FragmentVacancyBinding, val context:
             is VacancyFragmentState.Content -> {
                 showContent(state.vacancy)
                 FormatUtilFunctions.downloadImage(
-                    state.vacancy.employer.logoUrls?.logo240,
+                    state.vacancy.logoUrls.logo240,
                     binding.vacancyImage,
                     context
                 )
@@ -78,8 +78,8 @@ class VacancyFragmentPresenter(val binding: FragmentVacancyBinding, val context:
             vacancyName.text = vacancy.title
             FormatUtilFunctions.showSalaryString(vacancy.salary, binding.vacancyCoast)
 
-            vacancyCardName.text = vacancy.employer.name
-            vacancyPlace.text = vacancy.area.name
+            vacancyCardName.text = vacancy.employer
+            vacancyPlace.text = vacancy.city
 
             showExperience(vacancy)
             showSchedule(vacancy.schedule)

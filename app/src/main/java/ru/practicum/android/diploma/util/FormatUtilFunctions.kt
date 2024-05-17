@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.data.dto.Salary
+import ru.practicum.android.diploma.domain.models.Salary
 import ru.practicum.android.diploma.ui.search.recyclerview.SearchViewHolder
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 
@@ -30,20 +30,24 @@ object FormatUtilFunctions {
         return result.toString()
     }
 
-    fun getCurrency(currency: String): String {
-        return when (currency) {
-            "RUR", "RUB" -> "₽"
-            "BYR" -> "BYR"
-            "USD" -> "$"
-            "EUR" -> "€"
-            "KZT" -> "₸"
-            "UAH" -> "₴"
-            "AZN" -> "₼"
-            "UZS" -> "Soʻm"
-            "GEL" -> "₾"
-            "KGT" -> "\u20C0"
-            else -> currency
+    fun getCurrency(currency: String?): String {
+        var string = ""
+        if (currency != null) {
+            string = when (currency) {
+                "RUR", "RUB" -> "₽"
+                "BYR" -> "BYR"
+                "USD" -> "$"
+                "EUR" -> "€"
+                "KZT" -> "₸"
+                "UAH" -> "₴"
+                "AZN" -> "₼"
+                "UZS" -> "Soʻm"
+                "GEL" -> "₾"
+                "KGT" -> "\u20C0"
+                else -> currency
+            }
         }
+        return string
     }
 
     fun downloadImage(url: String?, imageView: ImageView, context: Context) {
