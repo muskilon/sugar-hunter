@@ -83,8 +83,8 @@ class FormatUtilFunctions {
 
             if (salary.to != null) {
                 salaryText = salaryText.plus(
-                    "до ${formatLongNumber(salary.to)} " +
-                    "${getCurrency(salary.currency)} "
+                "до ${formatLongNumber(salary.to)} " +
+                "${getCurrency(salary.currency)} "
                 )
             }
 
