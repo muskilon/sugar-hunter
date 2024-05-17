@@ -4,9 +4,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import ru.practicum.android.diploma.data.dto.AreaDictionaryDTO
 import ru.practicum.android.diploma.data.dto.DTOToDataMappers
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.VacanciesRepository
+import ru.practicum.android.diploma.domain.models.AreaDictionary
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacanciesResponse
@@ -62,6 +64,22 @@ class VacanciesRepositoryImpl(
             is Resource.Data -> {
                 with(response) {
                     val data = mapper.industryResponseToIndustries(this.value)
+                    emit(Resource.Data(data))
+                }
+            }
+
+            is Resource.NotFound -> emit(Resource.NotFound(response.message))
+            is Resource.ConnectionError -> {
+                emit(Resource.ConnectionError(response.message))
+            }
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun getAreas(): Flow<Resource<List<AreaDictionary>>> = flow {
+        when (val response = networkClient.getAreasDictionary()) {
+            is Resource.Data -> {
+                with(response) {
+                    val data = mapper.areasDTOToAreaDictionary(this.value)
                     emit(Resource.Data(data))
                 }
             }

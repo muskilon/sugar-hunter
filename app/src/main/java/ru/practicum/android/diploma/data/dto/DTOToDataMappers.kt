@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.data.dto
 
+import ru.practicum.android.diploma.domain.models.AreaDictionary
 import ru.practicum.android.diploma.domain.models.Contacts
 import ru.practicum.android.diploma.domain.models.Employment
 import ru.practicum.android.diploma.domain.models.Experience
@@ -83,6 +84,22 @@ class DTOToDataMappers {
                 }
             )
             industries
+        }
+    fun areasDTOToAreaDictionary(data: AreasDTO) =
+        data.container.map{
+            val areas = AreaDictionary(
+                id = it.id,
+                parentId = it.parentId,
+                name = it.name,
+                areas = it.areas.map { sub ->
+                    val subArea = AreaDictionary(
+                        id = it.id,
+                        parentId = it.parentId,
+                        name = it.name,
+                        areas = it.areas
+                    )
+                }
+            )
         }
     private fun mapSalaryDTOToSalary(salary: SalaryDTO?) =
         Salary(
