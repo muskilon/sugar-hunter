@@ -15,34 +15,43 @@ import ru.practicum.android.diploma.data.network.responses.SearchResponse
 import ru.practicum.android.diploma.domain.VacanciesRepository
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 class VacanciesRepositoryImpl(
-    private val networkClient: NetworkClient,
+    private val networkClient: NetworkClient
 ) : VacanciesRepository {
+
     override fun searchVacancies(
         options: Map<String, String>
-    ): Flow<Resource<List<Vacancy>>> = flow {
+    ): Flow<Resource<VacanciesResponse>> = flow {
         val response = networkClient.doRequest(SearchRequest(options))
         when (response.resultCode) {
             OK -> {
                 with(response as SearchResponse) {
-                    val data = items.map {
-                        val vacancy = Vacancy(
-                            id = it.id,
-                            title = it.name,
-                            city = it.area.name,
-                            employer = it.employer.name,
-                            logos = it.employer.logoUrls,
-                            salary = it.salary
+                    val vacancyResponse =
+                        VacanciesResponse(
+                            page = page,
+                            pages = pages,
+                            found = found,
+                            items = items.map {
+                                val vacancy = Vacancy(
+                                    id = it.id,
+                                    title = it.name,
+                                    city = it.area.name,
+                                    employer = it.employer.name,
+                                    logos = it.employer.logoUrls,
+                                    salary = it.salary
+                                )
+                                vacancy
+                            }
                         )
-                        vacancy
-                    }
-                    if (data.isEmpty()) {
+
+                    if (vacancyResponse.items.isEmpty()) {
                         emit(Resource.NotFound(NOT_FOUND_TEXT))
                     } else {
-                        emit(Resource.Data(data))
+                        emit(Resource.Data(vacancyResponse))
                     }
                 }
             }
