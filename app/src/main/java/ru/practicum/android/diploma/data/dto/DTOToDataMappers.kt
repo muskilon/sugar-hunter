@@ -1,9 +1,5 @@
 package ru.practicum.android.diploma.data.dto
 
-import ru.practicum.android.diploma.data.network.responses.DetailsResponse
-import ru.practicum.android.diploma.data.network.responses.IndustryResponse
-import ru.practicum.android.diploma.data.network.responses.KeySkillsDTO
-import ru.practicum.android.diploma.data.network.responses.SearchResponse
 import ru.practicum.android.diploma.domain.models.Contacts
 import ru.practicum.android.diploma.domain.models.Employment
 import ru.practicum.android.diploma.domain.models.Experience
@@ -56,7 +52,7 @@ class DTOToDataMappers {
             logoUrls = mapLogoUrlsDTOToLogoUrls(vacancy.employer.logoUrls),
             url = vacancy.url
         )
-    fun mapSearchResponseToVacanciesResponse(data: SearchResponse) =
+    fun mapSearchResponseToVacanciesResponse(data: SearchResponseDTO) =
         VacanciesResponse(
             page = data.page,
             pages = data.pages,

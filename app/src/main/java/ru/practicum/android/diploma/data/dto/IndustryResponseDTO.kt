@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.data.network.responses
+package ru.practicum.android.diploma.data.dto
 
 import ru.practicum.android.diploma.data.network.Response
 

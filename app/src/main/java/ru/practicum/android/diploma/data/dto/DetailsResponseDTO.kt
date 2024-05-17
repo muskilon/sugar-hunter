@@ -1,9 +1,6 @@
-package ru.practicum.android.diploma.data.network.responses
+package ru.practicum.android.diploma.data.dto
 
 import com.google.gson.annotations.SerializedName
-import ru.practicum.android.diploma.data.dto.AreaDTO
-import ru.practicum.android.diploma.data.dto.EmployerDTO
-import ru.practicum.android.diploma.data.dto.SalaryDTO
 import ru.practicum.android.diploma.data.network.Response
 
 data class DetailsResponse(
