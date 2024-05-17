@@ -7,8 +7,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.data.dto.Salary
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
+import ru.practicum.android.diploma.domain.models.Salary
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 class FavouriteViewHolder(view: View, private val binding: ItemVacancyBinding) : RecyclerView.ViewHolder(view) {
@@ -16,10 +16,10 @@ class FavouriteViewHolder(view: View, private val binding: ItemVacancyBinding) :
     @SuppressLint("ResourceType")
     fun bind(vacancy: VacancyDetails) {
         binding.vacancyName.text = vacancy.title
-        binding.companyName.text = vacancy.employer.name
+        binding.companyName.text = vacancy.employer
         binding.financeCount.text = getTextFromFinanceCount(vacancy.salary)
 
-        Glide.with(itemView.context).load(vacancy.employer.logoUrls).placeholder(R.drawable.vacancy_no_image_holder)
+        Glide.with(itemView.context).load(vacancy.logoUrls).placeholder(R.drawable.vacancy_no_image_holder)
             .transform(
                 FitCenter(),
                 RoundedCorners(

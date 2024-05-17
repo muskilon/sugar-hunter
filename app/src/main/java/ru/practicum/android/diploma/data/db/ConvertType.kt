@@ -2,33 +2,33 @@ package ru.practicum.android.diploma.data.db
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import ru.practicum.android.diploma.data.dto.Area
-import ru.practicum.android.diploma.data.dto.Employer
-import ru.practicum.android.diploma.data.dto.Salary
-import ru.practicum.android.diploma.data.network.responses.Contacts
-import ru.practicum.android.diploma.data.network.responses.Employment
-import ru.practicum.android.diploma.data.network.responses.Experience
-import ru.practicum.android.diploma.data.network.responses.Schedule
+import ru.practicum.android.diploma.data.dto.AreaDTO
+import ru.practicum.android.diploma.domain.models.Contacts
+import ru.practicum.android.diploma.domain.models.Employment
+import ru.practicum.android.diploma.domain.models.Experience
+import ru.practicum.android.diploma.domain.models.LogoUrls
+import ru.practicum.android.diploma.domain.models.Salary
+import ru.practicum.android.diploma.domain.models.Schedule
 
 class ConvertType {
 
     @TypeConverter
-    fun stringToArea(value: String): Area? {
-        return Gson().fromJson(value, Area::class.java)
+    fun stringToArea(value: String): AreaDTO? {
+        return Gson().fromJson(value, AreaDTO::class.java)
     }
 
     @TypeConverter
-    fun areaToString(area: Area?): String {
+    fun areaToString(area: AreaDTO?): String {
         return Gson().toJson(area)
     }
 
     @TypeConverter
-    fun stringToLogoUrls(value: String): Employer? {
-        return Gson().fromJson(value, Employer::class.java)
+    fun stringToLogoUrls(value: String): LogoUrls? {
+        return Gson().fromJson(value, LogoUrls::class.java)
     }
 
     @TypeConverter
-    fun logoUrlsToString(employer: Employer?): String {
+    fun logoUrlsToString(employer: LogoUrls?): String {
         return Gson().toJson(employer)
     }
 

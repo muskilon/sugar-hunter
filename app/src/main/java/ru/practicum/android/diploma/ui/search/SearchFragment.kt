@@ -62,8 +62,8 @@ class SearchFragment : Fragment() {
         //       Для тестирования!!! Можно удалять
 //       Пример формирования options для @QueryMap
         val options: HashMap<String, String> = HashMap()
-        options["text"] = "VisualBasic" // Как передавать поисковый запрос
-        options["page"] = "3" // Как передавать номер нужной страницы
+        options["text"] = "Java" // Как передавать поисковый запрос
+        options["page"] = "2" // Как передавать номер нужной страницы
 //        viewModel.searchVacancies(options)
 //
 //        viewModel.getVacancy("98561017")

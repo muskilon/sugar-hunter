@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.network.requests.DetailsRequest
 import ru.practicum.android.diploma.data.network.requests.IndustryRequest
 import ru.practicum.android.diploma.data.network.requests.SearchRequest
-import ru.practicum.android.diploma.data.network.responses.IndustryList
+import ru.practicum.android.diploma.data.network.responses.IndustryListDTO
 import ru.practicum.android.diploma.data.network.responses.IndustryResponse
 import java.io.IOException
 
@@ -67,7 +67,7 @@ class RetrofitNetworkClient(
         return response
     }
 
-    private fun industryMapper(array: Array<IndustryList>): IndustryResponse {
+    private fun industryMapper(array: Array<IndustryListDTO>): IndustryResponse {
         return IndustryResponse(
             container = array.asList()
         )
