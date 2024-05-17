@@ -50,7 +50,8 @@ class DTOToDataMappers {
                     phones
                 }
             ),
-            logoUrls = mapLogoUrlsDTOToLogoUrls(vacancy.employer.logoUrls)
+            logoUrls = mapLogoUrlsDTOToLogoUrls(vacancy.employer.logoUrls),
+            url = vacancy.url
         )
     fun mapSearchResponseToVacanciesResponse(data: SearchResponse) =
         VacanciesResponse(

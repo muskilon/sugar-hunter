@@ -12,7 +12,7 @@ data class DetailsResponse(
     val area: AreaDTO,
     val employer: EmployerDTO,
     val salary: SalaryDTO?,
-    val url: String,
+    @SerializedName("alternate_url") val url: String,
     val experience: ExperienceDTO?,
     val employment: EmploymentDTO?,
     val schedule: ScheduleDTO?,
