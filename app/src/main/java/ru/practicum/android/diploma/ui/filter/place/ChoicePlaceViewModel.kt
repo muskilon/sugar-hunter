@@ -5,11 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.data.dto.AreaItemDTO
 import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.models.AreaItem
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.ui.search.SearchViewModel
 
 class ChoicePlaceViewModel(
     private val vacanciesInterActor: VacanciesInterActor
@@ -18,19 +16,19 @@ class ChoicePlaceViewModel(
     val mutable = MutableLiveData<Int>()
     private val foundAreas = mutableListOf<AreaItem>()
 
-    fun getAreas(){
+    fun getAreas() {
         viewModelScope.launch {
             vacanciesInterActor.getAreaDictionary().collect {
                 when (it) {
-                    is Resource.ConnectionError -> Log.d("FILTER", it.message)
+                    is Resource.ConnectionError -> Log.d(TAG, it.message)
 
-                    is Resource.NotFound -> Log.d("FILTER", it.message)
+                    is Resource.NotFound -> Log.d(TAG, it.message)
 
                     is Resource.Data -> {
                         val areas = it.value.container
                         foundAreas.clear()
                         areas.getArea("Мос")
-                        Log.d("FILTER", foundAreas.toString())
+                        Log.d(TAG, foundAreas.toString())
                     }
                 }
             }
@@ -39,12 +37,17 @@ class ChoicePlaceViewModel(
 
     private fun List<AreaItem>.getArea(name: String): AreaItem? {
         for (area in this) {
-            if (area.name.startsWith(name, true))
+            if (area.name.startsWith(name, true)) {
                 foundAreas.add(area)
+            }
             val found = area.areas?.getArea(name)
-            if (found != null)
+            if (found != null) {
                 return found
+            }
         }
         return null
+    }
+    companion object {
+        private const val TAG = "CHOOSE_PLACE"
     }
 }

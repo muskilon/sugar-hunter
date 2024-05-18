@@ -7,7 +7,7 @@ data class AreasDictionaryDTO(
 )
 data class AreaItemDTO(
     val areas: List<AreaItemDTO> = listOf(),
-    val id : String,
-    val name : String,
-    @SerializedName("parent_id") val parentId : String?
+    val id: String,
+    val name: String,
+    @SerializedName("parent_id") val parentId: String?
 )

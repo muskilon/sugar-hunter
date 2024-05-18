@@ -5,7 +5,7 @@ data class AreasDictionary(
 )
 data class AreaItem(
     val areas: List<AreaItem>?,
-    val id : String,
-    val name : String,
-    val parentId : String?
+    val id: String,
+    val name: String,
+    val parentId: String?
 )

@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.data.dto.AreaItemDTO
 import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.models.AreaItem
 import ru.practicum.android.diploma.domain.models.Resource
@@ -91,13 +90,13 @@ class SearchViewModel(
         }
     }
 
-    fun getAreas(){
+    fun getAreas() {
         viewModelScope.launch {
             vacanciesInterActor.getAreaDictionary().collect {
                 when (it) {
-                    is Resource.ConnectionError -> Log.d("FILTER", it.message)
+                    is Resource.ConnectionError -> Log.d(TAG, it.message)
 
-                    is Resource.NotFound -> Log.d("FILTER", it.message)
+                    is Resource.NotFound -> Log.d(TAG, it.message)
 
                     is Resource.Data -> {
                         val areas = it.value.container
@@ -112,11 +111,13 @@ class SearchViewModel(
 
     private fun List<AreaItem>.getArea(name: String): AreaItem? {
         for (area in this) {
-            if (area.name.startsWith(name, true))
+            if (area.name.startsWith(name, true)) {
                 foundAreas.add(area)
+            }
             val found = area.areas?.getArea(name)
-            if (found != null)
+            if (found != null) {
                 return found
+            }
         }
         return null
     }

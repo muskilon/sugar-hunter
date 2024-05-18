@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.data.dto
 
-import ru.practicum.android.diploma.domain.models.AreasDictionary
 import ru.practicum.android.diploma.domain.models.AreaItem
+import ru.practicum.android.diploma.domain.models.AreasDictionary
 import ru.practicum.android.diploma.domain.models.Contacts
 import ru.practicum.android.diploma.domain.models.Employment
 import ru.practicum.android.diploma.domain.models.Experience
