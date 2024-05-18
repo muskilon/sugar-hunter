@@ -102,6 +102,8 @@
             android:layout_width="match_parent"
             tools:listitem="@layout/item_vacancy"
             android:layout_height="match_parent"
+            android:paddingTop="38dp"
+            android:clipToPadding="false"
             android:visibility="gone"/>
 
         <TextView

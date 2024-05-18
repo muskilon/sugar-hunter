@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.di
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.ui.favourite.FavouriteViewModel
 import ru.practicum.android.diploma.ui.filter.FilterViewModel
 import ru.practicum.android.diploma.ui.filter.industry.ChooseSphereViewModel
@@ -43,7 +42,7 @@ val viewModelModules = module {
         TeamViewModel()
     }
     viewModel {
-            (vacancy: VacancyDetails) ->
-        VacancyViewModel(vacancy = vacancy, get())
+            (id: String) ->
+        VacancyViewModel(vacancyId = id, favouriteDataBaseInteractor = get(), vacanciesInterActor = get())
     }
 }

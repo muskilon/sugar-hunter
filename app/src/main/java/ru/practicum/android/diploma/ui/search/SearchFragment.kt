@@ -7,15 +7,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 import ru.practicum.android.diploma.ui.search.recyclerview.SearchAdapter
+import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 
 class SearchFragment : Fragment() {
 
@@ -25,12 +28,13 @@ class SearchFragment : Fragment() {
     private val searchAdapter by lazy {
         SearchAdapter { vacancy ->
             if (viewModel.clickDebounce()) {
+                requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
+
                 findNavController().navigate(
-                    R.id.action_searchFragment_to_vacancyFragment
+                    R.id.action_searchFragment_to_vacancyFragment,
+                    VacancyFragment.createArgs(vacancy.id)
                 )
             }
-        }.also {
-            binding.searchRecyclerView.adapter = it
         }
     }
 
@@ -59,6 +63,7 @@ class SearchFragment : Fragment() {
         binding.searchRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
+        binding.searchRecyclerView.adapter = searchAdapter
         //       Для тестирования!!! Можно удалять
 //       Пример формирования options для @QueryMap
         val options: HashMap<String, String> = HashMap()
@@ -152,17 +157,14 @@ class SearchFragment : Fragment() {
 
     private fun showError(errorMessage: String) {
         with(binding) {
-            somethingWrong.visibility = View.VISIBLE
-            vacancyCount.text = requireContext().getString(
-                R.string.search_error_no_vacancies
-            )
-            vacancyCount.visibility = View.VISIBLE
+            noInternet.visibility = View.VISIBLE
         }
         with(binding) {
             placeholderSearch.visibility = View.GONE
             noInternet.visibility = View.GONE
             progressBar.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
+            vacancyCount.visibility = View.GONE
         }
         Log.d("errorMessage: ", errorMessage)
     }
@@ -173,13 +175,13 @@ class SearchFragment : Fragment() {
                 R.string.search_error_no_vacancies
             )
             vacancyCount.visibility = View.VISIBLE
-            noInternet.visibility = View.VISIBLE
+            somethingWrong.visibility = View.VISIBLE
         }
         with(binding) {
             placeholderSearch.visibility = View.GONE
             progressBar.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
+            noInternet.visibility = View.GONE
         }
         Log.d("emptyMessage: ", emptyMessage)
     }
