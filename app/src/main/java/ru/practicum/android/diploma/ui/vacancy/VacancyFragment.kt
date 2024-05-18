@@ -26,7 +26,7 @@ class VacancyFragment : Fragment() {
         parametersOf(vacancyId)
     }
 
-    val vacancyId by lazy { requireArguments().getString(ARGS_VACANCY) }
+    private val vacancyId by lazy { requireArguments().getString(ARGS_VACANCY) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

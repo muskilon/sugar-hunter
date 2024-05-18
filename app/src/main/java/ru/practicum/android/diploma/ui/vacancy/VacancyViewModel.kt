@@ -34,7 +34,7 @@ class VacancyViewModel(
         }
     }
 
-    fun searchVacancyById(vacancyId: String) {
+    private fun searchVacancyById(vacancyId: String) {
         viewModelScope.launch {
             vacancyScreenState.postValue(VacancyFragmentState.Loading)
             vacanciesInterActor
@@ -46,7 +46,7 @@ class VacancyViewModel(
         }
     }
 
-    fun processResult(foundVacancy: Resource<VacancyDetails>) {
+    private fun processResult(foundVacancy: Resource<VacancyDetails>) {
         when (foundVacancy) {
             is Resource.ConnectionError -> {
                 vacancyScreenState.postValue(VacancyFragmentState.Error)
@@ -62,7 +62,7 @@ class VacancyViewModel(
         }
     }
 
-    suspend fun checkIdInFavourites(id: String) {
+    private suspend fun checkIdInFavourites(id: String) {
         withContext(Dispatchers.IO) {
             checkInFavouritesMutableLiveData.postValue(favouriteDataBaseInteractor.checkIdInFavourites(id))
         }
@@ -76,7 +76,7 @@ class VacancyViewModel(
         }
     }
 
-    suspend fun addFavouriteVacancy() {
+    private suspend fun addFavouriteVacancy() {
         if (vacancyScreenState.value is VacancyFragmentState.Content) {
             Log.d("add", "y")
             withContext(Dispatchers.IO) {
@@ -88,7 +88,7 @@ class VacancyViewModel(
         }
     }
 
-    suspend fun deleteFavouriteVacancy() {
+    private suspend fun deleteFavouriteVacancy() {
         if (vacancyScreenState.value is VacancyFragmentState.Content) {
             Log.d("add", "n")
             withContext(Dispatchers.IO) {

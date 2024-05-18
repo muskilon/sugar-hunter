@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Salary
 
 class FormatUtilFunctions {
-    fun formatLongNumber(salary: Long): String {
+    private fun formatLongNumber(salary: Long): String {
         val numberString = salary.toString()
         val result = StringBuilder()
 
@@ -28,7 +28,7 @@ class FormatUtilFunctions {
         return result.toString()
     }
 
-    fun getCurrency(currency: String?): String {
+    private fun getCurrency(currency: String?): String {
         var string = ""
         if (currency != null) {
             string = when (currency) {
