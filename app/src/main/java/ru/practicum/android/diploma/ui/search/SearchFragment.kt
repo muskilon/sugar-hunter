@@ -35,8 +35,6 @@ class SearchFragment : Fragment() {
                     VacancyFragment.createArgs(vacancy.id)
                 )
             }
-        }.also {
-            binding.searchRecyclerView.adapter = it
         }
     }
 
@@ -65,6 +63,7 @@ class SearchFragment : Fragment() {
         binding.searchRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
+        binding.searchRecyclerView.adapter = searchAdapter
         //       Для тестирования!!! Можно удалять
 //       Пример формирования options для @QueryMap
         val options: HashMap<String, String> = HashMap()
@@ -73,8 +72,8 @@ class SearchFragment : Fragment() {
 //        viewModel.searchVacancies(options)
 //
 //        viewModel.getVacancy("98561017")
-        viewModel.getVacancy("98899447")
-        viewModel.getIndustries()
+//        viewModel.getVacancy("98899447")
+//        viewModel.getIndustries()
 
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(NULL_TEXT)
@@ -151,17 +150,14 @@ class SearchFragment : Fragment() {
 
     private fun showError(errorMessage: String) {
         with(binding) {
-            somethingWrong.visibility = View.VISIBLE
-            vacancyCount.text = requireContext().getString(
-                R.string.search_error_no_vacancies
-            )
-            vacancyCount.visibility = View.VISIBLE
+            noInternet.visibility = View.VISIBLE
         }
         with(binding) {
             placeholderSearch.visibility = View.GONE
             noInternet.visibility = View.GONE
             progressBar.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
+            vacancyCount.visibility = View.GONE
         }
         Log.d("errorMessage: ", errorMessage)
     }
@@ -172,13 +168,13 @@ class SearchFragment : Fragment() {
                 R.string.search_error_no_vacancies
             )
             vacancyCount.visibility = View.VISIBLE
-            noInternet.visibility = View.VISIBLE
+            somethingWrong.visibility = View.VISIBLE
         }
         with(binding) {
             placeholderSearch.visibility = View.GONE
             progressBar.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
+            noInternet.visibility = View.GONE
         }
         Log.d("emptyMessage: ", emptyMessage)
     }
