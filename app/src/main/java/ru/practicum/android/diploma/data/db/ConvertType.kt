@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.data.db
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import ru.practicum.android.diploma.data.dto.AreaDTO
+import ru.practicum.android.diploma.domain.models.Address
 import ru.practicum.android.diploma.domain.models.Contacts
 import ru.practicum.android.diploma.domain.models.Employment
 import ru.practicum.android.diploma.domain.models.Experience
@@ -80,6 +81,16 @@ class ConvertType {
     @TypeConverter
     fun contactsToString(contacts: Contacts?): String {
         return Gson().toJson(contacts)
+    }
+
+    @TypeConverter
+    fun stringToAddress(value: String): Address? {
+        return Gson().fromJson(value, Address::class.java)
+    }
+
+    @TypeConverter
+    fun addressToString(address: Address?): String {
+        return Gson().toJson(address)
     }
 
     @TypeConverter

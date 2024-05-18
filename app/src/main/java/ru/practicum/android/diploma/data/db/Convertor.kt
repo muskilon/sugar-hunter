@@ -18,7 +18,8 @@ class Convertor {
             vacancy.keySkills,
             vacancy.contacts,
             vacancy.logoUrls,
-            vacancy.url
+            vacancy.url,
+            vacancy.address
         )
     }
 
@@ -36,7 +37,8 @@ class Convertor {
             vacancy.keySkills,
             vacancy.contacts,
             vacancy.logoUrls,
-            vacancy.url
+            vacancy.url,
+            vacancy.address
         )
     }
 

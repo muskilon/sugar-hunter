@@ -14,7 +14,8 @@ data class DetailsResponse(
     val schedule: ScheduleDTO?,
     val description: String?,
     @SerializedName("key_skills") val keySkills: List<KeySkillsDTO>?,
-    val contacts: ContactsDTO?
+    val contacts: ContactsDTO?,
+    val address: AddressDTO?
 )
 
 data class ExperienceDTO(
@@ -47,4 +48,9 @@ data class PhonesDTO(
 
 data class KeySkillsDTO(
     val name: String?
+)
+data class AddressDTO(
+    val city: String?,
+    val building: String?,
+    val street: String?
 )

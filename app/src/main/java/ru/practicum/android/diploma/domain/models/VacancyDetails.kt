@@ -13,7 +13,8 @@ data class VacancyDetails(
     val keySkills: List<String>?,
     val contacts: Contacts?,
     val logoUrls: LogoUrls,
-    val url: String
+    val url: String,
+    val address: Address?
 )
 data class Experience(
     val id: String?,
@@ -41,4 +42,9 @@ data class Phones(
     val country: String?,
     val number: String?,
     val formatted: String?
+)
+data class Address(
+    val city: String?,
+    val building: String?,
+    val street: String?
 )

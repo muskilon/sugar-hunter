@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.data.dto
 
+import ru.practicum.android.diploma.domain.models.Address
 import ru.practicum.android.diploma.domain.models.AreaItem
 import ru.practicum.android.diploma.domain.models.AreasDictionary
 import ru.practicum.android.diploma.domain.models.Contacts
@@ -37,22 +38,29 @@ class DTOToDataMappers {
             ),
             description = vacancy.description,
             keySkills = skillsMapper(vacancy.keySkills),
-            contacts = Contacts(
-                email = vacancy.contacts?.email,
-                name = vacancy.contacts?.name,
-                phones = vacancy.contacts?.phones?.map {
-                    val phones = Phones(
-                        city = it.city,
-                        country = it.country,
-                        comment = it.comment,
-                        formatted = it.formatted,
-                        number = it.number
-                    )
-                    phones
-                }
-            ),
+            contacts = mapContactsDTOToContacts(vacancy.contacts),
             logoUrls = mapLogoUrlsDTOToLogoUrls(vacancy.employer.logoUrls),
-            url = vacancy.url
+            url = vacancy.url,
+            address = Address(
+                city = vacancy.address?.city,
+                building = vacancy.address?.building,
+                street = vacancy.address?.street
+            )
+        )
+    private fun mapContactsDTOToContacts(contacts: ContactsDTO?) =
+        Contacts(
+            email = contacts?.email,
+            name = contacts?.name,
+            phones = contacts?.phones?.map {
+                val phones = Phones(
+                    city = it.city,
+                    country = it.country,
+                    comment = it.comment,
+                    formatted = it.formatted,
+                    number = it.number
+                )
+                phones
+            }
         )
     fun mapSearchResponseToVacanciesResponse(data: SearchResponseDTO) =
         VacanciesResponse(
