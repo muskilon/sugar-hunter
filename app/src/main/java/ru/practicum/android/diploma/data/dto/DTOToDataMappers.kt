@@ -1,11 +1,10 @@
 package ru.practicum.android.diploma.data.dto
 
-import ru.practicum.android.diploma.data.network.responses.DetailsResponse
-import ru.practicum.android.diploma.data.network.responses.KeySkillsDTO
-import ru.practicum.android.diploma.data.network.responses.SearchResponse
 import ru.practicum.android.diploma.domain.models.Contacts
 import ru.practicum.android.diploma.domain.models.Employment
 import ru.practicum.android.diploma.domain.models.Experience
+import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.LogoUrls
 import ru.practicum.android.diploma.domain.models.Phones
 import ru.practicum.android.diploma.domain.models.Salary
@@ -50,9 +49,10 @@ class DTOToDataMappers {
                     phones
                 }
             ),
-            logoUrls = mapLogoUrlsDTOToLogoUrls(vacancy.employer.logoUrls)
+            logoUrls = mapLogoUrlsDTOToLogoUrls(vacancy.employer.logoUrls),
+            url = vacancy.url
         )
-    fun mapSearchResponseToVacanciesResponse(data: SearchResponse) =
+    fun mapSearchResponseToVacanciesResponse(data: SearchResponseDTO) =
         VacanciesResponse(
             page = data.page,
             pages = data.pages,
@@ -69,6 +69,21 @@ class DTOToDataMappers {
                 vacancy
             }
         )
+    fun industryResponseToIndustries(data: IndustryResponse) =
+        data.container.map {
+            val industries = Industries(
+                id = it.id,
+                name = it.name,
+                industries = it.industries.map { sub ->
+                    val subIndustry = Industry(
+                        id = sub.id,
+                        name = sub.name
+                    )
+                    subIndustry
+                }
+            )
+            industries
+        }
     private fun mapSalaryDTOToSalary(salary: SalaryDTO?) =
         Salary(
             from = salary?.from,

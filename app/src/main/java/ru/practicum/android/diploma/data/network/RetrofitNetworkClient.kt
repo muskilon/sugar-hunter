@@ -6,71 +6,62 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.data.network.requests.DetailsRequest
-import ru.practicum.android.diploma.data.network.requests.IndustryRequest
-import ru.practicum.android.diploma.data.network.requests.SearchRequest
-import ru.practicum.android.diploma.data.network.responses.IndustryListDTO
-import ru.practicum.android.diploma.data.network.responses.IndustryResponse
+import ru.practicum.android.diploma.data.dto.DetailsResponse
+import ru.practicum.android.diploma.data.dto.IndustryResponse
+import ru.practicum.android.diploma.data.dto.SearchResponseDTO
+import ru.practicum.android.diploma.domain.models.Resource
 import java.io.IOException
 
 class RetrofitNetworkClient(
     private val context: Context,
     private val hhApi: HHApi
 ) : NetworkClient {
-    private var response = Response()
-    override suspend fun doRequest(dto: Any): Response {
-        return if (!isConnected()) {
-            Response().apply { resultCode = SERVER_ERROR }
-        } else {
-            when (dto) {
-                is SearchRequest -> getSearchResponse(dto)
-                is DetailsRequest -> getDetailsResponse(dto)
-                is IndustryRequest -> getIndustryResponse()
-                else -> Response().apply { resultCode = NOT_FOUND }
-            }
-        }
-    }
 
-    private suspend fun getSearchResponse(dto: SearchRequest): Response {
+    override suspend fun getVacancies(request: Map<String, String>): Resource<SearchResponseDTO> {
+        var vacancies: Resource<SearchResponseDTO>
+        if (!isConnected()) return Resource.ConnectionError(OFFLINE)
         withContext(Dispatchers.IO) {
-            try {
-                response = hhApi.getSearch(dto.options).apply { resultCode = OK }
+            vacancies = try {
+                hhApi.getSearch(request).body()?.let { Resource.Data(it) } ?: Resource.NotFound(
+                    OFFLINE)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
-                response = Response().apply { resultCode = NOT_FOUND }
+                Resource.ConnectionError(REQUEST_ERROR_TAG)
             }
         }
-        return response
+        return vacancies
     }
 
-    private suspend fun getDetailsResponse(dto: DetailsRequest): Response {
+    override suspend fun getIndustry(): Resource<IndustryResponse> {
+        var industry: Resource<IndustryResponse>
+        if (!isConnected()) return Resource.ConnectionError(OFFLINE)
         withContext(Dispatchers.IO) {
-            try {
-                response = hhApi.getVacancy(dto.id).apply { resultCode = OK }
+            industry = try {
+                hhApi.getIndustry().body()?.let {
+                    Resource.Data(IndustryResponse(container = it.asList()))
+                } ?: Resource.NotFound(
+                    NOT_FOUND)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
-                response = Response().apply { resultCode = NOT_FOUND }
+                Resource.ConnectionError(REQUEST_ERROR_TAG)
             }
         }
-        return response
+        return industry
     }
 
-    private suspend fun getIndustryResponse(): Response {
+    override suspend fun getVacancyDetails(id: String): Resource<DetailsResponse> {
+        var details: Resource<DetailsResponse>
+        if (!isConnected()) return Resource.ConnectionError(OFFLINE)
         withContext(Dispatchers.IO) {
-            try {
-                response = industryMapper(hhApi.getIndustry()).apply { resultCode = OK }
+            details = try {
+                hhApi.getVacancyDetails(id).body()?.let { Resource.Data(it) } ?: Resource.NotFound(
+                    NOT_FOUND)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
-                response = Response().apply { resultCode = NOT_FOUND }
+                Resource.ConnectionError(REQUEST_ERROR_TAG)
             }
         }
-        return response
-    }
-
-    private fun industryMapper(array: Array<IndustryListDTO>): IndustryResponse {
-        return IndustryResponse(
-            container = array.asList()
-        )
+        return details
     }
 
     private fun isConnected(): Boolean {
@@ -90,8 +81,7 @@ class RetrofitNetworkClient(
 
     companion object {
         private const val REQUEST_ERROR_TAG = "NetworkRequestError"
-        private const val OK = 200
-        private const val NOT_FOUND = 400
-        private const val SERVER_ERROR = 500
+        private const val NOT_FOUND = "not found"
+        private const val OFFLINE = "no internet"
     }
 }

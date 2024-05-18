@@ -12,7 +12,8 @@ data class VacancyDetails(
     val description: String?,
     val keySkills: List<String>?,
     val contacts: Contacts?,
-    val logoUrls: LogoUrls
+    val logoUrls: LogoUrls,
+    val url: String
 )
 data class Experience(
     val id: String?,

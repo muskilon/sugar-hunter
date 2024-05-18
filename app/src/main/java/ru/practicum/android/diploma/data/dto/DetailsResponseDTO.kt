@@ -1,9 +1,6 @@
-package ru.practicum.android.diploma.data.network.responses
+package ru.practicum.android.diploma.data.dto
 
 import com.google.gson.annotations.SerializedName
-import ru.practicum.android.diploma.data.dto.AreaDTO
-import ru.practicum.android.diploma.data.dto.EmployerDTO
-import ru.practicum.android.diploma.data.dto.SalaryDTO
 import ru.practicum.android.diploma.data.network.Response
 
 data class DetailsResponse(
@@ -12,7 +9,7 @@ data class DetailsResponse(
     val area: AreaDTO,
     val employer: EmployerDTO,
     val salary: SalaryDTO?,
-    val url: String,
+    @SerializedName("alternate_url") val url: String,
     val experience: ExperienceDTO?,
     val employment: EmploymentDTO?,
     val schedule: ScheduleDTO?,
