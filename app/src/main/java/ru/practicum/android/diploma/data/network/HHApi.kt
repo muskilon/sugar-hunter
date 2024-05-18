@@ -4,6 +4,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
+import ru.practicum.android.diploma.data.dto.AreaItemDTO
 import ru.practicum.android.diploma.data.dto.DetailsResponse
 import ru.practicum.android.diploma.data.dto.IndustryListDTO
 import ru.practicum.android.diploma.data.dto.SearchResponseDTO
@@ -16,6 +17,9 @@ interface HHApi {
 
     @GET("industries")
     suspend fun getIndustry(): Response<Array<IndustryListDTO>>
+
+    @GET("areas")
+    suspend fun getAreasDictionary(): Response<Array<AreaItemDTO>>
 
     @GET("vacancies")
     suspend fun getSearch(

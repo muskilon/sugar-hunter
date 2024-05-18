@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.practicum.android.diploma.data.dto.AreasDictionaryDTO
 import ru.practicum.android.diploma.data.dto.DetailsResponse
 import ru.practicum.android.diploma.data.dto.IndustryResponse
 import ru.practicum.android.diploma.data.dto.SearchResponseDTO
@@ -16,6 +17,24 @@ class RetrofitNetworkClient(
     private val context: Context,
     private val hhApi: HHApi
 ) : NetworkClient {
+
+    override suspend fun getAreasDictionary(): Resource<AreasDictionaryDTO> {
+        var industry: Resource<AreasDictionaryDTO>
+        if (!isConnected()) return Resource.ConnectionError(OFFLINE)
+        withContext(Dispatchers.IO) {
+            industry = try {
+                hhApi.getAreasDictionary().body()?.let {
+                    Resource.Data(AreasDictionaryDTO(container = it.asList()))
+                } ?: Resource.NotFound(
+                    NOT_FOUND
+                )
+            } catch (ex: IOException) {
+                Log.e(REQUEST_ERROR_TAG, ex.toString())
+                Resource.ConnectionError(REQUEST_ERROR_TAG)
+            }
+        }
+        return industry
+    }
 
     override suspend fun getVacancies(request: Map<String, String>): Resource<SearchResponseDTO> {
         var vacancies: Resource<SearchResponseDTO>
