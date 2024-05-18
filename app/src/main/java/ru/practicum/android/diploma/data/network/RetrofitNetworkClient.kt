@@ -6,7 +6,7 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.data.dto.AreasDTO
+import ru.practicum.android.diploma.data.dto.AreasDictionaryDTO
 import ru.practicum.android.diploma.data.dto.DetailsResponse
 import ru.practicum.android.diploma.data.dto.IndustryResponse
 import ru.practicum.android.diploma.data.dto.SearchResponseDTO
@@ -18,13 +18,13 @@ class RetrofitNetworkClient(
     private val hhApi: HHApi
 ) : NetworkClient {
 
-    override suspend fun getAreasDictionary(): Resource<AreasDTO> {
-        var industry: Resource<AreasDTO>
+    override suspend fun getAreasDictionary(): Resource<AreasDictionaryDTO> {
+        var industry: Resource<AreasDictionaryDTO>
         if (!isConnected()) return Resource.ConnectionError(OFFLINE)
         withContext(Dispatchers.IO) {
             industry = try {
                 hhApi.getAreasDictionary().body()?.let {
-                    Resource.Data(AreasDTO(container = it.asList()))
+                    Resource.Data(AreasDictionaryDTO(container = it.asList()))
                 } ?: Resource.NotFound(
                     NOT_FOUND
                 )

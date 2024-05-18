@@ -27,7 +27,8 @@ val dataModules = module {
                     .addHeader("HH-User-Agent", "Sugar Hunter (fantasmas.dev@gmail.com)")
                 val request = requestBuilder.build()
                 chain.proceed(request)
-            }.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            }
+//                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build()
         ).build().create(HHApi::class.java)
     }

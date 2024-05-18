@@ -63,15 +63,20 @@ class SearchFragment : Fragment() {
 //       Пример формирования options для @QueryMap
         val options: HashMap<String, String> = HashMap()
         options["text"] = "Java" // Как передавать поисковый запрос
-        options["page"] = "2" // Как передавать номер нужной страницы
+        options["page"] = "1" // Как передавать номер нужной страницы
 //        viewModel.searchVacancies(options)
 //
 //        viewModel.getVacancy("98561017")
-        viewModel.getVacancy("98899447")
-        viewModel.getIndustries()
+//        viewModel.getVacancy("98899447")
+//        viewModel.getIndustries()
 
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(NULL_TEXT)
+        }
+        binding.favoriteButton.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_searchFragment_to_filterFragment
+            )
         }
 
         val searchEditText = object : TextWatcher {
@@ -82,6 +87,7 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.visibility = clearButtonVisibility(s)
                 binding.searchIcon.visibility = searchButtonVisibility(s)
+                options["text"] = s.toString()
                 viewModel.searchDebounce(changedText = s?.toString() ?: "", options = options)
             }
 

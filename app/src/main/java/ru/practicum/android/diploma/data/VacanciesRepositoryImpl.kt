@@ -4,7 +4,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import ru.practicum.android.diploma.data.dto.AreaDictionaryDTO
 import ru.practicum.android.diploma.data.dto.DTOToDataMappers
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.VacanciesRepository
@@ -75,7 +74,7 @@ class VacanciesRepositoryImpl(
         }
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getAreas(): Flow<Resource<List<AreaDictionary>>> = flow {
+    override suspend fun getAreas(): Flow<Resource<AreaDictionary>> = flow {
         when (val response = networkClient.getAreasDictionary()) {
             is Resource.Data -> {
                 with(response) {

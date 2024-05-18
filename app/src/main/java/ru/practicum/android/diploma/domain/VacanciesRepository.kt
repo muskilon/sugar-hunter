@@ -11,5 +11,5 @@ interface VacanciesRepository {
     fun searchVacancies(options: Map<String, String>): Flow<Resource<VacanciesResponse>>
     suspend fun getVacancyDetails(id: String): Flow<Resource<VacancyDetails>>
     suspend fun getIndustries(): Flow<Resource<List<Industries>>>
-    suspend fun getAreas(): Flow<Resource<List<AreaDictionary>>>
+    suspend fun getAreas(): Flow<Resource<AreaDictionary>>
 }

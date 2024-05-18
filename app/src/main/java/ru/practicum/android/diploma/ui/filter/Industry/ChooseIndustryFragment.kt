@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.filter.sphere
+package ru.practicum.android.diploma.ui.filter.Industry
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.practicum.android.diploma.databinding.FragmentChoiceSphereBinding
 
-class ChoiceSphereFragment : Fragment() {
+class ChooseIndustryFragment : Fragment() {
 
     private var _binding: FragmentChoiceSphereBinding? = null
     private val binding get() = _binding!!

@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/choiceSphereFragment"
-        android:name="ru.practicum.android.diploma.ui.filter.sphere.ChoiceSphereFragment"
+        android:name="ru.practicum.android.diploma.ui.filter.Industry.ChooseIndustryFragment"
         android:label="fragment_choice_sphere"
         tools:layout="@layout/fragment_choice_sphere" />
     <fragment

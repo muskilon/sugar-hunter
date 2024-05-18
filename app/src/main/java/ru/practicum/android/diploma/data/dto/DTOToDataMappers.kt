@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.data.dto
 
 import ru.practicum.android.diploma.domain.models.AreaDictionary
+import ru.practicum.android.diploma.domain.models.AreaItem
 import ru.practicum.android.diploma.domain.models.Contacts
 import ru.practicum.android.diploma.domain.models.Employment
 import ru.practicum.android.diploma.domain.models.Experience
@@ -85,22 +86,22 @@ class DTOToDataMappers {
             )
             industries
         }
-    fun areasDTOToAreaDictionary(data: AreasDTO) =
-        data.container.map{
-            val areas = AreaDictionary(
-                id = it.id,
-                parentId = it.parentId,
-                name = it.name,
-                areas = it.areas.map { sub ->
-                    val subArea = AreaDictionary(
-                        id = it.id,
-                        parentId = it.parentId,
-                        name = it.name,
-                        areas = it.areas
-                    )
-                }
-            )
+    private fun List<AreaItemDTO>.getArea(): AreaItem? {
+        val new = mutableListOf<AreaItem>()
+        for (area in this) {
+            if (area.areas.isEmpty()) new.add(AreaItem(
+                id = area.id,
+                parentId = area.parentId,
+                name = area.name,
+                areas = listOf()
+            ))
+                val next = area.areas.getArea()
+                if (!next?.areas.isNullOrEmpty())
+                    return next
         }
+        return null
+    }
+    fun areasDTOToAreaDictionary(data: AreasDictionaryDTO) = AreaDictionary(container = data.container)
     private fun mapSalaryDTOToSalary(salary: SalaryDTO?) =
         Salary(
             from = salary?.from,

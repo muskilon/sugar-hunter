@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.ui.filter.FilterViewModel
 import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceViewModel
 import ru.practicum.android.diploma.ui.filter.place.country.CountryViewModel
 import ru.practicum.android.diploma.ui.filter.place.region.RegionViewModel
-import ru.practicum.android.diploma.ui.filter.sphere.ChoiceSphereViewModel
+import ru.practicum.android.diploma.ui.filter.Industry.ChooseSphereViewModel
 import ru.practicum.android.diploma.ui.root.RootViewModel
 import ru.practicum.android.diploma.ui.search.SearchViewModel
 import ru.practicum.android.diploma.ui.team.TeamViewModel
@@ -25,10 +25,10 @@ val viewModelModules = module {
         RegionViewModel()
     }
     viewModel {
-        ChoicePlaceViewModel()
+        ChoicePlaceViewModel(get())
     }
     viewModel {
-        ChoiceSphereViewModel()
+        ChooseSphereViewModel()
     }
     viewModel {
         FilterViewModel()

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.data.dto.AreaItemDTO
 import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacanciesResponse
@@ -103,7 +104,7 @@ class SearchViewModel(
         }
     }
 
-    fun processResult(foundVacancies: Resource<VacanciesResponse>) {
+    private fun processResult(foundVacancies: Resource<VacanciesResponse>) {
         when (foundVacancies) {
             is Resource.ConnectionError -> {
                 renderState(
