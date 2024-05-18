@@ -69,6 +69,7 @@ class SearchFragment : Fragment() {
 //        viewModel.getVacancy("98561017")
 //        viewModel.getVacancy("98899447")
 //        viewModel.getIndustries()
+        viewModel.getAreas()
 
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(NULL_TEXT)

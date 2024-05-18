@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.data.dto.DTOToDataMappers
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.VacanciesRepository
-import ru.practicum.android.diploma.domain.models.AreaDictionary
+import ru.practicum.android.diploma.domain.models.AreasDictionary
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacanciesResponse
@@ -74,11 +74,11 @@ class VacanciesRepositoryImpl(
         }
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getAreas(): Flow<Resource<AreaDictionary>> = flow {
+    override suspend fun getAreas(): Flow<Resource<AreasDictionary>> = flow {
         when (val response = networkClient.getAreasDictionary()) {
             is Resource.Data -> {
                 with(response) {
-                    val data = mapper.areasDTOToAreaDictionary(this.value)
+                    val data = mapper.areasDictionaryDTOToAreasDictionary(this.value)
                     emit(Resource.Data(data))
                 }
             }

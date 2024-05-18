@@ -1,9 +1,7 @@
 package ru.practicum.android.diploma.domain.models
 
-import ru.practicum.android.diploma.data.dto.AreaItemDTO
-
-data class AreaDictionary(
-    val container: List<AreaItemDTO>
+data class AreasDictionary(
+    val container: List<AreaItem>
 )
 data class AreaItem(
     val areas: List<AreaItem>?,

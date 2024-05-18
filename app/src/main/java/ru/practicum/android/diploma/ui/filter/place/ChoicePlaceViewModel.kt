@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.dto.AreaItemDTO
 import ru.practicum.android.diploma.domain.VacanciesInterActor
+import ru.practicum.android.diploma.domain.models.AreaItem
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.ui.search.SearchViewModel
 
@@ -15,7 +16,7 @@ class ChoicePlaceViewModel(
 ) : ViewModel() {
 
     val mutable = MutableLiveData<Int>()
-    private val foundAreas = mutableListOf<AreaItemDTO>()
+    private val foundAreas = mutableListOf<AreaItem>()
 
     fun getAreas(){
         viewModelScope.launch {
@@ -36,11 +37,11 @@ class ChoicePlaceViewModel(
         }
     }
 
-    private fun List<AreaItemDTO>.getArea(name: String): AreaItemDTO? {
+    private fun List<AreaItem>.getArea(name: String): AreaItem? {
         for (area in this) {
             if (area.name.startsWith(name, true))
                 foundAreas.add(area)
-            val found = area.areas.getArea(name)
+            val found = area.areas?.getArea(name)
             if (found != null)
                 return found
         }
