@@ -89,7 +89,7 @@ class SearchViewModel(
     }
 
     fun searchDebounce(changedText: String, options: Map<String, String>) {
-        if (latestSearchText == changedText) {
+        if (latestSearchText.equals(changedText) || changedText.isEmpty()) {
             return
         }
 
