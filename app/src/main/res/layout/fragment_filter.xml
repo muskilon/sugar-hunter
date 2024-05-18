@@ -1,20 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.filter.FilterFragment">
 
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="no"
+        android:paddingStart="@dimen/padding_16dp"
+        android:paddingTop="@dimen/padding_20dp"
+        android:paddingEnd="@dimen/padding_16dp"
+        android:paddingBottom="@dimen/padding_20dp"
+        android:src="@drawable/back_button"
+        app:layout_constraintBottom_toTopOf="@+id/textPlaceOfWork"
+        app:layout_constraintEnd_toStartOf="@id/filterTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/filterTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="@dimen/margin_19dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:lineHeight="@dimen/text_line_height_26dp"
         android:text="Настройки фильтрации"
+        android:textColor="?attr/prime_color_black"
+        android:textFontWeight="500"
         android:textSize="@dimen/textSize_22sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textPlaceOfWork"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/margin_24dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:gravity="center_vertical"
+        android:lineHeight="@dimen/text_line_height_19dp"
+        android:text="Место работы"
+        android:textColor="@color/Dark_Gray"
+        android:textFontWeight="400"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoicePlaceOfWork"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+
+    <ImageView
+        android:id="@+id/buttonGoToChoicePlaceOfWork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/leading_icon_filter"
+        app:layout_constraintBottom_toBottomOf="@+id/textPlaceOfWork"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textPlaceOfWork"
+        app:layout_constraintTop_toTopOf="@+id/textPlaceOfWork" />
+
+    <TextView
+        android:id="@+id/textChoiceSphere"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:gravity="center_vertical"
+        android:lineHeight="@dimen/text_line_height_19dp"
+        android:text="Отрасль"
+        android:textColor="@color/Dark_Gray"
+        android:textFontWeight="400"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoicePlaceOfWork"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPlaceOfWork"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"/>
+
+    <ImageView
+        android:id="@+id/buttonGoToChoiceSphere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/leading_icon_filter"
+        app:layout_constraintBottom_toBottomOf="@+id/textChoiceSphere"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textChoiceSphere"
+        app:layout_constraintTop_toTopOf="@+id/textChoiceSphere" />
+
+
+        <LinearLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/textChoiceSphere"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ожидаемая зарплата"
+                android:textColor="?attr/secondary_dark_gray"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Введите сумму"
+                android:textColorHint="?attr/secondary_dark_gray"
+                android:inputType="numberDecimal"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
