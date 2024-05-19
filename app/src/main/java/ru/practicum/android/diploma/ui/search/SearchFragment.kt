@@ -20,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.App
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 import ru.practicum.android.diploma.ui.search.recyclerview.SearchAdapter
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
@@ -172,7 +172,7 @@ class SearchFragment : Fragment() {
         }
         with(binding) {
             placeholderSearch.visibility = View.GONE
-            noInternet.visibility = View.GONE
+            somethingWrong.visibility = View.GONE
             progressBar.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
             vacancyCount.visibility = View.GONE
@@ -197,7 +197,7 @@ class SearchFragment : Fragment() {
         Log.d("emptyMessage: ", emptyMessage)
     }
 
-    private fun showContent(vacancy: List<Vacancy>) {
+    private fun showContent(vacancy: VacanciesResponse) {
         with(binding) {
             vacancyCount.text = App.getAppResources()?.getQuantityString(
                 R.plurals.vacancy_plurals, totalFoundVacancies, totalFoundVacancies
