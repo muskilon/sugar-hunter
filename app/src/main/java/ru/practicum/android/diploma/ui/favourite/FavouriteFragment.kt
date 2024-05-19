@@ -23,7 +23,7 @@ import java.lang.ref.WeakReference
 class FavouriteFragment : Fragment() {
 
     private val context by lazy { WeakReference(requireContext()) }
-    private val adapter by lazy { FavouriteAdapter ({ vacancy -> goToVacancy(vacancy) }, context) }
+    private val adapter by lazy { FavouriteAdapter({ vacancy -> goToVacancy(vacancy) }, context) }
     private var _binding: FragmentFavouriteBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<FavouriteViewModel>()
