@@ -42,7 +42,7 @@ class VacancyFragment : Fragment() {
 
         val vacancyFragmentPresenter = VacancyFragmentPresenter(binding, requireContext())
 
-        viewModel.getVacancyScreenStateLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer { state ->
+        viewModel.getVacancyScreenStateLiveData().observe(viewLifecycleOwner) { state ->
             vacancyFragmentPresenter.render(state)
 
             if (state is VacancyFragmentState.Content) {
@@ -57,26 +57,26 @@ class VacancyFragment : Fragment() {
                 binding.shareButton.setOnClickListener {
                     Toast.makeText(
                         requireContext(),
-                        "Загрузка не удалоась, отправлять нечего",
+                        "Загрузка не удалась, отправлять нечего",
                         Toast.LENGTH_SHORT
                     )
                         .show()
                 }
             }
-        })
+        }
 
         binding.favoriteButton.setOnClickListener {
             lifecycleScope.launch { viewModel.likeOrDislikeButton() }
         }
 
         viewModel.checkInFavouritesLiveData()
-            .observe(viewLifecycleOwner, androidx.lifecycle.Observer { checkInFavourites ->
+            .observe(viewLifecycleOwner) { checkInFavourites ->
                 if (checkInFavourites) {
                     binding.favoriteButton.setImageResource(R.drawable.favorite_active)
                 } else {
                     binding.favoriteButton.setImageResource(R.drawable.favorite_inactive)
                 }
-            })
+            }
 
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()

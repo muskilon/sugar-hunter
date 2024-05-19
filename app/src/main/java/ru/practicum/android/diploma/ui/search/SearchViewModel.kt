@@ -20,6 +20,7 @@ class SearchViewModel(
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchFragmentState>()
+    private val isLoading = MutableLiveData<Boolean>()
     private val foundAreas = mutableListOf<AreaItem>() // Для тестирования
     private var currentPage = 0
     private var totalPages = 0
@@ -27,12 +28,10 @@ class SearchViewModel(
     private var searchJob: Job? = null
     private var isClickAllowed = true
     private var currentVacancies = listOf<Vacancy>()
-    var isPageLoading = false
 
     fun observeState(): LiveData<SearchFragmentState> = stateLiveData
-    private fun renderState(state: SearchFragmentState) {
-        stateLiveData.postValue(state)
-    }
+    fun observeIsLoading(): LiveData<Boolean> = isLoading
+
     fun getSearchRequest(text: String, page: String?): HashMap<String, String> {
         val request: HashMap<String, String> = HashMap()
         with(request) {
@@ -70,34 +69,37 @@ class SearchViewModel(
     }
 
     fun searchVacancies(request: Map<String, String>) {
-        renderState(
-            SearchFragmentState.Loading
-        )
-        currentVacancies = listOf()
-        request[TEXT]?.let { latestSearchText = it }
-        viewModelScope.launch {
-            vacanciesInterActor
-                .searchVacancies(request)
-                .collect { result ->
-                    processResult(result)
+        request[TEXT]?.let { text ->
+            if (latestSearchText == text || text.isEmpty()) {
+                searchJob?.cancel()
+            } else {
+                stateLiveData.postValue(SearchFragmentState.Loading)
+                currentVacancies = listOf()
+                latestSearchText = text
+                viewModelScope.launch {
+                    vacanciesInterActor
+                        .searchVacancies(request)
+                        .collect { result ->
+                            processResult(result, true)
+                        }
                 }
-        }
-    }
-
-    fun onLastItemReached() {
-        if (currentPage < totalPages - 1) {
-            currentPage++
-            viewModelScope.launch {
-                vacanciesInterActor
-                    .searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
-                    .collect { result ->
-                        processResult(result)
-                    }
             }
         }
     }
 
-    //    ДЛЯ ТЕСТИРОВАНИЯ!!!
+    fun onLastItemReached() {
+        currentPage++
+        isLoading.postValue(true)
+        viewModelScope.launch {
+            vacanciesInterActor.searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
+                .collect { result ->
+                    processResult(result, false)
+                }
+        }
+    }
+
+// ДЛЯ ТЕСТИРОВАНИЯ!!!
+
     fun getVacancy(id: String) {
         viewModelScope.launch {
             vacanciesInterActor.getVacancy(id).collect {
@@ -157,18 +159,22 @@ class SearchViewModel(
         }
         return null
     }
-    private fun processResult(foundVacancies: Resource<VacanciesResponse>) {
+
+// ДЛЯ ТЕСТИРОВАНИЯ!!!
+
+    private fun processResult(foundVacancies: Resource<VacanciesResponse>, isSearch: Boolean) {
         when (foundVacancies) {
             is Resource.ConnectionError -> {
-                renderState(
+                stateLiveData.postValue(
                     SearchFragmentState.Error(
-                        foundVacancies.message
+                        foundVacancies.message,
+                        isSearch
                     )
                 )
             }
 
             is Resource.NotFound -> {
-                renderState(
+                stateLiveData.postValue(
                     SearchFragmentState.Empty(
                         foundVacancies.message
                     )
@@ -185,11 +191,12 @@ class SearchViewModel(
                 } else {
                     currentVacancies = data.items
                 }
-                renderState(
+                stateLiveData.postValue(
                     SearchFragmentState.Content(
                         data
                     )
                 )
+                isLoading.postValue(false)
             }
         }
     }
