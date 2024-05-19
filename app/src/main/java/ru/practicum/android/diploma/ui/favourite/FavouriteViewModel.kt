@@ -40,19 +40,16 @@ class FavouriteViewModel(private val favouriteDataBaseInteractor: FavouriteDataB
     }
 
     fun updateState() {
-        when (favoriteListLiveData().value){
+        when (favoriteListLiveData().value) {
             null -> setStateError()
             emptyList<VacancyDetails>() -> setStateEmpty()
             else -> setStateContent()
         }
     }
 
-
-
     fun setStateContent() {
         viewModelScope.launch {
-//            val content = readFavoriteList()
-            if (favoriteMutableListLiveData.value != null){
+            if (favoriteMutableListLiveData.value != null) {
                 stateMutableLiveData.postValue(FavouritesState.Content(favoriteMutableListLiveData.value!!))
                 Log.d("content", stateMutableLiveData.toString())
             } else {

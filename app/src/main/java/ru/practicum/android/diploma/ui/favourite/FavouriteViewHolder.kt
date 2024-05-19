@@ -8,13 +8,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
-import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
-import ru.practicum.android.diploma.ui.search.recyclerview.SearchViewHolder
 import ru.practicum.android.diploma.util.FormatUtilFunctions
 import java.lang.ref.WeakReference
 
-class FavouriteViewHolder(private val binding: ItemVacancyBinding, private val context:  WeakReference<Context>) :
+class FavouriteViewHolder(private val binding: ItemVacancyBinding, private val context: WeakReference<Context>) :
     RecyclerView.ViewHolder(binding.root) {
 
     val utilFunctions = FormatUtilFunctions()

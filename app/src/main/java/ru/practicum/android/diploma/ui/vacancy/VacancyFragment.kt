@@ -54,7 +54,6 @@ class VacancyFragment : Fragment() {
                     startActivity(Intent.createChooser(intent, "Поделиться ссылкой через:"))
                 }
 
-
             } else {
                 binding.shareButton.setOnClickListener {
                     Toast.makeText(
