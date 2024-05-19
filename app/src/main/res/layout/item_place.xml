@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <TextView
+        android:id="@+id/textCountry"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/ys_display_regular"
+        android:gravity="center_vertical"
+        android:lineHeight="@dimen/text_line_height_19dp"
+        android:textColor="@color/Black_Day"
+        android:textFontWeight="400"
+        android:textSize="@dimen/textSize_16sp"
+        tools:text="Страна" />
+
+    <ImageView
+        android:id="@+id/buttonChoiceCountry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/leading_icon_filter" />
+
+</LinearLayout>
