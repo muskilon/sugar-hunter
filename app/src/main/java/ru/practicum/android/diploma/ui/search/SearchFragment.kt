@@ -82,8 +82,7 @@ class SearchFragment : Fragment() {
 
         binding.searchEditText.addTextChangedListener(searchEditText)
 
-        val imm =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         binding.searchRecyclerView.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
@@ -99,9 +98,8 @@ class SearchFragment : Fragment() {
                         .findLastVisibleItemPosition()
                     val itemsCount = searchAdapter.itemCount
                     if (pos >= itemsCount - 1 && !viewModel.isPageLoading) {
-                        viewModel.isPageLoading = true // Это заглушка
-                        binding.pageLoading.isVisible = true
                         viewModel.onLastItemReached()
+                        binding.pageLoading.isVisible = viewModel.isPageLoading
                     }
                 }
             }
@@ -209,7 +207,7 @@ class SearchFragment : Fragment() {
             pageLoading.isVisible = false
         }
         searchAdapter.setData(vacancy.items)
-        viewModel.isPageLoading = false // Это заглушка
+        viewModel.isPageLoading = false
     }
     private fun getAdapter() =
         SearchAdapter { vacancy ->

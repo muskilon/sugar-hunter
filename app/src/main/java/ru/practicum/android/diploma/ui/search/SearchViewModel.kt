@@ -87,6 +87,7 @@ class SearchViewModel(
     fun onLastItemReached() {
         if (currentPage < totalPages - 1) {
             currentPage++
+            isPageLoading = true
             viewModelScope.launch {
                 vacanciesInterActor
                     .searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
