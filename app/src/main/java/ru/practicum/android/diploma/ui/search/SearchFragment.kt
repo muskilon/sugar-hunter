@@ -161,7 +161,7 @@ class SearchFragment : Fragment() {
         }
         with(binding) {
             placeholderSearch.visibility = View.GONE
-            noInternet.visibility = View.GONE
+            somethingWrong.visibility = View.GONE
             progressBar.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
             vacancyCount.visibility = View.GONE
