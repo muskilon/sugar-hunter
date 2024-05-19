@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="prime_color_black">@color/Black_Night</item>
-        <item name="prime_color_white">@color/White_Night</item>
-        <item name="secondary_gray">@color/Dark_Gray</item>
-        <item name="secondary_dark_gray">@color/White_Universal</item>
+        <item name="prime_color_black">@color/black_night</item>
+        <item name="prime_color_white">@color/white_night</item>
+        <item name="secondary_gray">@color/dark_gray</item>
+        <item name="secondary_dark_gray">@color/white_universal</item>
 
-        <item name="android:statusBarColor">@color/White_Night</item>
-        <item name="android:navigationBarColor">@color/White_Night</item>
+        <item name="android:statusBarColor">@color/white_night</item>
+        <item name="android:navigationBarColor">@color/white_night</item>
 
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>

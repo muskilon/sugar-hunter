@@ -20,7 +20,7 @@
         android:text="@string/team"
         android:textColor="?attr/prime_color_black"
         android:textFontWeight="500"
-        android:textSize="@dimen/textSize_22sp"
+        android:textSize="@dimen/text_size_22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,10 +45,10 @@
             android:paddingTop="@dimen/margin_8dp"
             android:paddingEnd="@dimen/margin_16dp"
             android:paddingBottom="@dimen/margin_8dp"
-            android:text="@string/teamAuthorTitle"
+            android:text="@string/team_author_title"
             android:textColor="?attr/prime_color_black"
             android:textFontWeight="700"
-            android:textSize="@dimen/textSize_32sp" />
+            android:textSize="@dimen/text_size_32sp" />
 
         <TextView
             android:id="@+id/teamMember1"
@@ -59,10 +59,10 @@
             android:layout_marginEnd="@dimen/margin_16dp"
             android:fontFamily="@font/ys_display_medium"
             android:lineHeight="@dimen/text_line_height_19dp"
-            android:text="@string/teamAuthor1"
+            android:text="@string/team_author1"
             android:textColor="?attr/prime_color_black"
             android:textFontWeight="500"
-            android:textSize="@dimen/textSize_16sp" />
+            android:textSize="@dimen/text_size_16sp" />
 
         <TextView
             android:id="@+id/teamMember2"
@@ -73,10 +73,10 @@
             android:layout_marginEnd="@dimen/margin_16dp"
             android:fontFamily="@font/ys_display_medium"
             android:lineHeight="@dimen/text_line_height_19dp"
-            android:text="@string/teamAuthor2"
+            android:text="@string/team_author2"
             android:textColor="?attr/prime_color_black"
             android:textFontWeight="500"
-            android:textSize="@dimen/textSize_16sp" />
+            android:textSize="@dimen/text_size_16sp" />
 
         <TextView
             android:id="@+id/teamMember3"
@@ -87,10 +87,10 @@
             android:layout_marginEnd="@dimen/margin_16dp"
             android:fontFamily="@font/ys_display_medium"
             android:lineHeight="@dimen/text_line_height_19dp"
-            android:text="@string/teamAuthor3"
+            android:text="@string/team_author3"
             android:textColor="?attr/prime_color_black"
             android:textFontWeight="500"
-            android:textSize="@dimen/textSize_16sp" />
+            android:textSize="@dimen/text_size_16sp" />
 
         <TextView
             android:id="@+id/teamMember4"
@@ -101,10 +101,10 @@
             android:layout_marginEnd="@dimen/margin_16dp"
             android:fontFamily="@font/ys_display_medium"
             android:lineHeight="@dimen/text_line_height_19dp"
-            android:text="@string/teamAuthor4"
+            android:text="@string/team_author4"
             android:textColor="?attr/prime_color_black"
             android:textFontWeight="500"
-            android:textSize="@dimen/textSize_16sp" />
+            android:textSize="@dimen/text_size_16sp" />
 
     </LinearLayout>
 

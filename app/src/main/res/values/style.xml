@@ -3,7 +3,7 @@
 <resources>
 
     <style name="CustomBottomNavigation" parent="Widget.Design.BottomNavigationView">
-        <item name="android:textSize">@dimen/textSize_12sp</item>
+        <item name="android:textSize">@dimen/text_size_12sp</item>
         <item name="android:textFontWeight">400</item>
         <item name="lineHeight">@dimen/text_line_height_16dp</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>

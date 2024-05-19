@@ -13,7 +13,7 @@
         android:layout_marginStart="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_19dp"
         android:text="Выбор страны"
-        android:textSize="@dimen/textSize_22sp"
+        android:textSize="@dimen/text_size_22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
