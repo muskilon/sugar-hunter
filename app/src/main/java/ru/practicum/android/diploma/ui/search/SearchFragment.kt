@@ -128,7 +128,7 @@ class SearchFragment : Fragment() {
             is SearchFragmentState.Start -> showStart()
             is SearchFragmentState.Content -> {
                 totalFoundVacancies = state.vacancy.found
-                showContent(state.vacancy.items)
+                showContent(state.vacancy)
             }
             is SearchFragmentState.Empty -> showEmpty(state.message)
             is SearchFragmentState.Error -> showError(state.errorMessage)
@@ -208,7 +208,7 @@ class SearchFragment : Fragment() {
             noInternet.visibility = View.GONE
             pageLoading.isVisible = false
         }
-        searchAdapter.setData(vacancy)
+        searchAdapter.setData(vacancy.items)
         viewModel.isPageLoading = false // Это заглушка
     }
     private fun getAdapter() =
