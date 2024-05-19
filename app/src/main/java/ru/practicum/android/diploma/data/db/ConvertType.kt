@@ -83,13 +83,13 @@ class ConvertType {
     }
 
     @TypeConverter
-    fun stringToList(value: String): List<String> {
-        return value.split(",")
+    fun stringToList(value: String?): List<String>? {
+        return value?.split(",")
     }
 
     @TypeConverter
-    fun listToString(list: List<String>): String {
-        return list.joinToString(",")
+    fun listToString(list: List<String>?): String? {
+        return list?.joinToString(",")
     }
 
 }
