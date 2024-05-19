@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.util.FormatUtilFunctions
 
 class SearchViewHolder(
     private val binding: ItemVacancyBinding
@@ -26,7 +27,7 @@ class SearchViewHolder(
 
         binding.vacancyName.text = model.title
         binding.companyName.text = model.employer
-        binding.financeCount.text = "от ${model.salary?.from} до ${model.salary?.to}"
+        FormatUtilFunctions().showSalaryString(model.salary, binding.financeCount)
     }
 
     private fun dpToPx(context: Context): Int {

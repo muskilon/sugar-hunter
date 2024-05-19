@@ -34,6 +34,7 @@
         android:paddingRight="@dimen/padding_20dp"
         android:paddingBottom="@dimen/padding_20dp"
         android:src="@drawable/search_filter_inactive"
+        app:tint="?attr/prime_color_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/searchScreenTitle"
         app:layout_constraintTop_toTopOf="parent"
@@ -85,6 +86,16 @@
             android:visibility="visible" />
 
     </FrameLayout>
+    <ProgressBar
+        android:id="@+id/pageLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:indeterminateTint="@color/Blue"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <FrameLayout
         android:layout_width="match_parent"

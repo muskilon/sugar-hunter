@@ -9,8 +9,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.VacanciesInterActor
+import ru.practicum.android.diploma.domain.models.AreaItem
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacanciesResponse
+import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 
 class SearchViewModel(
@@ -18,20 +20,30 @@ class SearchViewModel(
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchFragmentState>()
-    fun observeState(): LiveData<SearchFragmentState> = stateLiveData
-
-    private var latestSearchText: String = ""
+    private val foundAreas = mutableListOf<AreaItem>() // Для тестирования
+    private var currentPage = 0
+    private var totalPages = 0
+    private var latestSearchText = ""
     private var searchJob: Job? = null
     private var isClickAllowed = true
+    private var currentVacancies = listOf<Vacancy>()
+    var isPageLoading = false
 
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val TAG = "process"
-    }
-
+    fun observeState(): LiveData<SearchFragmentState> = stateLiveData
     private fun renderState(state: SearchFragmentState) {
         stateLiveData.postValue(state)
+    }
+    fun getSearchRequest(text: String, page: String?): HashMap<String, String> {
+        val request: HashMap<String, String> = HashMap()
+        with(request) {
+            this[TEXT] = text
+            if (!page.isNullOrEmpty()) {
+                this[PAGE] = page
+            }
+            this[PER_PAGE] = PAGE_SIZE
+        }
+
+        return request
     }
 
     fun clickDebounce(): Boolean {
@@ -45,17 +57,43 @@ class SearchViewModel(
         }
         return current
     }
+    fun searchDebounce(text: String) {
+        if (latestSearchText == text || text.isEmpty()) {
+            searchJob?.cancel()
+        } else {
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                delay(SEARCH_DEBOUNCE_DELAY)
+                searchVacancies(getSearchRequest(text, null))
+            }
+        }
+    }
 
-    fun searchVacancies(options: Map<String, String>) {
+    fun searchVacancies(request: Map<String, String>) {
         renderState(
             SearchFragmentState.Loading
         )
+        currentVacancies = listOf()
+        request[TEXT]?.let { latestSearchText = it }
         viewModelScope.launch {
             vacanciesInterActor
-                .searchVacancies(options)
+                .searchVacancies(request)
                 .collect { result ->
                     processResult(result)
                 }
+        }
+    }
+
+    fun onLastItemReached() {
+        if (currentPage < totalPages - 1) {
+            currentPage++
+            viewModelScope.launch {
+                vacanciesInterActor
+                    .searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
+                    .collect { result ->
+                        processResult(result)
+                    }
+            }
         }
     }
 
@@ -88,22 +126,38 @@ class SearchViewModel(
         }
     }
 
-    fun searchDebounce(changedText: String, options: Map<String, String>) {
-        if (latestSearchText == changedText) {
-            return
-        }
+    fun getAreas() {
+        viewModelScope.launch {
+            vacanciesInterActor.getAreaDictionary().collect {
+                when (it) {
+                    is Resource.ConnectionError -> Log.d(TAG, it.message)
 
-        this.latestSearchText = changedText
+                    is Resource.NotFound -> Log.d(TAG, it.message)
 
-        searchJob?.cancel()
-
-        searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_DELAY)
-            searchVacancies(options)
+                    is Resource.Data -> {
+                        val areas = it.value.container
+                        foundAreas.clear()
+                        areas.getArea("Мос")
+                        Log.d("FILTER", foundAreas.toString())
+                    }
+                }
+            }
         }
     }
 
-    fun processResult(foundVacancies: Resource<VacanciesResponse>) {
+    private fun List<AreaItem>.getArea(name: String): AreaItem? {
+        for (area in this) {
+            if (area.name.startsWith(name, true)) {
+                foundAreas.add(area)
+            }
+            val found = area.areas?.getArea(name)
+            if (found != null) {
+                return found
+            }
+        }
+        return null
+    }
+    private fun processResult(foundVacancies: Resource<VacanciesResponse>) {
         when (foundVacancies) {
             is Resource.ConnectionError -> {
                 renderState(
@@ -122,12 +176,30 @@ class SearchViewModel(
             }
 
             is Resource.Data -> {
+                var data = foundVacancies.value
+                totalPages = foundVacancies.value.pages
+                currentPage = foundVacancies.value.page
+                if (currentPage != 0) {
+                    currentVacancies = currentVacancies + data.items
+                    data = data.copy(items = currentVacancies)
+                } else {
+                    currentVacancies = data.items
+                }
                 renderState(
                     SearchFragmentState.Content(
-                        foundVacancies.value
+                        data
                     )
                 )
             }
         }
+    }
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val TAG = "process"
+        private const val TEXT = "text"
+        private const val PAGE = "page"
+        private const val PAGE_SIZE = "20"
+        private const val PER_PAGE = "per_page"
     }
 }

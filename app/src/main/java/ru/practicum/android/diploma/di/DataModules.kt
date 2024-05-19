@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.di
 
 import androidx.room.Room
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -27,7 +26,8 @@ val dataModules = module {
                     .addHeader("HH-User-Agent", "Sugar Hunter (fantasmas.dev@gmail.com)")
                 val request = requestBuilder.build()
                 chain.proceed(request)
-            }.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            }
+//                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build()
         ).build().create(HHApi::class.java)
     }
