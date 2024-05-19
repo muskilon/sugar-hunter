@@ -31,8 +31,6 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
     private var totalFoundVacancies = 0
-    private var currentPage = 0
-    private var totalPages = 0
     private val searchAdapter by lazy { getAdapter() }
     private var searchText = EMPTY_TEXT
 
@@ -130,8 +128,6 @@ class SearchFragment : Fragment() {
             is SearchFragmentState.Start -> showStart()
             is SearchFragmentState.Content -> {
                 totalFoundVacancies = state.vacancy.found
-                currentPage = state.vacancy.page
-                totalPages = state.vacancy.pages
                 showContent(state.vacancy.items)
             }
             is SearchFragmentState.Empty -> showEmpty(state.message)
