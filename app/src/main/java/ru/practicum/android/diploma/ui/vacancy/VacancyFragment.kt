@@ -54,9 +54,6 @@ class VacancyFragment : Fragment() {
                     startActivity(Intent.createChooser(intent, "Поделиться ссылкой через:"))
                 }
 
-                binding.favoriteButton.setOnClickListener {
-                    lifecycleScope.launch { viewModel.likeOrDislikeButton() }
-                }
             } else {
                 binding.shareButton.setOnClickListener {
                     Toast.makeText(
@@ -68,6 +65,10 @@ class VacancyFragment : Fragment() {
                 }
             }
         })
+
+        binding.favoriteButton.setOnClickListener {
+            lifecycleScope.launch { viewModel.likeOrDislikeButton() }
+        }
 
         viewModel.checkInFavouritesLiveData()
             .observe(viewLifecycleOwner, androidx.lifecycle.Observer { checkInFavourites ->

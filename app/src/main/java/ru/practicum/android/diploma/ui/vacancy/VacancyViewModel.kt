@@ -70,9 +70,9 @@ class VacancyViewModel(
 
     suspend fun likeOrDislikeButton() {
         if (checkInFavouritesMutableLiveData.value == true) {
-            addFavouriteVacancy()
-        } else {
             deleteFavouriteVacancy()
+        } else {
+            addFavouriteVacancy()
         }
     }
 
