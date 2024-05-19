@@ -36,22 +36,60 @@
         app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textCountry"
+    <LinearLayout
+        android:id="@+id/boxFromCountry"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="@dimen/margin_24dp"
-        android:fontFamily="@font/ys_display_regular"
-        android:gravity="center_vertical"
-        android:lineHeight="@dimen/text_line_height_19dp"
-        android:text="Страна"
-        android:textColor="@color/Dark_Gray"
-        android:textFontWeight="400"
-        android:textSize="18sp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoiceCountry"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+        app:layout_constraintTop_toBottomOf="@+id/backButton">
+
+        <TextView
+            android:id="@+id/textCountryMini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Страна"
+            android:layout_marginTop="12.5dp"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:fontFamily="@font/ys_display_regular"
+            android:lineHeight="@dimen/text_line_height_16dp"
+            android:textColor="?attr/prime_color_black"
+            android:textFontWeight="400"
+            android:textSize="@dimen/textSize_12sp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/Country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Россия"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:fontFamily="@font/ys_display_regular"
+            android:lineHeight="@dimen/text_line_height_19dp"
+            android:textColor="?attr/prime_color_black"
+            android:textFontWeight="400"
+            android:textSize="@dimen/textSize_16sp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/textCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/ys_display_regular"
+            android:gravity="center_vertical"
+            android:lineHeight="@dimen/text_line_height_19dp"
+            android:text="Страна"
+            android:textColor="@color/Dark_Gray"
+            android:textFontWeight="400"
+            android:textSize="@dimen/textSize_16sp"/>
+    </LinearLayout>
+
+
 
     <ImageView
         android:id="@+id/buttonGoToChoiceCountry"
@@ -59,27 +97,64 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:src="@drawable/leading_icon_filter"
-        app:layout_constraintBottom_toBottomOf="@+id/textCountry"
+        app:layout_constraintBottom_toBottomOf="@+id/boxFromCountry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textCountry"
-        app:layout_constraintTop_toTopOf="@+id/textCountry" />
+        app:layout_constraintStart_toEndOf="@+id/boxFromCountry"
+        app:layout_constraintTop_toTopOf="@+id/boxFromCountry" />
+
+    <LinearLayout
+        android:id="@+id/boxFromRegion"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoiceRegion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGoToChoiceCountry">
+
+        <TextView
+            android:id="@+id/textRegionMini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Регион"
+            android:layout_marginTop="12.5dp"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:fontFamily="@font/ys_display_regular"
+            android:lineHeight="@dimen/text_line_height_16dp"
+            android:textColor="?attr/prime_color_black"
+            android:textFontWeight="400"
+            android:textSize="@dimen/textSize_12sp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/Region"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Москва"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:fontFamily="@font/ys_display_regular"
+            android:lineHeight="@dimen/text_line_height_19dp"
+            android:textColor="?attr/prime_color_black"
+            android:textFontWeight="400"
+            android:textSize="@dimen/textSize_16sp"
+            android:visibility="gone"
+            />
 
     <TextView
         android:id="@+id/textRegion"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
         android:fontFamily="@font/ys_display_regular"
         android:gravity="center_vertical"
         android:lineHeight="@dimen/text_line_height_19dp"
         android:text="Регион"
         android:textColor="@color/Dark_Gray"
         android:textFontWeight="400"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoiceCountry"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textCountry" />
+        android:textSize="@dimen/textSize_16sp"
+        />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/buttonGoToChoiceRegion"
@@ -87,9 +162,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:src="@drawable/leading_icon_filter"
-        app:layout_constraintBottom_toBottomOf="@+id/textRegion"
+        app:layout_constraintBottom_toBottomOf="@+id/boxFromRegion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textRegion"
-        app:layout_constraintTop_toTopOf="@+id/textRegion" />
+        app:layout_constraintStart_toEndOf="@+id/boxFromRegion"
+        app:layout_constraintTop_toTopOf="@+id/boxFromRegion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

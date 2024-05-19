@@ -16,7 +16,7 @@
         android:textColor="@color/Black_Day"
         android:textFontWeight="400"
         android:textSize="@dimen/textSize_16sp"
-        tools:text="Страна" />
+        tools:text="Место" />
 
     <ImageView
         android:id="@+id/buttonChoiceCountry"
