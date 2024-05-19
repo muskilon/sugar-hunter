@@ -69,9 +69,12 @@ class FormatUtilFunctions {
     }
 
     fun showSalaryString(salary: Salary?, textView: TextView) {
+        Log.d("mull_salary", salary.toString())
+        val nullString = textView.context.getString(R.string.no_salary_string)
         if (salary == null) {
-            textView.isVisible = false
-            Log.d("return", "true")
+            textView.isVisible = true
+            textView.text = nullString
+            return
         } else {
             var salaryText: String = ""
 
@@ -86,6 +89,10 @@ class FormatUtilFunctions {
                     "до ${formatLongNumber(salary.to)} " +
                         "${getCurrency(salary.currency)} "
                 )
+            }
+
+            if (salary.from == null && salary.to == null) {
+                salaryText = nullString
             }
 
             textView.isVisible = true
