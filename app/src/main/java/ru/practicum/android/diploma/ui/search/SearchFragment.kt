@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,13 +8,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.app.App
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
@@ -25,27 +30,15 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
-    private val searchAdapter by lazy {
-        SearchAdapter { vacancy ->
-            if (viewModel.clickDebounce()) {
-                requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
-
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_vacancyFragment,
-                    VacancyFragment.createArgs(vacancy.id)
-                )
-            }
-        }
-    }
+    private var totalFoundVacancies = 0
+    private var currentPage = 0
+    private var totalPages = 0
+    private val searchAdapter by lazy { getAdapter() }
+    private val searchRequest: HashMap<String, String> = HashMap()
 
     companion object {
         private const val NULL_TEXT = ""
-        private const val MOD_10 = 10
-        private const val NUMBER_0 = 0
-        private const val NUMBER_1 = 1
-        private const val NUMBER_2 = 2
-        private const val NUMBER_3 = 3
-        private const val NUMBER_4 = 4
+        private const val TEXT = "text"
     }
 
     override fun onCreateView(
@@ -64,18 +57,6 @@ class SearchFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         binding.searchRecyclerView.adapter = searchAdapter
-        //       Для тестирования!!! Можно удалять
-//       Пример формирования options для @QueryMap
-        val options: HashMap<String, String> = HashMap()
-        options["text"] = "Java" // Как передавать поисковый запрос
-        options["page"] = "1" // Как передавать номер нужной страницы
-//        viewModel.searchVacancies(options)
-//
-//        viewModel.getVacancy("98561017")
-//        viewModel.getVacancy("98899447")
-//        viewModel.getIndustries()
-        viewModel.getAreas()
-
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(NULL_TEXT)
         }
@@ -93,8 +74,8 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.visibility = clearButtonVisibility(s)
                 binding.searchIcon.visibility = searchButtonVisibility(s)
-                options["text"] = s.toString()
-                viewModel.searchDebounce(changedText = s?.toString() ?: "", options = options)
+                searchRequest[TEXT] = s.toString()
+                viewModel.searchDebounce(searchRequest)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -102,8 +83,28 @@ class SearchFragment : Fragment() {
             }
         }
 
-        searchEditText.let {
-            binding.searchEditText.addTextChangedListener(it)
+        binding.searchEditText.addTextChangedListener(searchEditText)
+
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        binding.searchRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
+            }
+        })
+
+        binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.searchEditText.clearFocus()
+                viewModel.searchDebounce(mapOf())
+                if(!searchRequest[TEXT].isNullOrEmpty()) {
+                    viewModel.searchVacancies(searchRequest)
+                }
+            }
+            false
         }
 
         viewModel.observeState().observe(viewLifecycleOwner) {
@@ -115,13 +116,10 @@ class SearchFragment : Fragment() {
         when (state) {
             is SearchFragmentState.Start -> showStart()
             is SearchFragmentState.Content -> {
+                totalFoundVacancies = state.vacancy.found
+                currentPage = state.vacancy.page
+                totalPages = state.vacancy.pages
                 showContent(state.vacancy.items)
-//                 Как получить количество найденных вакансий
-                Log.d("Найдено вакансий: ", "Найдено вакансий: ${state.vacancy.found}")
-//                 Как получить количество найденных вакансий
-                Log.d("Всего страниц: ", "Всего страниц: ${state.vacancy.pages}")
-//                 Как получить номер текущей страницы
-                Log.d("Текущая страница: ", "Текущая страница: ${state.vacancy.page}")
             }
             is SearchFragmentState.Empty -> showEmpty(state.message)
             is SearchFragmentState.Error -> showError(state.errorMessage)
@@ -188,7 +186,8 @@ class SearchFragment : Fragment() {
 
     private fun showContent(vacancy: List<Vacancy>) {
         with(binding) {
-            vacancyCount.text = "Найдено ${vacancy.size} ${countToString(vacancy.size)}"
+            vacancyCount.text = App.getAppResources()
+                .getQuantityString(R.plurals.vacancy_plurals, totalFoundVacancies, totalFoundVacancies)
             vacancyCount.visibility = View.VISIBLE
             searchRecyclerView.visibility = View.VISIBLE
         }
@@ -200,6 +199,17 @@ class SearchFragment : Fragment() {
         }
         searchAdapter.setData(vacancy)
     }
+    private fun getAdapter() =
+        SearchAdapter { vacancy ->
+            if (viewModel.clickDebounce()) {
+                requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
+
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_vacancyFragment,
+                    VacancyFragment.createArgs(vacancy.id)
+                )
+            }
+        }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
@@ -214,15 +224,6 @@ class SearchFragment : Fragment() {
             View.GONE
         } else {
             View.VISIBLE
-        }
-    }
-
-    private fun countToString(count: Int): String {
-        return when (count.mod(MOD_10)) {
-            NUMBER_0 -> "вакансий"
-            NUMBER_1 -> "вакансия"
-            NUMBER_2, NUMBER_3, NUMBER_4 -> "вакансии"
-            else -> "вакансий"
         }
     }
 

@@ -22,7 +22,7 @@ class SearchViewModel(
     private val foundAreas = mutableListOf<AreaItem>() // Для тестирования
     fun observeState(): LiveData<SearchFragmentState> = stateLiveData
 
-    private var latestSearchText: String = ""
+    private var latestSearchText: String? = null
     private var searchJob: Job? = null
     private var isClickAllowed = true
 
@@ -52,6 +52,7 @@ class SearchViewModel(
         renderState(
             SearchFragmentState.Loading
         )
+        latestSearchText = options["text"]
         viewModelScope.launch {
             vacanciesInterActor
                 .searchVacancies(options)
@@ -122,18 +123,15 @@ class SearchViewModel(
         return null
     }
 
-    fun searchDebounce(changedText: String, options: Map<String, String>) {
-        if (latestSearchText.equals(changedText) || changedText.isEmpty()) {
-            return
-        }
-
-        this.latestSearchText = changedText
-
-        searchJob?.cancel()
-
-        searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_DELAY)
-            searchVacancies(options)
+    fun searchDebounce(options: Map<String, String>) {
+        if (latestSearchText == options["text"] || options["text"].isNullOrEmpty()) {
+            searchJob?.cancel()
+        } else {
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                delay(SEARCH_DEBOUNCE_DELAY)
+                searchVacancies(options)
+            }
         }
     }
 
