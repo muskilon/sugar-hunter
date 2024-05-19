@@ -1,40 +1,45 @@
 package ru.practicum.android.diploma.ui.favourite
 
-import android.annotation.SuppressLint
-import android.view.View
+import android.content.Context
+import android.util.Log
+import android.util.TypedValue
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
-import ru.practicum.android.diploma.domain.models.Salary
+import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
+import ru.practicum.android.diploma.ui.search.recyclerview.SearchViewHolder
+import ru.practicum.android.diploma.util.FormatUtilFunctions
+import java.lang.ref.WeakReference
 
-class FavouriteViewHolder(view: View, private val binding: ItemVacancyBinding) : RecyclerView.ViewHolder(view) {
+class FavouriteViewHolder(private val binding: ItemVacancyBinding, private val context:  WeakReference<Context>) :
+    RecyclerView.ViewHolder(binding.root) {
 
-    @SuppressLint("ResourceType")
+    val utilFunctions = FormatUtilFunctions()
+
+    companion object {
+        const val RADIUS_IN_DP = 12f
+    }
     fun bind(vacancy: VacancyDetails) {
         binding.vacancyName.text = vacancy.title
         binding.companyName.text = vacancy.employer
-        binding.financeCount.text = getTextFromFinanceCount(vacancy.salary)
+        utilFunctions.showSalaryString(vacancy.salary, binding.financeCount)
 
-        Glide.with(itemView.context).load(vacancy.logoUrls).placeholder(R.drawable.vacancy_no_image_holder)
-            .transform(
-                FitCenter(),
-                RoundedCorners(
-                    itemView.context.resources.getDimensionPixelSize(R.dimen.rounded_corners)
-                ),
-            ).into(binding.vacancyLogo)
-    }
-
-    private fun getTextFromFinanceCount(salary: Salary?): String {
-        return when {
-            salary?.from != null && salary.to != null -> "от ${salary.from} до ${salary.to} ${salary.currency}"
-            salary?.from != null -> "от ${salary.from} ${salary.currency}"
-            salary?.to != null -> "до ${salary.to} ${salary.currency}"
-            else -> "зарплата не указана"
+        fun dpToPx(context: Context): Int {
+            return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                RADIUS_IN_DP,
+                context.resources.displayMetrics
+            ).toInt()
         }
-    }
 
+        Log.d("url", vacancy.logoUrls.logo240.toString())
+        Glide.with(binding.vacancyLogo)
+            .load(vacancy.logoUrls.logo240)
+            .placeholder(R.drawable.vacancy_no_image_holder)
+            .transform(RoundedCorners(dpToPx(itemView.context)))
+            .into(binding.vacancyLogo)
+    }
 }

@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.favourite
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.delay
@@ -18,15 +18,15 @@ import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
 import ru.practicum.android.diploma.domain.models.FavouritesState
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
+import java.lang.ref.WeakReference
 
 class FavouriteFragment : Fragment() {
 
+    private val context by lazy { WeakReference(requireContext()) }
+    private val adapter by lazy { FavouriteAdapter ({ vacancy -> goToVacancy(vacancy) }, context) }
     private var _binding: FragmentFavouriteBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<FavouriteViewModel>()
-    private val adapter = FavouriteAdapter { vacancy ->
-        goToVacancy(vacancy)
-    }
     private var isClickAllowed = true
 
     override fun onCreateView(
@@ -41,25 +41,9 @@ class FavouriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.favoriteListLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer { vacancyList ->
-            if (vacancyList.isEmpty()) {
-                viewModel.setStateEmpty()
-            } else if (vacancyList.isNotEmpty()) {
-                viewModel.setStateContent()
-                adapter.favoriteDetailsList = vacancyList
-                adapter.setData(vacancyList)
-            } else {
-                viewModel.setStateError()
-            }
-        })
-
         viewModel.checkStateLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer { favouriteState ->
             render(favouriteState)
         })
-
-        viewModel.viewModelScope.launch {
-            viewModel.checkFavoriteList()
-        }
 
         binding.favoriteRecyclerView.adapter = adapter
         binding.favoriteRecyclerView.layoutManager =
@@ -96,11 +80,16 @@ class FavouriteFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun render(state: FavouritesState) {
         when (state) {
             is FavouritesState.Error -> showError()
             is FavouritesState.Empty -> showEmpty()
-            is FavouritesState.Content -> showContent()
+            is FavouritesState.Content -> {
+                showContent()
+                adapter.favoriteDetailsList = state.favourites
+                adapter.notifyDataSetChanged()
+            }
         }
     }
 
@@ -127,4 +116,12 @@ class FavouriteFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            viewModel.readFavoriteList()
+            viewModel.updateState()
+        }
+
+    }
 }
