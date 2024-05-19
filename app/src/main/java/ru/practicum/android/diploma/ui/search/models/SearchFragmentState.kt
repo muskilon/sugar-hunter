@@ -12,7 +12,8 @@ sealed interface SearchFragmentState {
     ) : SearchFragmentState
 
     data class Error(
-        val errorMessage: String
+        val errorMessage: String,
+        val isSearch: Boolean
     ) : SearchFragmentState
 
     data class Empty(

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -121,7 +122,7 @@ class SearchFragment : Fragment() {
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
-        viewModel.observeIsLoading().observe(viewLifecycleOwner){
+        viewModel.observeIsLoading().observe(viewLifecycleOwner) {
             isPageLoading = it
         }
     }
@@ -136,7 +137,19 @@ class SearchFragment : Fragment() {
                 showContent(state.vacancy)
             }
             is SearchFragmentState.Empty -> showEmpty(state.message)
-            is SearchFragmentState.Error -> showError(state.errorMessage)
+            is SearchFragmentState.Error -> {
+                if (state.isSearch) {
+                    showError(state.errorMessage)
+                } else {
+                    binding.pageLoading.isVisible = false
+                    Toast.makeText(
+                        requireContext(),
+                        state.errorMessage,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
             is SearchFragmentState.Loading -> showLoading()
         }
     }

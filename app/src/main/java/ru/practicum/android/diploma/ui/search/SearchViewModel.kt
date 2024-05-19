@@ -69,7 +69,7 @@ class SearchViewModel(
     }
 
     fun searchVacancies(request: Map<String, String>) {
-        request[TEXT]?.let {text ->
+        request[TEXT]?.let { text ->
             if (latestSearchText == text || text.isEmpty()) {
                 searchJob?.cancel()
             } else {
@@ -80,7 +80,7 @@ class SearchViewModel(
                     vacanciesInterActor
                         .searchVacancies(request)
                         .collect { result ->
-                            processResult(result)
+                            processResult(result, true)
                         }
                 }
             }
@@ -88,18 +88,18 @@ class SearchViewModel(
     }
 
     fun onLastItemReached() {
-            currentPage++
-            isLoading.postValue(true)
-            viewModelScope.launch {
-                vacanciesInterActor
-                    .searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
-                    .collect { result ->
-                        processResult(result)
-                    }
-            }
+        currentPage++
+        isLoading.postValue(true)
+        viewModelScope.launch {
+            vacanciesInterActor.searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
+                .collect { result ->
+                    processResult(result, false)
+                }
+        }
     }
 
-    //    ДЛЯ ТЕСТИРОВАНИЯ!!!
+// ДЛЯ ТЕСТИРОВАНИЯ!!!
+
     fun getVacancy(id: String) {
         viewModelScope.launch {
             vacanciesInterActor.getVacancy(id).collect {
@@ -159,13 +159,16 @@ class SearchViewModel(
         }
         return null
     }
-//    ДЛЯ ТЕСТИРОВАНИЯ!!!
-    private fun processResult(foundVacancies: Resource<VacanciesResponse>) {
+
+// ДЛЯ ТЕСТИРОВАНИЯ!!!
+
+    private fun processResult(foundVacancies: Resource<VacanciesResponse>, isSearch: Boolean) {
         when (foundVacancies) {
             is Resource.ConnectionError -> {
                 stateLiveData.postValue(
                     SearchFragmentState.Error(
-                        foundVacancies.message
+                        foundVacancies.message,
+                        isSearch
                     )
                 )
             }

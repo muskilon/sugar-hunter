@@ -99,8 +99,8 @@ class RetrofitNetworkClient(
     }
 
     companion object {
-        private const val REQUEST_ERROR_TAG = "NetworkRequestError"
+        private const val REQUEST_ERROR_TAG = "Произошла ошибка"
         private const val NOT_FOUND = "not found"
-        private const val OFFLINE = "no internet"
+        private const val OFFLINE = "Проверьте подключение к интернету"
     }
 }

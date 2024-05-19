@@ -42,7 +42,7 @@ class VacancyFragment : Fragment() {
 
         val vacancyFragmentPresenter = VacancyFragmentPresenter(binding, requireContext())
 
-        viewModel.getVacancyScreenStateLiveData().observe(viewLifecycleOwner){ state ->
+        viewModel.getVacancyScreenStateLiveData().observe(viewLifecycleOwner) { state ->
             vacancyFragmentPresenter.render(state)
 
             if (state is VacancyFragmentState.Content) {
@@ -69,7 +69,7 @@ class VacancyFragment : Fragment() {
         }
 
         viewModel.checkInFavouritesLiveData()
-            .observe(viewLifecycleOwner){ checkInFavourites ->
+            .observe(viewLifecycleOwner) { checkInFavourites ->
                 if (checkInFavourites) {
                     binding.favoriteButton.setImageResource(R.drawable.favorite_active)
                 } else {
