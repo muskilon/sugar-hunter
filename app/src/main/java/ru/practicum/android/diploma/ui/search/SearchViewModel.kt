@@ -33,13 +33,14 @@ class SearchViewModel(
     private fun renderState(state: SearchFragmentState) {
         stateLiveData.postValue(state)
     }
-    private fun getSearchRequest(text: String, page: String?): HashMap<String, String> {
+    fun getSearchRequest(text: String, page: String?): HashMap<String, String> {
         val request: HashMap<String, String> = HashMap()
-        with(request){
+        with(request) {
             this[TEXT] = text
-            if(!page.isNullOrEmpty()){
+            if (!page.isNullOrEmpty()) {
                 this[PAGE] = page
             }
+            this[PER_PAGE] = PAGE_SIZE
         }
 
         return request
@@ -68,7 +69,7 @@ class SearchViewModel(
         }
     }
 
-    fun searchVacancies(request: Map<String,String>) {
+    fun searchVacancies(request: Map<String, String>) {
         renderState(
             SearchFragmentState.Loading
         )
@@ -83,8 +84,8 @@ class SearchViewModel(
         }
     }
 
-    fun onLastItemReached(){
-        if(currentPage < totalPages-1) {
+    fun onLastItemReached() {
+        if (currentPage < totalPages - 1) {
             currentPage++
             viewModelScope.launch {
                 vacanciesInterActor
@@ -178,7 +179,7 @@ class SearchViewModel(
                 var data = foundVacancies.value
                 totalPages = foundVacancies.value.pages
                 currentPage = foundVacancies.value.page
-                if (currentPage != 0){
+                if (currentPage != 0) {
                     currentVacancies = currentVacancies + data.items
                     data = data.copy(items = currentVacancies)
                 } else {
@@ -198,7 +199,7 @@ class SearchViewModel(
         private const val TAG = "process"
         private const val TEXT = "text"
         private const val PAGE = "page"
-        private const val PAGES = "pages"
+        private const val PAGE_SIZE = "20"
         private const val PER_PAGE = "per_page"
     }
 }

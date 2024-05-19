@@ -38,10 +38,6 @@ class SearchFragment : Fragment() {
 
     companion object {
         private const val EMPTY_TEXT = ""
-        private const val TEXT = "text"
-        private const val PAGE = "page"
-        private const val PAGES = "pages"
-        private const val PER_PAGE = "per_page"
     }
 
     override fun onCreateView(
@@ -101,10 +97,12 @@ class SearchFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
-                    val pos = (binding.searchRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val pos = (binding.searchRecyclerView.layoutManager as LinearLayoutManager)
+                        .findLastVisibleItemPosition()
                     val itemsCount = searchAdapter.itemCount
-                    if (pos >= itemsCount-1 && !viewModel.isPageLoading) {
-                        viewModel.isPageLoading = true
+                    if (pos >= itemsCount - 1 && !viewModel.isPageLoading) {
+                        viewModel.isPageLoading = true // Это заглушка
+                        binding.pageLoading.isVisible = true
                         viewModel.onLastItemReached()
                     }
                 }
@@ -115,8 +113,8 @@ class SearchFragment : Fragment() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 binding.searchEditText.clearFocus()
                 viewModel.searchDebounce(EMPTY_TEXT)
-                if(searchText.isNotEmpty()) {
-                    viewModel.searchVacancies(mapOf(TEXT to searchText))
+                if (searchText.isNotEmpty()) {
+                    viewModel.searchVacancies(viewModel.getSearchRequest(searchText, null))
                 }
             }
             false
@@ -201,8 +199,9 @@ class SearchFragment : Fragment() {
 
     private fun showContent(vacancy: List<Vacancy>) {
         with(binding) {
-            vacancyCount.text = App.getAppResources()
-                .getQuantityString(R.plurals.vacancy_plurals, totalFoundVacancies, totalFoundVacancies)
+            vacancyCount.text = App.getAppResources()?.getQuantityString(
+                R.plurals.vacancy_plurals, totalFoundVacancies, totalFoundVacancies
+            )
             vacancyCount.visibility = View.VISIBLE
             searchRecyclerView.visibility = View.VISIBLE
         }
@@ -211,9 +210,10 @@ class SearchFragment : Fragment() {
             progressBar.visibility = View.GONE
             somethingWrong.visibility = View.GONE
             noInternet.visibility = View.GONE
+            pageLoading.isVisible = false
         }
         searchAdapter.setData(vacancy)
-        viewModel.isPageLoading = false
+        viewModel.isPageLoading = false // Это заглушка
     }
     private fun getAdapter() =
         SearchAdapter { vacancy ->
