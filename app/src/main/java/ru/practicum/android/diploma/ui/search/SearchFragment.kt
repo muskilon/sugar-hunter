@@ -34,11 +34,14 @@ class SearchFragment : Fragment() {
     private var currentPage = 0
     private var totalPages = 0
     private val searchAdapter by lazy { getAdapter() }
-    private val searchRequest: HashMap<String, String> = HashMap()
+    private var searchText = EMPTY_TEXT
 
     companion object {
-        private const val NULL_TEXT = ""
+        private const val EMPTY_TEXT = ""
         private const val TEXT = "text"
+        private const val PAGE = "page"
+        private const val PAGES = "pages"
+        private const val PER_PAGE = "per_page"
     }
 
     override fun onCreateView(
@@ -58,7 +61,7 @@ class SearchFragment : Fragment() {
 
         binding.searchRecyclerView.adapter = searchAdapter
         binding.clearIcon.setOnClickListener {
-            binding.searchEditText.setText(NULL_TEXT)
+            binding.searchEditText.setText(EMPTY_TEXT)
         }
         binding.favoriteButton.setOnClickListener {
             findNavController().navigate(
@@ -74,8 +77,8 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.visibility = clearButtonVisibility(s)
                 binding.searchIcon.visibility = searchButtonVisibility(s)
-                searchRequest[TEXT] = s.toString()
-                viewModel.searchDebounce(searchRequest)
+                searchText = s.toString()
+                viewModel.searchDebounce(searchText)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -94,14 +97,26 @@ class SearchFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
             }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    val pos = (binding.searchRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = searchAdapter.itemCount
+                    if (pos >= itemsCount-1 && !viewModel.isPageLoading) {
+                        viewModel.isPageLoading = true
+                        viewModel.onLastItemReached()
+                    }
+                }
+            }
         })
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 binding.searchEditText.clearFocus()
-                viewModel.searchDebounce(mapOf())
-                if(!searchRequest[TEXT].isNullOrEmpty()) {
-                    viewModel.searchVacancies(searchRequest)
+                viewModel.searchDebounce(EMPTY_TEXT)
+                if(searchText.isNotEmpty()) {
+                    viewModel.searchVacancies(mapOf(TEXT to searchText))
                 }
             }
             false
@@ -198,6 +213,7 @@ class SearchFragment : Fragment() {
             noInternet.visibility = View.GONE
         }
         searchAdapter.setData(vacancy)
+        viewModel.isPageLoading = false
     }
     private fun getAdapter() =
         SearchAdapter { vacancy ->

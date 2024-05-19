@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.di
 
 import androidx.room.Room
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
