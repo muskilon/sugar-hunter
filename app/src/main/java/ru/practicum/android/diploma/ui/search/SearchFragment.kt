@@ -108,7 +108,6 @@ class SearchFragment : Fragment() {
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 binding.searchEditText.clearFocus()
-                viewModel.searchDebounce(EMPTY_TEXT)
                 if (searchText.isNotEmpty()) {
                     viewModel.searchVacancies(viewModel.getSearchRequest(searchText, null))
                 }

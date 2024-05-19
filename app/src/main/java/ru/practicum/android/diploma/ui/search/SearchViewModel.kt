@@ -70,17 +70,23 @@ class SearchViewModel(
     }
 
     fun searchVacancies(request: Map<String, String>) {
-        renderState(
-            SearchFragmentState.Loading
-        )
-        currentVacancies = listOf()
-        request[TEXT]?.let { latestSearchText = it }
-        viewModelScope.launch {
-            vacanciesInterActor
-                .searchVacancies(request)
-                .collect { result ->
-                    processResult(result)
+        request[TEXT]?.let {text ->
+            if (latestSearchText == text || text.isEmpty()) {
+                searchJob?.cancel()
+            } else {
+                renderState(
+                    SearchFragmentState.Loading
+                )
+                currentVacancies = listOf()
+                latestSearchText = text
+                viewModelScope.launch {
+                    vacanciesInterActor
+                        .searchVacancies(request)
+                        .collect { result ->
+                            processResult(result)
+                        }
                 }
+            }
         }
     }
 
