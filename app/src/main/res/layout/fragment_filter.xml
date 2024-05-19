@@ -16,7 +16,7 @@
         android:paddingEnd="@dimen/padding_16dp"
         android:paddingBottom="@dimen/padding_20dp"
         android:src="@drawable/back_button"
-        app:layout_constraintBottom_toTopOf="@+id/textPlaceOfWork"
+        app:layout_constraintBottom_toTopOf="@+id/textCountry"
         app:layout_constraintEnd_toStartOf="@id/filterTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textPlaceOfWork"
+        android:id="@+id/textCountry"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
@@ -49,23 +49,23 @@
         android:textColor="@color/Dark_Gray"
         android:textFontWeight="400"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoicePlaceOfWork"
+        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoiceCountry"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
     <ImageView
-        android:id="@+id/buttonGoToChoicePlaceOfWork"
+        android:id="@+id/buttonGoToChoiceCountry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:src="@drawable/leading_icon_filter"
-        app:layout_constraintBottom_toBottomOf="@+id/textPlaceOfWork"
+        app:layout_constraintBottom_toBottomOf="@+id/textCountry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textPlaceOfWork"
-        app:layout_constraintTop_toTopOf="@+id/textPlaceOfWork" />
+        app:layout_constraintStart_toEndOf="@+id/textCountry"
+        app:layout_constraintTop_toTopOf="@+id/textCountry" />
 
     <TextView
-        android:id="@+id/textChoiceSphere"
+        android:id="@+id/textRegion"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
@@ -78,20 +78,20 @@
         android:textFontWeight="400"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
-        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoicePlaceOfWork"
+        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoiceCountry"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPlaceOfWork" />
+        app:layout_constraintTop_toBottomOf="@+id/textCountry" />
 
     <ImageView
-        android:id="@+id/buttonGoToChoiceSphere"
+        android:id="@+id/buttonGoToChoiceRegion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:src="@drawable/leading_icon_filter"
-        app:layout_constraintBottom_toBottomOf="@+id/textChoiceSphere"
+        app:layout_constraintBottom_toBottomOf="@+id/textRegion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textChoiceSphere"
-        app:layout_constraintTop_toTopOf="@+id/textChoiceSphere" />
+        app:layout_constraintStart_toEndOf="@+id/textRegion"
+        app:layout_constraintTop_toTopOf="@+id/textRegion" />
 
 
     <LinearLayout
@@ -104,7 +104,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textChoiceSphere">
+        app:layout_constraintTop_toBottomOf="@+id/textRegion">
 
         <TextView
             android:id="@+id/titleForEditText"

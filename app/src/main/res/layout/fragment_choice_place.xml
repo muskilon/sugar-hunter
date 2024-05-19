@@ -6,15 +6,90 @@
     android:layout_height="match_parent"
     tools:context=".ui.filter.place.ChoicePlaceFragment">
 
-    <TextView
-        android:id="@+id/title"
+    <ImageView
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_19dp"
-        android:text="Выбор места работы"
-        android:textSize="@dimen/textSize_22sp"
+        android:importantForAccessibility="no"
+        android:paddingStart="@dimen/padding_16dp"
+        android:paddingTop="@dimen/padding_20dp"
+        android:paddingEnd="@dimen/padding_16dp"
+        android:paddingBottom="@dimen/padding_20dp"
+        android:src="@drawable/back_button"
+        app:layout_constraintBottom_toTopOf="@+id/textCountry"
+        app:layout_constraintEnd_toStartOf="@id/choicePlaceTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/choicePlaceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="@dimen/margin_19dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:lineHeight="@dimen/text_line_height_26dp"
+        android:text="Выбор места работы"
+        android:textColor="?attr/prime_color_black"
+        android:textFontWeight="500"
+        android:textSize="@dimen/textSize_22sp"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textCountry"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/margin_24dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:gravity="center_vertical"
+        android:lineHeight="@dimen/text_line_height_19dp"
+        android:text="Страна"
+        android:textColor="@color/Dark_Gray"
+        android:textFontWeight="400"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoiceCountry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+
+    <ImageView
+        android:id="@+id/buttonGoToChoiceCountry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/leading_icon_filter"
+        app:layout_constraintBottom_toBottomOf="@+id/textCountry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textCountry"
+        app:layout_constraintTop_toTopOf="@+id/textCountry" />
+
+    <TextView
+        android:id="@+id/textRegion"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:gravity="center_vertical"
+        android:lineHeight="@dimen/text_line_height_19dp"
+        android:text="Регион"
+        android:textColor="@color/Dark_Gray"
+        android:textFontWeight="400"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoiceCountry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textCountry" />
+
+    <ImageView
+        android:id="@+id/buttonGoToChoiceRegion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/leading_icon_filter"
+        app:layout_constraintBottom_toBottomOf="@+id/textRegion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textRegion"
+        app:layout_constraintTop_toTopOf="@+id/textRegion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
