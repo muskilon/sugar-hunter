@@ -15,7 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 import ru.practicum.android.diploma.ui.search.recyclerview.SearchAdapter
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
@@ -115,7 +115,7 @@ class SearchFragment : Fragment() {
         when (state) {
             is SearchFragmentState.Start -> showStart()
             is SearchFragmentState.Content -> {
-                showContent(state.vacancy.items)
+                showContent(state.vacancy)
 //                 Как получить количество найденных вакансий
                 Log.d("Найдено вакансий: ", "Найдено вакансий: ${state.vacancy.found}")
 //                 Как получить количество найденных вакансий
@@ -186,9 +186,9 @@ class SearchFragment : Fragment() {
         Log.d("emptyMessage: ", emptyMessage)
     }
 
-    private fun showContent(vacancy: List<Vacancy>) {
+    private fun showContent(vacancy: VacanciesResponse) {
         with(binding) {
-            vacancyCount.text = "Найдено ${vacancy.size} ${countToString(vacancy.size)}"
+            vacancyCount.text = "Найдено ${vacancy.found} ${countToString(vacancy.found)}"
             vacancyCount.visibility = View.VISIBLE
             searchRecyclerView.visibility = View.VISIBLE
         }
@@ -198,7 +198,7 @@ class SearchFragment : Fragment() {
             somethingWrong.visibility = View.GONE
             noInternet.visibility = View.GONE
         }
-        searchAdapter.setData(vacancy)
+        searchAdapter.setData(vacancy.items)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
