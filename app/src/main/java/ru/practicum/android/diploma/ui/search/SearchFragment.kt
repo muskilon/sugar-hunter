@@ -31,8 +31,11 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
     private var totalFoundVacancies = 0
+    private var pages = 0
+    private var currentPage = 0
     private val searchAdapter by lazy { getAdapter() }
     private var searchText = EMPTY_TEXT
+    private var isPageLoading = false
 
     companion object {
         private const val EMPTY_TEXT = ""
@@ -97,9 +100,9 @@ class SearchFragment : Fragment() {
                     val pos = (binding.searchRecyclerView.layoutManager as LinearLayoutManager)
                         .findLastVisibleItemPosition()
                     val itemsCount = searchAdapter.itemCount
-                    if (pos >= itemsCount - 1 && !viewModel.isPageLoading) {
+                    if (pos >= itemsCount - 1 && !isPageLoading && currentPage < pages - 1) {
                         viewModel.onLastItemReached()
-                        binding.pageLoading.isVisible = viewModel.isPageLoading
+                        binding.pageLoading.isVisible = true
                     }
                 }
             }
@@ -118,12 +121,17 @@ class SearchFragment : Fragment() {
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
+        viewModel.observeIsLoading().observe(viewLifecycleOwner){
+            isPageLoading = it
+        }
     }
 
     private fun render(state: SearchFragmentState) {
         when (state) {
             is SearchFragmentState.Start -> showStart()
             is SearchFragmentState.Content -> {
+                pages = state.vacancy.pages
+                currentPage = state.vacancy.page
                 totalFoundVacancies = state.vacancy.found
                 showContent(state.vacancy)
             }
@@ -149,8 +157,6 @@ class SearchFragment : Fragment() {
     private fun showLoading() {
         with(binding) {
             progressBar.visibility = View.VISIBLE
-        }
-        with(binding) {
             placeholderSearch.visibility = View.GONE
             noInternet.visibility = View.GONE
             somethingWrong.visibility = View.GONE
@@ -162,8 +168,6 @@ class SearchFragment : Fragment() {
     private fun showError(errorMessage: String) {
         with(binding) {
             noInternet.visibility = View.VISIBLE
-        }
-        with(binding) {
             placeholderSearch.visibility = View.GONE
             somethingWrong.visibility = View.GONE
             progressBar.visibility = View.GONE
@@ -180,8 +184,6 @@ class SearchFragment : Fragment() {
             )
             vacancyCount.visibility = View.VISIBLE
             somethingWrong.visibility = View.VISIBLE
-        }
-        with(binding) {
             placeholderSearch.visibility = View.GONE
             progressBar.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
@@ -191,22 +193,19 @@ class SearchFragment : Fragment() {
     }
 
     private fun showContent(vacancy: VacanciesResponse) {
+        searchAdapter.setData(vacancy.items)
         with(binding) {
             vacancyCount.text = App.getAppResources()?.getQuantityString(
                 R.plurals.vacancy_plurals, totalFoundVacancies, totalFoundVacancies
             )
-            vacancyCount.visibility = View.VISIBLE
-            searchRecyclerView.visibility = View.VISIBLE
-        }
-        with(binding) {
             placeholderSearch.visibility = View.GONE
             progressBar.visibility = View.GONE
             somethingWrong.visibility = View.GONE
             noInternet.visibility = View.GONE
+            vacancyCount.visibility = View.VISIBLE
+            searchRecyclerView.visibility = View.VISIBLE
             pageLoading.isVisible = false
         }
-        searchAdapter.setData(vacancy.items)
-        viewModel.isPageLoading = false
     }
     private fun getAdapter() =
         SearchAdapter { vacancy ->

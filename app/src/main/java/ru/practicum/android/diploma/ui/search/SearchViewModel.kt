@@ -20,6 +20,7 @@ class SearchViewModel(
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchFragmentState>()
+    private val isLoading = MutableLiveData<Boolean>()
     private val foundAreas = mutableListOf<AreaItem>() // Для тестирования
     private var currentPage = 0
     private var totalPages = 0
@@ -27,12 +28,10 @@ class SearchViewModel(
     private var searchJob: Job? = null
     private var isClickAllowed = true
     private var currentVacancies = listOf<Vacancy>()
-    var isPageLoading = false
 
     fun observeState(): LiveData<SearchFragmentState> = stateLiveData
-    private fun renderState(state: SearchFragmentState) {
-        stateLiveData.postValue(state)
-    }
+    fun observeIsLoading(): LiveData<Boolean> = isLoading
+
     fun getSearchRequest(text: String, page: String?): HashMap<String, String> {
         val request: HashMap<String, String> = HashMap()
         with(request) {
@@ -74,9 +73,7 @@ class SearchViewModel(
             if (latestSearchText == text || text.isEmpty()) {
                 searchJob?.cancel()
             } else {
-                renderState(
-                    SearchFragmentState.Loading
-                )
+                stateLiveData.postValue(SearchFragmentState.Loading)
                 currentVacancies = listOf()
                 latestSearchText = text
                 viewModelScope.launch {
@@ -91,9 +88,8 @@ class SearchViewModel(
     }
 
     fun onLastItemReached() {
-        if (currentPage < totalPages - 1) {
             currentPage++
-            isPageLoading = true
+            isLoading.postValue(true)
             viewModelScope.launch {
                 vacanciesInterActor
                     .searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
@@ -101,7 +97,6 @@ class SearchViewModel(
                         processResult(result)
                     }
             }
-        }
     }
 
     //    ДЛЯ ТЕСТИРОВАНИЯ!!!
@@ -164,10 +159,11 @@ class SearchViewModel(
         }
         return null
     }
+//    ДЛЯ ТЕСТИРОВАНИЯ!!!
     private fun processResult(foundVacancies: Resource<VacanciesResponse>) {
         when (foundVacancies) {
             is Resource.ConnectionError -> {
-                renderState(
+                stateLiveData.postValue(
                     SearchFragmentState.Error(
                         foundVacancies.message
                     )
@@ -175,7 +171,7 @@ class SearchViewModel(
             }
 
             is Resource.NotFound -> {
-                renderState(
+                stateLiveData.postValue(
                     SearchFragmentState.Empty(
                         foundVacancies.message
                     )
@@ -192,11 +188,12 @@ class SearchViewModel(
                 } else {
                     currentVacancies = data.items
                 }
-                renderState(
+                stateLiveData.postValue(
                     SearchFragmentState.Content(
                         data
                     )
                 )
+                isLoading.postValue(false)
             }
         }
     }

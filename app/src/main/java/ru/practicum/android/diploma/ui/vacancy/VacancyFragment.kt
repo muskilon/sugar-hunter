@@ -42,15 +42,14 @@ class VacancyFragment : Fragment() {
 
         val vacancyFragmentPresenter = VacancyFragmentPresenter(binding, requireContext())
 
-        viewModel.getVacancyScreenStateLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer { state ->
+        viewModel.getVacancyScreenStateLiveData().observe(viewLifecycleOwner){ state ->
             vacancyFragmentPresenter.render(state)
 
             if (state is VacancyFragmentState.Content) {
                 binding.shareButton.setOnClickListener {
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.type = "text/plain"
-                    // Замени ссылку потом
-                    intent.putExtra(Intent.EXTRA_TEXT, state.vacancy.logoUrls.toString())
+                    intent.putExtra(Intent.EXTRA_TEXT, state.vacancy.url)
                     startActivity(Intent.createChooser(intent, "Поделиться ссылкой через:"))
                 }
 
@@ -61,22 +60,22 @@ class VacancyFragment : Fragment() {
                 binding.shareButton.setOnClickListener {
                     Toast.makeText(
                         requireContext(),
-                        "Загрузка не удалоась, отправлять нечего",
+                        "Загрузка не удалась, отправлять нечего",
                         Toast.LENGTH_SHORT
                     )
                         .show()
                 }
             }
-        })
+        }
 
         viewModel.checkInFavouritesLiveData()
-            .observe(viewLifecycleOwner, androidx.lifecycle.Observer { checkInFavourites ->
+            .observe(viewLifecycleOwner){ checkInFavourites ->
                 if (checkInFavourites) {
                     binding.favoriteButton.setImageResource(R.drawable.favorite_active)
                 } else {
                     binding.favoriteButton.setImageResource(R.drawable.favorite_inactive)
                 }
-            })
+            }
 
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
