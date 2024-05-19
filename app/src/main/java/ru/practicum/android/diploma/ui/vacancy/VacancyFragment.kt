@@ -49,8 +49,7 @@ class VacancyFragment : Fragment() {
                 binding.shareButton.setOnClickListener {
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.type = "text/plain"
-                    // Замени ссылку потом
-                    intent.putExtra(Intent.EXTRA_TEXT, state.vacancy.logoUrls.toString())
+                    intent.putExtra(Intent.EXTRA_TEXT, state.vacancy.url)
                     startActivity(Intent.createChooser(intent, "Поделиться ссылкой через:"))
                 }
 

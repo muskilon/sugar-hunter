@@ -65,7 +65,7 @@ class VacancyFragmentPresenter(val binding: FragmentVacancyBinding, val context:
             progressBar.isVisible = false
             vacancyName.text = vacancy.title
             vacancyCardName.text = vacancy.employer
-            vacancyPlace.text = vacancy.city
+            showAddress(vacancy)
             util.showSalaryString(vacancy.salary, binding.vacancyCoast)
             showExperience(vacancy)
             showSchedule(vacancy.schedule)
@@ -176,4 +176,30 @@ class VacancyFragmentPresenter(val binding: FragmentVacancyBinding, val context:
             binding.keySkillsResponce.text = result
         }
     }
+
+    fun showAddress(vacancy: VacancyDetails) {
+        if (vacancy.address == null) {
+            binding.vacancyPlace.text = vacancy.city
+            return
+        }
+
+        if (vacancy.address.city == null && vacancy.address.street == null && vacancy.address.building == null) {
+            binding.vacancyPlace.text = vacancy.city
+            return
+        }
+
+        var string = ""
+        if (vacancy.address.city != null) {
+            string = vacancy.address.city
+        }
+        if (vacancy.address.street != null) {
+            string = string.plus(", ${vacancy.address.street}")
+        }
+        if (vacancy.address.building != null) {
+            string = string.plus(", ${vacancy.address.building}")
+        }
+        binding.vacancyPlace.text = string
+
+    }
+
 }
