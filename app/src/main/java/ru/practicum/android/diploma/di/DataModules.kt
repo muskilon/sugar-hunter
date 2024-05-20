@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.di
 
+import android.content.Context
 import androidx.room.Room
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -11,6 +12,7 @@ import ru.practicum.android.diploma.data.ExternalNavigator
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.db.Convertor
 import ru.practicum.android.diploma.data.dto.DTOToDataMappers
+import ru.practicum.android.diploma.data.filtres.FiltresStorage
 import ru.practicum.android.diploma.data.network.HHApi
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
@@ -36,6 +38,13 @@ val dataModules = module {
 
     factory { Convertor() }
     single { DTOToDataMappers() }
+    single { FiltresStorage(sharedPreferences = get()) }
+    single {
+        androidContext().getSharedPreferences(
+            FiltresStorage.FILTRES,
+            Context.MODE_PRIVATE
+        )
+    }
 
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "favourite_vacancy.db")
