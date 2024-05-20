@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.favourite
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,7 @@ import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 class FavouriteViewModel(private val favouriteDataBaseInteractor: FavouriteDataBaseInteractor) : ViewModel() {
 
-    private var stateMutableLiveData = MutableLiveData<FavouritesState>()
+    private var stateMutableLiveData = MutableLiveData<FavouritesState>(FavouritesState.Empty)
     fun checkStateLiveData(): LiveData<FavouritesState> = stateMutableLiveData
 
     private var favoriteMutableListLiveData = MutableLiveData<ArrayList<VacancyDetails>>()
@@ -21,31 +22,39 @@ class FavouriteViewModel(private val favouriteDataBaseInteractor: FavouriteDataB
 
     init {
         viewModelScope.launch {
-            checkFavoriteList()
+            readFavoriteList()
+            updateState()
         }
     }
 
-    fun checkFavoriteList() {
-        viewModelScope.launch {
-            favoriteMutableListLiveData.postValue(readFavoriteList())
-        }
-    }
-
-    private suspend fun readFavoriteList(): ArrayList<VacancyDetails> {
+    suspend fun readFavoriteList() {
         return withContext(Dispatchers.IO) {
             val flowList = favouriteDataBaseInteractor.getFavouritesVacancies()
             val favoriteList = ArrayList<VacancyDetails>()
             flowList.collect { vacansies ->
                 favoriteList.addAll(vacansies)
             }
-            favoriteList
+            Log.d("list", favoriteList.toString())
+            favoriteMutableListLiveData.postValue(favoriteList)
+        }
+    }
+
+    fun updateState() {
+        when (favoriteListLiveData().value) {
+            null -> setStateError()
+            emptyList<VacancyDetails>() -> setStateEmpty()
+            else -> setStateContent()
         }
     }
 
     fun setStateContent() {
         viewModelScope.launch {
-            val content = readFavoriteList()
-            stateMutableLiveData.postValue(FavouritesState.Content(content))
+            if (favoriteMutableListLiveData.value != null) {
+                stateMutableLiveData.postValue(FavouritesState.Content(favoriteMutableListLiveData.value!!))
+                Log.d("content", stateMutableLiveData.toString())
+            } else {
+                setStateError()
+            }
         }
     }
 

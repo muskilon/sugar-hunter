@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.data.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.practicum.android.diploma.domain.models.Address
 import ru.practicum.android.diploma.domain.models.Contacts
 import ru.practicum.android.diploma.domain.models.Employment
 import ru.practicum.android.diploma.domain.models.Experience
@@ -23,5 +24,7 @@ data class FavouriteVacancy(
     val description: String?,
     val keySkills: List<String>?,
     val contacts: Contacts?,
-    val logoUrls: LogoUrls
+    val logoUrls: LogoUrls,
+    val url: String,
+    val address: Address?
 )

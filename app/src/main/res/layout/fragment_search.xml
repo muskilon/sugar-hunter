@@ -20,7 +20,7 @@
         android:text="@string/search"
         android:textColor="?attr/prime_color_black"
         android:textFontWeight="500"
-        android:textSize="@dimen/textSize_22sp"
+        android:textSize="@dimen/text_size_22sp"
         app:layout_constraintEnd_toStartOf="@+id/favoriteButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,6 +34,7 @@
         android:paddingRight="@dimen/padding_20dp"
         android:paddingBottom="@dimen/padding_20dp"
         android:src="@drawable/search_filter_inactive"
+        app:tint="?attr/prime_color_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/searchScreenTitle"
         app:layout_constraintTop_toTopOf="parent"
@@ -61,10 +62,10 @@
             android:lineHeight="@dimen/text_line_height_19dp"
             android:maxLines="1"
             android:paddingHorizontal="@dimen/padding_16dp"
-            android:textColor="@color/Black_Universal"
+            android:textColor="@color/black_universal"
             android:textColorHint="?attr/secondary_dark_gray"
             android:textCursorDrawable="@drawable/search_edittext_color_cursor"
-            android:textSize="@dimen/textSize_16sp"/>
+            android:textSize="@dimen/text_size_16sp"/>
 
         <ImageView
             android:id="@+id/clearIcon"
@@ -85,12 +86,22 @@
             android:visibility="visible" />
 
     </FrameLayout>
+    <ProgressBar
+        android:id="@+id/pageLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingHorizontal="@dimen/padding_16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/pageLoading"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_edit_frame">
@@ -101,6 +112,8 @@
             android:layout_width="match_parent"
             tools:listitem="@layout/item_vacancy"
             android:layout_height="match_parent"
+            android:paddingTop="38dp"
+            android:clipToPadding="false"
             android:visibility="gone"/>
 
         <TextView
@@ -113,7 +126,7 @@
             android:lineHeight="@dimen/text_line_height_19dp"
             android:paddingHorizontal="@dimen/padding_16dp"
             android:paddingVertical="@dimen/padding_4dp"
-            android:textColor="@color/White_Universal"
+            android:textColor="@color/white_universal"
             android:visibility="gone"
             tools:visibility="gone"
             tools:text="Найдено 22 вакансии"/>
@@ -132,7 +145,7 @@
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:indeterminateTint="@color/Blue"
+            android:indeterminateTint="@color/blue"
             android:visibility="gone"
             tools:visibility="gone" />
 
@@ -163,7 +176,7 @@
                 android:textAlignment="center"
                 android:textColor="?attr/prime_color_black"
                 android:textFontWeight="500"
-                android:textSize="@dimen/textSize_22sp" />
+                android:textSize="@dimen/text_size_22sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -192,7 +205,7 @@
                 android:text="@string/search_error_no_internet"
                 android:textAlignment="center"
                 android:textColor="?attr/prime_color_black"
-                android:textSize="@dimen/textSize_22sp" />
+                android:textSize="@dimen/text_size_22sp" />
         </LinearLayout>
 
 

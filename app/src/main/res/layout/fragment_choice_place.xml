@@ -32,8 +32,8 @@
         android:text="Выбор места работы"
         android:textColor="?attr/prime_color_black"
         android:textFontWeight="500"
-        android:textSize="@dimen/textSize_22sp"
         app:layout_constraintStart_toEndOf="@+id/backButton"
+        android:textSize="@dimen/text_size_22sp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout

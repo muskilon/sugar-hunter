@@ -1,10 +1,8 @@
-package ru.practicum.android.diploma.data.network.responses
-
-import ru.practicum.android.diploma.data.network.Response
+package ru.practicum.android.diploma.data.dto
 
 data class IndustryResponse(
     val container: List<IndustryListDTO>
-) : Response()
+)
 class IndustryListDTO(
     val id: String,
     val industries: List<IndustryDTO>,

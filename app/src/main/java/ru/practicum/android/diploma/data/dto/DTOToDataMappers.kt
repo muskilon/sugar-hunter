@@ -1,11 +1,13 @@
 package ru.practicum.android.diploma.data.dto
 
-import ru.practicum.android.diploma.data.network.responses.DetailsResponse
-import ru.practicum.android.diploma.data.network.responses.KeySkillsDTO
-import ru.practicum.android.diploma.data.network.responses.SearchResponse
+import ru.practicum.android.diploma.domain.models.Address
+import ru.practicum.android.diploma.domain.models.AreaItem
+import ru.practicum.android.diploma.domain.models.AreasDictionary
 import ru.practicum.android.diploma.domain.models.Contacts
 import ru.practicum.android.diploma.domain.models.Employment
 import ru.practicum.android.diploma.domain.models.Experience
+import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.LogoUrls
 import ru.practicum.android.diploma.domain.models.Phones
 import ru.practicum.android.diploma.domain.models.Salary
@@ -36,23 +38,31 @@ class DTOToDataMappers {
             ),
             description = vacancy.description,
             keySkills = skillsMapper(vacancy.keySkills),
-            contacts = Contacts(
-                email = vacancy.contacts?.email,
-                name = vacancy.contacts?.name,
-                phones = vacancy.contacts?.phones?.map {
-                    val phones = Phones(
-                        city = it.city,
-                        country = it.country,
-                        comment = it.comment,
-                        formatted = it.formatted,
-                        number = it.number
-                    )
-                    phones
-                }
-            ),
-            logoUrls = mapLogoUrlsDTOToLogoUrls(vacancy.employer.logoUrls)
+            contacts = mapContactsDTOToContacts(vacancy.contacts),
+            logoUrls = mapLogoUrlsDTOToLogoUrls(vacancy.employer.logoUrls),
+            url = vacancy.url,
+            address = Address(
+                city = vacancy.address?.city,
+                building = vacancy.address?.building,
+                street = vacancy.address?.street
+            )
         )
-    fun mapSearchResponseToVacanciesResponse(data: SearchResponse) =
+    private fun mapContactsDTOToContacts(contacts: ContactsDTO?) =
+        Contacts(
+            email = contacts?.email,
+            name = contacts?.name,
+            phones = contacts?.phones?.map {
+                val phones = Phones(
+                    city = it.city,
+                    country = it.country,
+                    comment = it.comment,
+                    formatted = it.formatted,
+                    number = it.number
+                )
+                phones
+            }
+        )
+    fun mapSearchResponseToVacanciesResponse(data: SearchResponseDTO) =
         VacanciesResponse(
             page = data.page,
             pages = data.pages,
@@ -69,6 +79,32 @@ class DTOToDataMappers {
                 vacancy
             }
         )
+    fun industryResponseToIndustries(data: IndustryResponse) =
+        data.container.map {
+            val industries = Industries(
+                id = it.id,
+                name = it.name,
+                industries = it.industries.map { sub ->
+                    val subIndustry = Industry(
+                        id = sub.id,
+                        name = sub.name
+                    )
+                    subIndustry
+                }
+            )
+            industries
+        }
+    fun areasDictionaryDTOToAreasDictionary(areasDictionaryDTO: AreasDictionaryDTO): AreasDictionary {
+        return AreasDictionary(container = areasDictionaryDTO.container.map { it.transform() })
+    }
+    private fun AreaItemDTO.transform(): AreaItem {
+        return AreaItem(
+            areas = this.areas.map { it.transform() },
+            id = this.id,
+            name = this.name,
+            parentId = this.parentId
+        )
+    }
     private fun mapSalaryDTOToSalary(salary: SalaryDTO?) =
         Salary(
             from = salary?.from,
