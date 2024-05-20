@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.domain.models.SavedFiltres
 
 class FilterFragment : Fragment() {
 
@@ -25,6 +26,15 @@ class FilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.setFiltres(SavedFiltres(
+            areaId = "65",
+            areaName = "Москва",
+            areaParentId = "35",
+            industryId = "100",
+            industryName = "Копание"
+        ))
+        viewModel.getFiltres()
 
     }
 

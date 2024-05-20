@@ -30,7 +30,7 @@ val viewModelModules = module {
         ChooseSphereViewModel()
     }
     viewModel {
-        FilterViewModel()
+        FilterViewModel(filtresInterActor = get())
     }
     viewModel {
         RootViewModel()
