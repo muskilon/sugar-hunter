@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.data.ExternalNavigator
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.db.Convertor
 import ru.practicum.android.diploma.data.dto.DTOToDataMappers
-import ru.practicum.android.diploma.data.filtres.FiltresStorage
+import ru.practicum.android.diploma.data.filtres.FiltersStorage
 import ru.practicum.android.diploma.data.network.HHApi
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
@@ -38,10 +38,10 @@ val dataModules = module {
 
     factory { Convertor() }
     single { DTOToDataMappers() }
-    single { FiltresStorage(sharedPreferences = get()) }
+    single { FiltersStorage(sharedPreferences = get()) }
     single {
         androidContext().getSharedPreferences(
-            FiltresStorage.FILTRES,
+            FiltersStorage.FILTERS,
             Context.MODE_PRIVATE
         )
     }
