@@ -8,7 +8,7 @@ class FiltresRepositoryImpl(
     private val filtresStorage: FiltresStorage
 ) : FiltresRepository {
     override fun getFiltres(): SavedFiltres? {
-        return filtresStorage.getFitres()?.let{
+        return filtresStorage.getFitres()?.let {
             Gson().fromJson(it, SavedFiltres::class.java)
         }
     }

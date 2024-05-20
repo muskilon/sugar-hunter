@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.di
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.room.Room
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -17,7 +16,6 @@ import ru.practicum.android.diploma.data.filtres.FiltresStorage
 import ru.practicum.android.diploma.data.network.HHApi
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
-import kotlin.math.sin
 
 val dataModules = module {
 //    Network

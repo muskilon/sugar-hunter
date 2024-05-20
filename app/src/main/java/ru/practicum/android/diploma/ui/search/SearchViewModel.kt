@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.FiltresInterActor
 import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.models.AreaItem
 import ru.practicum.android.diploma.domain.models.Resource
@@ -16,7 +17,8 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 
 class SearchViewModel(
-    private val vacanciesInterActor: VacanciesInterActor
+    private val vacanciesInterActor: VacanciesInterActor,
+    private val filtresInterActor: FiltresInterActor
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchFragmentState>()
@@ -33,14 +35,30 @@ class SearchViewModel(
     fun observeIsLoading(): LiveData<Boolean> = isLoading
 
     fun getSearchRequest(text: String, page: String?): HashMap<String, String> {
+        val filter = filtresInterActor.getFiltres()
         val request: HashMap<String, String> = HashMap()
         with(request) {
             this[TEXT] = text
+            this[PER_PAGE] = PAGE_SIZE
             if (!page.isNullOrEmpty()) {
                 this[PAGE] = page
             }
-            this[PER_PAGE] = PAGE_SIZE
+            filter?.let {
+                if (!it.areaId.isNullOrEmpty()) {
+                    this[AREA] = it.areaId
+                }
+                if (!it.industryId.isNullOrEmpty()) {
+                    this[INDUSTRY] = it.industryId
+                }
+                if (!it.salary.isNullOrEmpty()) {
+                    this[SALARY] = it.salary
+                }
+                if (it.onlyWithSalary) {
+                    this[ONLY_WITH_SALARY] = it.onlyWithSalary.toString()
+                }
+            }
         }
+        Log.d("REQUEST", request.toString())
 
         return request
     }
@@ -204,9 +222,16 @@ class SearchViewModel(
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val TAG = "process"
+
+//        API параметры
+
         private const val TEXT = "text"
         private const val PAGE = "page"
         private const val PAGE_SIZE = "20"
         private const val PER_PAGE = "per_page"
+        private const val AREA = "area"
+        private const val INDUSTRY = "industry"
+        private const val SALARY = "salary"
+        private const val ONLY_WITH_SALARY = "only_with_salary"
     }
 }

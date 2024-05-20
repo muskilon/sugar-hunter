@@ -27,14 +27,13 @@ class FilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setFiltres(SavedFiltres(
-            areaId = "65",
-            areaName = "Москва",
-            areaParentId = "35",
-            industryId = "100",
-            industryName = "Копание"
-        ))
-        viewModel.getFiltres()
+//        viewModel.setFiltres(SavedFiltres(
+//            areaId = "1",
+//            industryId = "7",
+//            salary = "350000",
+//            onlyWithSalary = true
+//        ))
+//        viewModel.getFiltres()
 
     }
 

@@ -12,10 +12,10 @@ class FilterViewModel(
 
     val mutable = MutableLiveData<Int>()
 
-    fun setFiltres(filtres: SavedFiltres){
+    fun setFiltres(filtres: SavedFiltres) {
         filtresInterActor.updateFiltres(filtres)
     }
-    fun getFiltres(){
+    fun getFiltres() {
         val ttt = filtresInterActor.getFiltres()
         Log.d("FILTRES", ttt.toString())
     }

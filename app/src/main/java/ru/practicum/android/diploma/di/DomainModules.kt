@@ -21,6 +21,6 @@ val domainModules = module {
     single<FavouriteDataBaseRepository> { FavouriteDataBaseRepositoryImpl(database = get(), convertor = get()) }
     single<FavouriteDataBaseInteractor> { FavouriteDataBaseInteractorImpl(favouriteDataBaseRepository = get()) }
 
-    factory<FiltresInterActor> { FiltresInterActorImpl(repository = get())}
-    single<FiltresRepository> { FiltresRepositoryImpl(filtresStorage = get())}
+    factory<FiltresInterActor> { FiltresInterActorImpl(repository = get()) }
+    single<FiltresRepository> { FiltresRepositoryImpl(filtresStorage = get()) }
 }
