@@ -34,7 +34,7 @@ class SearchViewModel(
     fun observeState(): LiveData<SearchFragmentState> = stateLiveData
     fun observeIsLoading(): LiveData<Boolean> = isLoading
 
-    fun isFiltersOn() : Boolean {
+    fun isFiltersOn(): Boolean {
         return !filtersInterActor.getFilters().filters.isNullOrEmpty()
     }
 
