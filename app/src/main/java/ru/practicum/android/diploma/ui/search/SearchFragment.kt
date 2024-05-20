@@ -35,12 +35,8 @@ class SearchFragment : Fragment() {
     private var pages = 0
     private var currentPage = 0
     private val searchAdapter by lazy { getAdapter() }
-    private var searchText = EMPTY_TEXT
+    private var searchText: String? = null
     private var isPageLoading = false
-
-    companion object {
-        private const val EMPTY_TEXT = ""
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,8 +63,8 @@ class SearchFragment : Fragment() {
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 binding.searchEditText.clearFocus()
-                if (searchText.isNotEmpty()) {
-                    viewModel.searchVacancies(viewModel.getSearchRequest(searchText, null))
+                if (!searchText.isNullOrEmpty()) {
+                    viewModel.searchVacancies(viewModel.getSearchRequest(searchText!!, null))
                 }
             }
             false
@@ -129,7 +125,7 @@ class SearchFragment : Fragment() {
             binding.clearIcon.visibility = clearButtonVisibility(s)
             binding.searchIcon.visibility = searchButtonVisibility(s)
             searchText = s.toString()
-            viewModel.searchDebounce(searchText)
+            searchText?.let { viewModel.searchDebounce(it) }
         }
 
         override fun afterTextChanged(s: Editable?) {
