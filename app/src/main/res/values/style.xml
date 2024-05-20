@@ -11,7 +11,16 @@
 
     <style name="EditTextFilter" >
         <item name="android:background">@null</item>
-
+    </style>
+    
+    <style name="filterButtonsStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:backgroundTint">@color/Blue</item>
+        <item name="android:textColor">@color/White_Day</item>
+        <item name="android:textSize">@dimen/textSize_16sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
     </style>
 
 </resources>
