@@ -34,36 +34,22 @@ class SearchViewModel(
     fun observeState(): LiveData<SearchFragmentState> = stateLiveData
     fun observeIsLoading(): LiveData<Boolean> = isLoading
 
-    fun isFiltersOn() : Boolean{
-        return filtersInterActor.getFilters() != null
+    fun isFiltersOn() : Boolean {
+        return !filtersInterActor.getFilters().filters.isNullOrEmpty()
     }
 
-    fun getSearchRequest(text: String, page: String?): HashMap<String, String> {
+    fun getSearchRequest(text: String, page: String?): Map<String, String> {
         val filter = filtersInterActor.getFilters()
-        val request: HashMap<String, String> = HashMap()
+        val request = filter.filters ?: mutableMapOf()
         with(request) {
             this[TEXT] = text
             this[PER_PAGE] = PAGE_SIZE
-            if (!page.isNullOrEmpty()) {
+            page?.let {
                 this[PAGE] = page
-            }
-            filter?.let {
-                if (!it.areaId.isNullOrEmpty()) {
-                    this[AREA] = it.areaId
-                }
-                if (!it.industryId.isNullOrEmpty()) {
-                    this[INDUSTRY] = it.industryId
-                }
-                if (!it.salary.isNullOrEmpty()) {
-                    this[SALARY] = it.salary
-                }
-                if (it.onlyWithSalary) {
-                    this[ONLY_WITH_SALARY] = it.onlyWithSalary.toString()
-                }
             }
         }
 
-        return request
+        return request.toMap()
     }
 
     fun clickDebounce(): Boolean {
@@ -232,9 +218,5 @@ class SearchViewModel(
         private const val PAGE = "page"
         private const val PAGE_SIZE = "20"
         private const val PER_PAGE = "per_page"
-        private const val AREA = "area"
-        private const val INDUSTRY = "industry"
-        private const val SALARY = "salary"
-        private const val ONLY_WITH_SALARY = "only_with_salary"
     }
 }

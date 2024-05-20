@@ -7,7 +7,7 @@ import ru.practicum.android.diploma.domain.models.SavedFilters
 class FiltersInterActorImpl(
     private val repository: FiltersRepository
 ) : FiltersInterActor {
-    override fun getFilters(): SavedFilters? {
+    override fun getFilters(): SavedFilters {
         return repository.getFilters()
     }
 

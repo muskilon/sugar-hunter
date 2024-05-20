@@ -7,10 +7,10 @@ import ru.practicum.android.diploma.domain.models.SavedFilters
 class FiltersRepositoryImpl(
     private val filtersStorage: FiltersStorage
 ) : FiltersRepository {
-    override fun getFilters(): SavedFilters? {
+    override fun getFilters(): SavedFilters {
         return filtersStorage.getFilters()?.let {
             Gson().fromJson(it, SavedFilters::class.java)
-        }
+        } ?: SavedFilters(null)
     }
 
     override fun updateFilters(filters: SavedFilters?) {
