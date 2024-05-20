@@ -40,6 +40,16 @@
     <string name="vacancy_fragment_placeholder_text">Ошибка сервера</string>
     <string name="no_salary_string">Зарплата не указана</string>
 
+    <!--    Filter Fragment Strings-->
+    <string name="filter_screen_header">Настройки фильтрации</string>
+    <string name="select_region_button">Место работы</string>
+    <string name="select_industry_button">Отрасль</string>
+    <string name="salary_card_header">Ожидаемая зарплата</string>
+    <string name="salary_hint">Введите сумму</string>
+    <string name="salary_checkbox_hint">Не показывать без зарплаты</string>
+    <string name="decline_button">Сбросить</string>
+    <string name="apply_button">Применить</string>
+
     <plurals name="vacancy_plurals">
         <item quantity="zero">Вакансий не найдено</item>
         <item quantity="one">Найдена %1$d вакансия</item>
