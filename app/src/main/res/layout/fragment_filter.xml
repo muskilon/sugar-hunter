@@ -81,6 +81,7 @@
                 android:textFontWeight="400"
                 android:textSize="@dimen/text_size_16sp"
                 tools:text="Россия"
+                android:visibility="gone"
                 tools:visibility="visible" />
         </LinearLayout>
 
@@ -141,6 +142,7 @@
                 android:textFontWeight="400"
                 android:textSize="@dimen/text_size_16sp"
                 tools:text="Телекоммуникации"
+                android:visibility="gone"
                 tools:visibility="visible" />
         </LinearLayout>
 
