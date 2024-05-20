@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.domain.models
 
-data class SavedFiltres(
+data class SavedFilters(
     val areaId: String?, // area
     val industryId: String?, // industry
     val salary: String?, // salary

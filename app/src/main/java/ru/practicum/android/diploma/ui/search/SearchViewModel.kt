@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.FiltresInterActor
+import ru.practicum.android.diploma.domain.FiltersInterActor
 import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.models.AreaItem
 import ru.practicum.android.diploma.domain.models.Resource
@@ -18,7 +18,7 @@ import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 
 class SearchViewModel(
     private val vacanciesInterActor: VacanciesInterActor,
-    private val filtresInterActor: FiltresInterActor
+    private val filtersInterActor: FiltersInterActor
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchFragmentState>()
@@ -34,8 +34,12 @@ class SearchViewModel(
     fun observeState(): LiveData<SearchFragmentState> = stateLiveData
     fun observeIsLoading(): LiveData<Boolean> = isLoading
 
+    fun isFiltersOn() : Boolean{
+        return filtersInterActor.getFilters() != null
+    }
+
     fun getSearchRequest(text: String, page: String?): HashMap<String, String> {
-        val filter = filtresInterActor.getFiltres()
+        val filter = filtersInterActor.getFilters()
         val request: HashMap<String, String> = HashMap()
         with(request) {
             this[TEXT] = text
@@ -58,7 +62,6 @@ class SearchViewModel(
                 }
             }
         }
-        Log.d("REQUEST", request.toString())
 
         return request
     }

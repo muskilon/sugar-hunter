@@ -54,6 +54,12 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (viewModel.isFiltersOn()) {
+            binding.favoriteButton.setImageResource(R.drawable.search_filter_active)
+        } else {
+            binding.favoriteButton.setImageResource(R.drawable.search_filter_inactive)
+        }
+
         binding.searchRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
