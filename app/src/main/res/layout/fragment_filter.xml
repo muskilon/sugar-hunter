@@ -16,169 +16,261 @@
         android:paddingEnd="@dimen/padding_16dp"
         android:paddingBottom="@dimen/padding_20dp"
         android:src="@drawable/back_button"
-        app:layout_constraintBottom_toTopOf="@+id/textCountry"
-        app:layout_constraintEnd_toStartOf="@id/filterTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/filterTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="@dimen/margin_19dp"
+        android:id="@+id/filterScreenTitle"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
         android:fontFamily="@font/ys_display_medium"
         android:lineHeight="@dimen/text_line_height_26dp"
-        android:text="Настройки фильтрации"
+        android:paddingStart="@dimen/margin_16dp"
+        android:paddingTop="@dimen/margin_19dp"
+        android:paddingEnd="@dimen/margin_8dp"
+        android:paddingBottom="@dimen/margin_19dp"
+        android:text="@string/filter_screen_header"
         android:textColor="?attr/prime_color_black"
         android:textFontWeight="500"
-        app:layout_constraintStart_toEndOf="@+id/backButton"
         android:textSize="@dimen/text_size_22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/backButton"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textCountry"
+    <LinearLayout
+        android:id="@+id/selectRegionButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="@dimen/margin_24dp"
-        android:fontFamily="@font/ys_display_regular"
-        android:gravity="center_vertical"
-        android:lineHeight="@dimen/text_line_height_19dp"
-        android:text="Место работы"
-        android:textColor="@color/dark_gray"
-        android:textFontWeight="400"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoiceCountry"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
-
-    <ImageView
-        android:id="@+id/buttonGoToChoiceCountry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:src="@drawable/leading_icon_filter"
-        app:layout_constraintBottom_toBottomOf="@+id/textCountry"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:paddingEnd="@dimen/padding_4dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textCountry"
-        app:layout_constraintTop_toTopOf="@+id/textCountry" />
-
-    <TextView
-        android:id="@+id/textRegion"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/ys_display_regular"
-        android:gravity="center_vertical"
-        android:lineHeight="@dimen/text_line_height_19dp"
-        android:text="Отрасль"
-        android:textColor="@color/dark_gray"
-        android:textFontWeight="400"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
-        app:layout_constraintEnd_toStartOf="@+id/buttonGoToChoiceCountry"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textCountry" />
+        app:layout_constraintTop_toBottomOf="@id/filterScreenTitle"
+        tools:ignore="RtlSymmetry">
 
-    <ImageView
-        android:id="@+id/buttonGoToChoiceRegion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:src="@drawable/leading_icon_filter"
-        app:layout_constraintBottom_toBottomOf="@+id/textRegion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textRegion"
-        app:layout_constraintTop_toTopOf="@+id/textRegion" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="6dp"
+            android:paddingStart="16dp">
 
+            <TextView
+                android:id="@+id/selectRegionHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ys_display_regular"
+                android:gravity="start|center"
+                android:lineHeight="@dimen/text_line_height_19dp"
+                android:text="@string/select_region_button"
+                android:textColor="@color/dark_gray"
+                android:textFontWeight="400"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/selectedRegionsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:lineHeight="19dp"
+                android:textColor="?prime_color_black"
+                android:textFontWeight="400"
+                android:textSize="@dimen/text_size_16sp"
+                tools:text="Россия"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/selectRegionActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:importantForAccessibility="no"
+            android:paddingVertical="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:src="@drawable/leading_icon_filter"
+            app:tint="?attr/prime_color_black" />
+    </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginHorizontal="@dimen/margin_16dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/round_corner_filter"
-        android:orientation="vertical"
+        android:id="@+id/selectIndustryButton"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:paddingEnd="@dimen/padding_4dp"
+        android:clickable="true"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textRegion">
+        app:layout_constraintTop_toBottomOf="@id/selectRegionButton"
+        tools:ignore="RtlSymmetry">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="6dp"
+            android:paddingStart="16dp">
+
+            <TextView
+                android:id="@+id/selectIndustryHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ys_display_regular"
+                android:gravity="start|center"
+                android:lineHeight="@dimen/text_line_height_19dp"
+                android:text="@string/select_industry_button"
+                android:textColor="@color/dark_gray"
+                android:textFontWeight="400"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/selectedIndustryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:lineHeight="19dp"
+                android:textColor="?prime_color_black"
+                android:textFontWeight="400"
+                android:textSize="@dimen/text_size_16sp"
+                tools:text="Телекоммуникации"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/selectIndustryActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:importantForAccessibility="no"
+            android:paddingVertical="12dp"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:src="@drawable/leading_icon_filter"
+            app:tint="?attr/prime_color_black"
+            tools:ignore="RtlSymmetry" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/salaryCard"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_marginHorizontal="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_24dp"
+        android:background="@drawable/round_corner_filter"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_16dp"
+        android:paddingVertical="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectIndustryButton">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/salaryHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textFontWeight="400"
+                android:fontFamily="@font/ys_display_regular"
+                android:gravity="start|center"
+                android:lineHeight="@dimen/text_line_height_16dp"
+                android:text="@string/salary_card_header"
+                android:textColor="?attr/secondary_dark_gray"
+                android:textSize="@dimen/text_size_12sp" />
+
+            <EditText
+                style="@style/SalaryEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textFontWeight="400"
+                android:fontFamily="@font/ys_display_regular"
+                android:gravity="start|start"
+                android:hint="@string/salary_hint"
+                android:imeOptions="actionDone"
+                android:inputType="numberSigned"
+                android:lineHeight="@dimen/text_line_height_19dp"
+                android:lines="1"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textColorHint="?attr/secondary_dark_gray"
+                android:textCursorDrawable="@drawable/custom_cursor"
+                android:textSize="@dimen/text_size_16sp"
+                tools:ignore="RtlSymmetry"
+                android:importantForAutofill="no" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/salaryClearButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/clear_button"
+            android:visibility="gone"
+            app:tint="@color/black_universal"
+            android:importantForAccessibility="no" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/salaryCheckBoxGroup"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/margin_24dp"
+        android:clickable="true"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/salaryCard"
+        tools:ignore="UseCompoundDrawables">
 
         <TextView
-            android:id="@+id/titleForEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/margin_16dp"
-            android:layout_marginTop="@dimen/margin_8dp"
-            android:layout_weight="400"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
             android:fontFamily="@font/ys_display_regular"
-            android:lineHeight="@dimen/text_line_height_16dp"
-            android:text="Ожидаемая зарплата"
-            android:textColor="?attr/secondary_dark_gray"
-            android:textSize="@dimen/text_size_12sp" />
-
-        <EditText
-            style="@style/EditTextFilter"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="@dimen/margin_16dp"
-            android:layout_marginBottom="@dimen/margin_8dp"
-            android:layout_weight="400"
-            android:fontFamily="@font/ys_display_regular"
-            android:hint="Введите сумму"
-            android:imeOptions="actionDone"
-            android:textCursorDrawable="@drawable/custom_cursor"
-            android:inputType="numberSigned"
+            android:gravity="start|center"
             android:lineHeight="@dimen/text_line_height_19dp"
-            android:lines="1"
-            android:singleLine="true"
-            android:textColor="@android:color/black"
-            android:textColorHint="?attr/secondary_dark_gray"
-            android:textSize="@dimen/text_size_16sp"
+            android:paddingVertical="6dp"
+            android:paddingStart="16dp"
+            android:text="@string/salary_checkbox_hint"
+            android:textColor="?attr/prime_color_black"
+            android:textFontWeight="400"
+            android:textSize="18sp"
             tools:ignore="RtlSymmetry" />
 
+        <CheckBox
+            android:id="@+id/salaryCheckBox"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="4dp"
+            android:buttonTint="@color/blue"
+            tools:checked="true" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textForCheckBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
-        android:layout_marginTop="30dp"
-        android:layout_weight="400"
-        android:fontFamily="@font/ys_display_regular"
-        android:lineHeight="@dimen/text_line_height_19dp"
-        android:paddingVertical="14.5dp"
-        android:text="Не показывать без зарплаты"
-        android:textColor="?attr/prime_color_black"
-        android:textSize="@dimen/text_size_16sp"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/padding_4dp"
-        android:background="@animator/checkbox_custom"
-        android:button="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/textForCheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textForCheckBox" />
-
-    <TextView
-        android:id="@+id/buttonThrowOf"
+        android:id="@+id/buttonDecline"
         android:layout_width="0dp"
         android:layout_height="59dp"
+        android:layout_marginHorizontal="17dp"
         android:layout_marginBottom="@dimen/margin_24dp"
+        android:clickable="true"
         android:fontFamily="@font/ys_display_medium"
         android:gravity="center"
         android:lineHeight="@dimen/text_line_height_19dp"
-        android:text="Сбросить"
+        android:text="@string/decline_button"
         android:textColor="@color/red"
         android:textFontWeight="500"
         android:textSize="@dimen/text_size_16sp"
@@ -186,7 +278,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <Button
         android:id="@+id/buttonApply"
@@ -194,12 +286,15 @@
         android:layout_width="0dp"
         android:layout_height="59dp"
         android:layout_marginHorizontal="17dp"
-        android:layout_marginBottom="@dimen/margin_8dp"
-        android:text="Применить"
+        android:layout_marginBottom="8dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:text="@string/apply_button"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/buttonThrowOf"
+        app:layout_constraintBottom_toTopOf="@id/buttonDecline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+        app:layout_goneMarginBottom="@dimen/margin_24dp"
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
