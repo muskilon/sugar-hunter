@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.domain.models.SavedFilters
 
 class FilterFragment : Fragment() {
 
@@ -26,13 +27,19 @@ class FilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        viewModel.setFiltres(SavedFiltres(
-//            areaId = "1",
-//            industryId = "7",
-//            salary = "350000",
-//            onlyWithSalary = true
-//        ))
-//        viewModel.getFiltres()
+        viewModel.setFilters(
+            SavedFilters(
+                mutableMapOf(
+                    "area" to "1",
+                    "industry" to "7",
+                    "salary" to "350000"
+                )
+            )
+        )
+
+//        viewModel.setFilters(null)
+
+        viewModel.getFilters()
 
     }
 

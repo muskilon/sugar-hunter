@@ -41,9 +41,9 @@ class FavouriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.checkStateLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer { favouriteState ->
+        viewModel.checkStateLiveData().observe(viewLifecycleOwner) { favouriteState ->
             render(favouriteState)
-        })
+        }
 
         binding.favoriteRecyclerView.adapter = adapter
         binding.favoriteRecyclerView.layoutManager =
@@ -56,12 +56,14 @@ class FavouriteFragment : Fragment() {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
-    private suspend fun clickDebounce(): Boolean {
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            delay(CLICK_DEBOUNCE_DELAY)
-            isClickAllowed = true
+            lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }

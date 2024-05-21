@@ -30,13 +30,13 @@ val viewModelModules = module {
         ChooseSphereViewModel()
     }
     viewModel {
-        FilterViewModel(filtresInterActor = get())
+        FilterViewModel(filtersInterActor = get())
     }
     viewModel {
         RootViewModel()
     }
     viewModel {
-        SearchViewModel(vacanciesInterActor = get(), filtresInterActor = get())
+        SearchViewModel(vacanciesInterActor = get(), filtersInterActor = get())
     }
     viewModel {
         TeamViewModel()

@@ -2,11 +2,9 @@ package ru.practicum.android.diploma.ui.search.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.util.DiffUtilCallback
 
 class SearchAdapter(
     private val onItemClick: (Vacancy) -> Unit
@@ -22,17 +20,15 @@ class SearchAdapter(
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(vacancy[position])
         holder.itemView.setOnClickListener {
-            onItemClick.invoke(vacancy[holder.adapterPosition])
+            onItemClick.invoke(vacancy[holder.getBindingAdapterPosition()])
         }
     }
 
     override fun getItemCount(): Int = vacancy.size
 
-    fun setData(newTracks: List<Vacancy>) {
-        val diffCallback = DiffUtilCallback(vacancy, newTracks)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
+    fun setData(newVacancies: List<Vacancy>) {
         vacancy.clear()
-        vacancy.addAll(newTracks)
-        diffResult.dispatchUpdatesTo(this)
+        vacancy.addAll(newVacancies)
+        notifyItemRangeInserted(vacancy.size - 1, newVacancies.size)
     }
 }

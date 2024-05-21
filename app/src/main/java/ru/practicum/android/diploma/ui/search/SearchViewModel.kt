@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.FiltresInterActor
+import ru.practicum.android.diploma.domain.FiltersInterActor
 import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.models.AreaItem
 import ru.practicum.android.diploma.domain.models.Resource
@@ -18,11 +18,10 @@ import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 
 class SearchViewModel(
     private val vacanciesInterActor: VacanciesInterActor,
-    private val filtresInterActor: FiltresInterActor
+    private val filtersInterActor: FiltersInterActor
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchFragmentState>()
-    private val isLoading = MutableLiveData<Boolean>()
     private val foundAreas = mutableListOf<AreaItem>() // Для тестирования
     private var currentPage = 0
     private var totalPages = 0
@@ -32,35 +31,21 @@ class SearchViewModel(
     private var currentVacancies = listOf<Vacancy>()
 
     fun observeState(): LiveData<SearchFragmentState> = stateLiveData
-    fun observeIsLoading(): LiveData<Boolean> = isLoading
+    fun isFiltersOn(): Boolean {
+        return !filtersInterActor.getFilters().filters.isNullOrEmpty()
+    }
 
-    fun getSearchRequest(text: String, page: String?): HashMap<String, String> {
-        val filter = filtresInterActor.getFiltres()
-        val request: HashMap<String, String> = HashMap()
+    fun getSearchRequest(text: String, page: String?): Map<String, String> {
+        val filter = filtersInterActor.getFilters()
+        val request = filter.filters ?: mutableMapOf()
         with(request) {
             this[TEXT] = text
             this[PER_PAGE] = PAGE_SIZE
-            if (!page.isNullOrEmpty()) {
+            page?.let {
                 this[PAGE] = page
             }
-            filter?.let {
-                if (!it.areaId.isNullOrEmpty()) {
-                    this[AREA] = it.areaId
-                }
-                if (!it.industryId.isNullOrEmpty()) {
-                    this[INDUSTRY] = it.industryId
-                }
-                if (!it.salary.isNullOrEmpty()) {
-                    this[SALARY] = it.salary
-                }
-                if (it.onlyWithSalary) {
-                    this[ONLY_WITH_SALARY] = it.onlyWithSalary.toString()
-                }
-            }
         }
-        Log.d("REQUEST", request.toString())
-
-        return request
+        return request.toMap()
     }
 
     fun clickDebounce(): Boolean {
@@ -107,7 +92,6 @@ class SearchViewModel(
 
     fun onLastItemReached() {
         currentPage++
-        isLoading.postValue(true)
         viewModelScope.launch {
             vacanciesInterActor.searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
                 .collect { result ->
@@ -186,7 +170,7 @@ class SearchViewModel(
                 stateLiveData.postValue(
                     SearchFragmentState.Error(
                         foundVacancies.message,
-                        isSearch
+                        isSearch = isSearch
                     )
                 )
             }
@@ -210,11 +194,8 @@ class SearchViewModel(
                     currentVacancies = data.items
                 }
                 stateLiveData.postValue(
-                    SearchFragmentState.Content(
-                        data
-                    )
+                    SearchFragmentState.Content(data)
                 )
-                isLoading.postValue(false)
             }
         }
     }
@@ -229,9 +210,5 @@ class SearchViewModel(
         private const val PAGE = "page"
         private const val PAGE_SIZE = "20"
         private const val PER_PAGE = "per_page"
-        private const val AREA = "area"
-        private const val INDUSTRY = "industry"
-        private const val SALARY = "salary"
-        private const val ONLY_WITH_SALARY = "only_with_salary"
     }
 }

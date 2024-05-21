@@ -19,12 +19,15 @@ data class AreaDTO(
 
 data class EmployerDTO(
     val name: String,
-    @SerializedName("logo_urls") val logoUrls: LogoUrlsDTO?
+    @SerializedName("logo_urls")
+    val logoUrls: LogoUrlsDTO?
 )
 
 data class LogoUrlsDTO(
-    @SerializedName("90") val logo90: String?,
-    @SerializedName("240") val logo240: String?
+    @SerializedName("90")
+    val logo90: String?,
+    @SerializedName("240")
+    val logo240: String?
 )
 
 data class SalaryDTO(

@@ -7,8 +7,10 @@ import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.domain.db.FavouriteDataBaseRepository
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
-class FavouriteDataBaseRepositoryImpl(private val database: AppDatabase, private val convertor: Convertor) :
-    FavouriteDataBaseRepository {
+class FavouriteDataBaseRepositoryImpl(
+    private val database: AppDatabase,
+    private val convertor: Convertor
+) : FavouriteDataBaseRepository {
     override suspend fun addFavouriteVacancy(vacancy: VacancyDetails) {
         val favouriteVacancy = convertor.mapFromVacancy(vacancy)
         database.favouritesVacanciesDao().insertVacancy(favouriteVacancy)

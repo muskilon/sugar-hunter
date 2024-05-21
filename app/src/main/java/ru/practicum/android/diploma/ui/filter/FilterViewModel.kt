@@ -3,20 +3,20 @@ package ru.practicum.android.diploma.ui.filter
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.practicum.android.diploma.domain.FiltresInterActor
-import ru.practicum.android.diploma.domain.models.SavedFiltres
+import ru.practicum.android.diploma.domain.FiltersInterActor
+import ru.practicum.android.diploma.domain.models.SavedFilters
 
 class FilterViewModel(
-    val filtresInterActor: FiltresInterActor
+    val filtersInterActor: FiltersInterActor
 ) : ViewModel() {
 
     val mutable = MutableLiveData<Int>()
 
-    fun setFiltres(filtres: SavedFiltres) {
-        filtresInterActor.updateFiltres(filtres)
+    fun setFilters(filters: SavedFilters?) {
+        filtersInterActor.updateFilters(filters)
     }
-    fun getFiltres() {
-        val ttt = filtresInterActor.getFiltres()
-        Log.d("FILTRES", ttt.toString())
+    fun getFilters() {
+        val ttt = filtersInterActor.getFilters()
+        Log.d("FILTERS", ttt.toString())
     }
 }
