@@ -84,10 +84,6 @@ class SearchFragment : Fragment() {
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
-        viewModel.observeIsLoading().observe(viewLifecycleOwner) {
-            isPageLoading = it
-        }
-
         binding.favoriteButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterFragment
@@ -109,6 +105,7 @@ class SearchFragment : Fragment() {
                     .findLastVisibleItemPosition()
                 val itemsCount = searchAdapter.itemCount
                 if (pos >= itemsCount - 1 && !isPageLoading && currentPage < pages - 1) {
+                    isPageLoading = true
                     viewModel.onLastItemReached()
                     binding.pageLoading.isVisible = true
                 }
@@ -183,12 +180,9 @@ class SearchFragment : Fragment() {
             searchRecyclerView.visibility = View.GONE
         }
 
-//        Что бы при запросах подряд в которых есть одни и те же вакансии RV вставал сначала
-//        Пример запроса java, затем поскролить, а потом запросить kotlin
-//        И очистка RV, что бы не моргали предыдущие результаты поиска
+//очистка RV, что бы не моргали предыдущие результаты поиска
 
         binding.searchRecyclerView.removeAllViewsInLayout()
-        searchAdapter.setData(listOf())
     }
 
     private fun showError(errorMessage: String) {
@@ -220,6 +214,7 @@ class SearchFragment : Fragment() {
 
     private fun showContent(vacancy: VacanciesResponse) {
         searchAdapter.setData(vacancy.items)
+        isPageLoading = false
         with(binding) {
             vacancyCount.text = App.getAppResources()?.getQuantityString(
                 R.plurals.vacancy_plurals, totalFoundVacancies, totalFoundVacancies
@@ -232,6 +227,7 @@ class SearchFragment : Fragment() {
             searchRecyclerView.visibility = View.VISIBLE
             pageLoading.isVisible = false
         }
+        Log.d("TAG_ITEMS_COUNT", searchAdapter.itemCount.toString())
     }
     private fun getAdapter() =
         SearchAdapter { vacancy ->

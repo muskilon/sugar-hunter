@@ -22,17 +22,18 @@ class SearchAdapter(
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(vacancy[position])
         holder.itemView.setOnClickListener {
-            onItemClick.invoke(vacancy[holder.adapterPosition])
+            onItemClick.invoke(vacancy[holder.getBindingAdapterPosition()])
         }
     }
 
     override fun getItemCount(): Int = vacancy.size
 
-    fun setData(newTracks: List<Vacancy>) {
-        val diffCallback = DiffUtilCallback(vacancy, newTracks)
+    fun setData(newVacancies: List<Vacancy>) {
+        val diffCallback = DiffUtilCallback(vacancy, newVacancies)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         vacancy.clear()
-        vacancy.addAll(newTracks)
-        diffResult.dispatchUpdatesTo(this)
+        vacancy.addAll(newVacancies)
+        notifyItemRangeInserted(vacancy.size - 1, newVacancies.size)
+//        diffResult.dispatchUpdatesTo(this)
     }
 }

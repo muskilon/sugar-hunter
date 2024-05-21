@@ -22,7 +22,6 @@ class SearchViewModel(
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchFragmentState>()
-    private val isLoading = MutableLiveData<Boolean>()
     private val foundAreas = mutableListOf<AreaItem>() // Для тестирования
     private var currentPage = 0
     private var totalPages = 0
@@ -32,8 +31,6 @@ class SearchViewModel(
     private var currentVacancies = listOf<Vacancy>()
 
     fun observeState(): LiveData<SearchFragmentState> = stateLiveData
-    fun observeIsLoading(): LiveData<Boolean> = isLoading
-
     fun isFiltersOn(): Boolean {
         return !filtersInterActor.getFilters().filters.isNullOrEmpty()
     }
@@ -83,6 +80,7 @@ class SearchViewModel(
                 currentVacancies = listOf()
                 latestSearchText = text
                 viewModelScope.launch {
+                    Log.d("TAG_SEARCH_REQUEST", "SEARCH_REQUEST")
                     vacanciesInterActor
                         .searchVacancies(request)
                         .collect { result ->
@@ -95,8 +93,8 @@ class SearchViewModel(
 
     fun onLastItemReached() {
         currentPage++
-        isLoading.postValue(true)
         viewModelScope.launch {
+            Log.d("TAG_PAGE_REQUEST", "PAGE_REQUEST")
             vacanciesInterActor.searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
                 .collect { result ->
                     processResult(result, false)
@@ -203,7 +201,6 @@ class SearchViewModel(
                         isSearch = isSearch
                     )
                 )
-                isLoading.postValue(false)
             }
         }
     }
