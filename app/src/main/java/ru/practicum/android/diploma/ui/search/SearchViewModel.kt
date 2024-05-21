@@ -80,7 +80,6 @@ class SearchViewModel(
                 currentVacancies = listOf()
                 latestSearchText = text
                 viewModelScope.launch {
-                    Log.d("TAG_SEARCH_REQUEST", "SEARCH_REQUEST")
                     vacanciesInterActor
                         .searchVacancies(request)
                         .collect { result ->
@@ -94,7 +93,6 @@ class SearchViewModel(
     fun onLastItemReached() {
         currentPage++
         viewModelScope.launch {
-            Log.d("TAG_PAGE_REQUEST", "PAGE_REQUEST")
             vacanciesInterActor.searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
                 .collect { result ->
                     processResult(result, false)
@@ -196,10 +194,7 @@ class SearchViewModel(
                     currentVacancies = data.items
                 }
                 stateLiveData.postValue(
-                    SearchFragmentState.Content(
-                        vacancy = data,
-                        isSearch = isSearch
-                    )
+                    SearchFragmentState.Content(data)
                 )
             }
         }

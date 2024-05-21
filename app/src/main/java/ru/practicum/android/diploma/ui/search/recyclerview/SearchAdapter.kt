@@ -29,11 +29,8 @@ class SearchAdapter(
     override fun getItemCount(): Int = vacancy.size
 
     fun setData(newVacancies: List<Vacancy>) {
-        val diffCallback = DiffUtilCallback(vacancy, newVacancies)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
         vacancy.clear()
         vacancy.addAll(newVacancies)
         notifyItemRangeInserted(vacancy.size - 1, newVacancies.size)
-//        diffResult.dispatchUpdatesTo(this)
     }
 }

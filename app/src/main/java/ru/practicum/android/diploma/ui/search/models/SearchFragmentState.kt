@@ -8,8 +8,7 @@ sealed interface SearchFragmentState {
     data object Loading : SearchFragmentState
 
     data class Content(
-        val vacancy: VacanciesResponse,
-        val isSearch: Boolean
+        val vacancy: VacanciesResponse
     ) : SearchFragmentState
 
     data class Error(
