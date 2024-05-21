@@ -16,34 +16,35 @@
         android:paddingEnd="@dimen/padding_16dp"
         android:paddingBottom="@dimen/padding_20dp"
         android:src="@drawable/back_button"
-        app:layout_constraintEnd_toStartOf="@id/choiceCountryTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/choiceCountryTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="@dimen/margin_19dp"
+        android:id="@+id/choiceCountryScreenTitle"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
         android:fontFamily="@font/ys_display_medium"
         android:lineHeight="@dimen/text_line_height_26dp"
-        android:text="Выбор страны"
+        android:paddingStart="0dp"
+        android:paddingTop="@dimen/margin_19dp"
+        android:paddingEnd="@dimen/margin_8dp"
+        android:paddingBottom="@dimen/margin_19dp"
+        android:text="@string/choice_country_fragment_header"
         android:textColor="?attr/prime_color_black"
         android:textFontWeight="500"
-        app:layout_constraintStart_toEndOf="@+id/backButton"
         android:textSize="@dimen/text_size_22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/countryRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choiceCountryTitle" />
-
+        app:layout_constraintTop_toBottomOf="@id/choiceCountryScreenTitle"
+        tools:listitem="@layout/item_country" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
