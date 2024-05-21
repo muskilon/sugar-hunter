@@ -1,21 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".ui.filter.place.region.RegionFragment">
 
-    <TextView
-        android:id="@+id/title"
+    <ImageView
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_19dp"
-        android:text="Выбор региона"
-        android:textSize="@dimen/text_size_22sp"
+        android:importantForAccessibility="no"
+        android:paddingStart="@dimen/padding_16dp"
+        android:paddingTop="@dimen/padding_20dp"
+        android:paddingEnd="@dimen/padding_16dp"
+        android:paddingBottom="@dimen/padding_20dp"
+        android:src="@drawable/back_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/choiceRegionScreenTitle"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:lineHeight="@dimen/text_line_height_26dp"
+        android:paddingStart="0dp"
+        android:paddingTop="@dimen/margin_19dp"
+        android:paddingEnd="@dimen/margin_8dp"
+        android:paddingBottom="@dimen/margin_19dp"
+        android:text="@string/choice_region_fragment_header"
+        android:textColor="?attr/prime_color_black"
+        android:textFontWeight="500"
+        android:textSize="@dimen/text_size_22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/industry_input_text_frame"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="@dimen/padding_16dp"
+        android:layout_marginVertical="@dimen/padding_8dp"
+        android:background="@drawable/search_edittext_shape"
+        android:orientation="horizontal"
+        android:paddingVertical="4dp"
+        android:paddingStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choiceRegionScreenTitle">
+
+        <EditText
+            android:id="@+id/region_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/search_edittext_shape"
+            android:fontFamily="@font/ys_display_regular"
+            android:hint="@string/region_input_edittext"
+            android:inputType="text"
+            android:lineHeight="@dimen/text_line_height_19dp"
+            android:maxLines="1"
+            android:textColor="@color/black_universal"
+            android:textColorHint="?attr/secondary_dark_gray"
+            android:textCursorDrawable="@drawable/search_edittext_color_cursor"
+            android:textFontWeight="400"
+            android:textSize="@dimen/text_size_16sp" />
+
+        <ImageView
+            android:id="@+id/clearIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="4dp"
+            android:padding="12dp"
+            android:src="@drawable/clear_button"
+            android:visibility="gone"
+            tools:visibility="gone"
+            android:importantForAccessibility="no" />
+
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="4dp"
+            android:padding="12dp"
+            android:src="@drawable/search_icon"
+            android:visibility="visible"
+            android:importantForAccessibility="no" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/industryRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/industry_input_text_frame"
+        tools:listitem="@layout/item_country" />
+
+    <LinearLayout
+        android:id="@+id/regionNoFoundHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choiceRegionScreenTitle"
+        tools:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/placeholder_error_favorite"
+            android:importantForAccessibility="no" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:lineHeight="@dimen/text_line_height_26dp"
+            android:text="@string/region_no_found"
+            android:textAlignment="center"
+            android:textColor="?attr/prime_color_black"
+            android:textFontWeight="500"
+            android:textSize="@dimen/text_size_22sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/regionErrorHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choiceRegionScreenTitle"
+        tools:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/error_region_holder"
+            android:importantForAccessibility="no" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:lineHeight="@dimen/text_line_height_26dp"
+            android:text="@string/error_region"
+            android:textAlignment="center"
+            android:textColor="?attr/prime_color_black"
+            android:textFontWeight="500"
+            android:textSize="@dimen/text_size_22sp" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
