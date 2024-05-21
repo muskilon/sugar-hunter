@@ -36,7 +36,7 @@
         android:importantForAccessibility="no" />
 
     <FrameLayout
-        android:id="@+id/search_edit_frame"
+        android:id="@+id/industry_input_text_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +100,7 @@
         app:layout_constraintBottom_toTopOf="@id/pageLoading"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_edit_frame">
+        app:layout_constraintTop_toBottomOf="@id/industry_input_text_frame">
 
 
         <androidx.recyclerview.widget.RecyclerView
