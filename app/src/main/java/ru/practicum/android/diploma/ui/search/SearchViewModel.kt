@@ -32,12 +32,12 @@ class SearchViewModel(
 
     fun observeState(): LiveData<SearchFragmentState> = stateLiveData
     fun isFiltersOn(): Boolean {
-        return !filtersInterActor.getFilters().filters.isNullOrEmpty()
+        return filtersInterActor.getFilters().filters.isNotEmpty()
     }
 
     fun getSearchRequest(text: String, page: String?): Map<String, String> {
         val filter = filtersInterActor.getFilters()
-        val request = filter.filters ?: mutableMapOf()
+        val request = filter.filters
         with(request) {
             this[TEXT] = text
             this[PER_PAGE] = PAGE_SIZE
