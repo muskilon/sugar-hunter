@@ -16,51 +16,57 @@
         android:paddingEnd="@dimen/padding_16dp"
         android:paddingBottom="@dimen/padding_20dp"
         android:src="@drawable/back_button"
-        app:layout_constraintEnd_toStartOf="@id/choiceSphereTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/choiceSphereTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="64dp"
-        android:layout_marginStart="4dp"
         android:fontFamily="@font/ys_display_medium"
-        android:gravity="center_vertical"
         android:lineHeight="@dimen/text_line_height_26dp"
+        android:paddingStart="@dimen/margin_16dp"
+        android:paddingTop="@dimen/margin_19dp"
+        android:paddingEnd="@dimen/margin_8dp"
+        android:paddingBottom="@dimen/margin_19dp"
         android:text="Выбор отрасли"
         android:textColor="?attr/prime_color_black"
         android:textFontWeight="500"
         android:textSize="@dimen/text_size_22sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <FrameLayout
-        android:id="@+id/sphere_edit_frame"
+    <LinearLayout
+        android:id="@+id/industry_input_text_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="@dimen/padding_16dp"
+        android:layout_marginVertical="@dimen/padding_8dp"
+        android:background="@drawable/search_edittext_shape"
+        android:orientation="horizontal"
+        android:paddingVertical="4dp"
+        android:paddingStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/choiceSphereTitle">
 
         <EditText
-            android:id="@+id/sphere_edit_text"
-            android:layout_width="match_parent"
+            android:id="@+id/industry_edit_text"
+            android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginHorizontal="@dimen/margin_16dp"
-            android:layout_marginVertical="@dimen/margin_8dp"
-            android:layout_marginTop="8dp"
+            android:layout_weight="1"
             android:background="@drawable/search_edittext_shape"
             android:fontFamily="@font/ys_display_regular"
             android:hint="Введите отрасль"
             android:inputType="text"
             android:lineHeight="@dimen/text_line_height_19dp"
             android:maxLines="1"
-            android:paddingHorizontal="@dimen/padding_16dp"
             android:textColor="@color/black_universal"
             android:textColorHint="?attr/secondary_dark_gray"
             android:textCursorDrawable="@drawable/search_edittext_color_cursor"
+            android:textFontWeight="400"
             android:textSize="@dimen/text_size_16sp" />
 
         <ImageView
@@ -68,20 +74,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="4dp"
+            android:padding="12dp"
             android:src="@drawable/clear_button"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="gone" />
 
         <ImageView
             android:id="@+id/searchIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="4dp"
+            android:padding="12dp"
             android:src="@drawable/search_icon"
             android:visibility="visible" />
-
-    </FrameLayout>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -90,6 +98,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sphere_edit_frame" />
+        app:layout_constraintTop_toBottomOf="@+id/industry_input_text_frame"
+        tools:listitem="@layout/item_industry" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
