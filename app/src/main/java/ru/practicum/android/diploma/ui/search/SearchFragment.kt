@@ -182,6 +182,13 @@ class SearchFragment : Fragment() {
             vacancyCount.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
         }
+
+//        Что бы при запросах подряд в которых есть одни и те же вакансии RV вставал сначала
+//        Пример запроса java, затем поскролить, а потом запросить kotlin
+//        И очистка RV, что бы не моргали предыдущие результаты поиска
+
+        binding.searchRecyclerView.removeAllViewsInLayout()
+        searchAdapter.setData(listOf())
     }
 
     private fun showError(errorMessage: String) {

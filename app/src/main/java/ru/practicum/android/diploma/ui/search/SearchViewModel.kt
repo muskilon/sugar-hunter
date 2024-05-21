@@ -48,7 +48,6 @@ class SearchViewModel(
                 this[PAGE] = page
             }
         }
-
         return request.toMap()
     }
 
@@ -175,7 +174,7 @@ class SearchViewModel(
                 stateLiveData.postValue(
                     SearchFragmentState.Error(
                         foundVacancies.message,
-                        isSearch
+                        isSearch = isSearch
                     )
                 )
             }
@@ -200,7 +199,8 @@ class SearchViewModel(
                 }
                 stateLiveData.postValue(
                     SearchFragmentState.Content(
-                        data
+                        vacancy = data,
+                        isSearch = isSearch
                     )
                 )
                 isLoading.postValue(false)
