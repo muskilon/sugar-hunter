@@ -2,11 +2,9 @@ package ru.practicum.android.diploma.ui.search.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.util.DiffUtilCallback
 
 class SearchAdapter(
     private val onItemClick: (Vacancy) -> Unit

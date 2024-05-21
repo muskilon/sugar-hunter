@@ -180,7 +180,7 @@ class SearchFragment : Fragment() {
             searchRecyclerView.visibility = View.GONE
         }
 
-//очистка RV, что бы не моргали предыдущие результаты поиска
+// очистка RV, что бы не моргали предыдущие результаты поиска
 
         binding.searchRecyclerView.removeAllViewsInLayout()
     }
