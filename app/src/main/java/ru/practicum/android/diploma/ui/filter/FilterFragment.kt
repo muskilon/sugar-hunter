@@ -41,6 +41,10 @@ class FilterFragment : Fragment() {
 
         binding.salaryEdit.addTextChangedListener(getTextWatcher())
 
+        binding.salaryClearButton.setOnClickListener {
+            binding.salaryEdit.text.clear()
+        }
+
         binding.buttonDecline.setOnClickListener {
             filters.clear()
             setStatements()
@@ -90,10 +94,15 @@ class FilterFragment : Fragment() {
     }
     private fun setStatements() {
         binding.buttonApply.isVisible = oldFilters != filters
+        Log.d("TAG_OLD", oldFilters.toString())
+        Log.d("TAG_NEW", filters.toString())
         if (filters.isNotEmpty()) {
             filters.keys.forEach { key ->
                 when (key) {
-                    SALARY -> binding.salaryEdit.setText(filters[key])
+                    SALARY -> {
+                        binding.salaryEdit.setText(filters[key])
+                        binding.salaryClearButton.isVisible = true
+                    }
                     ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
                     INDUSTRY -> Unit
                     AREA -> Unit
@@ -115,11 +124,13 @@ class FilterFragment : Fragment() {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             if (s.isNullOrEmpty()) {
                 filters.remove(SALARY)
+                binding.salaryClearButton.isVisible = false
                 setStatements()
             } else {
                 filters[SALARY] = s.toString()
-                binding.buttonApply.isVisible = true
+                binding.buttonApply.isVisible = oldFilters != filters
                 binding.buttonDecline.isVisible = true
+                binding.salaryClearButton.isVisible = true
             }
         }
 
