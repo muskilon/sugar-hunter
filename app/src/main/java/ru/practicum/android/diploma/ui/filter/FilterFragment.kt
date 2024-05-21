@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.filter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class FilterFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<FilterViewModel>()
     private var filters: MutableMap<String, String> = mutableMapOf()
+    private var oldFilters: MutableMap<String, String> = mutableMapOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +35,7 @@ class FilterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         filters = viewModel.getFilters()
+        oldFilters.putAll(filters)
 
         setStatements()
 
@@ -86,6 +89,7 @@ class FilterFragment : Fragment() {
         setStatements()
     }
     private fun setStatements() {
+        binding.buttonApply.isVisible = oldFilters != filters
         if (filters.isNotEmpty()) {
             filters.keys.forEach { key ->
                 when (key) {
@@ -94,11 +98,9 @@ class FilterFragment : Fragment() {
                     INDUSTRY -> Unit
                     AREA -> Unit
                 }
-                binding.buttonApply.isVisible = true
                 binding.buttonDecline.isVisible = true
             }
         } else {
-            binding.buttonApply.isVisible = false
             binding.buttonDecline.isVisible = false
             binding.salaryCheckBox.isChecked = false
             binding.salaryEdit.text.clear()
