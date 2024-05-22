@@ -57,7 +57,7 @@ class VacancyViewModel(
             }
 
             is Resource.Data -> {
-                vacancyScreenState.postValue(VacancyFragmentState.Content(foundVacancy.value as VacancyDetails))
+                vacancyScreenState.postValue(VacancyFragmentState.Content(foundVacancy.value))
             }
         }
     }

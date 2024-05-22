@@ -10,7 +10,7 @@ class FiltersRepositoryImpl(
     override fun getFilters(): SavedFilters {
         return filtersStorage.getFilters()?.let {
             Gson().fromJson(it, SavedFilters::class.java)
-        } ?: SavedFilters(null)
+        } ?: SavedFilters(mutableMapOf())
     }
 
     override fun updateFilters(filters: SavedFilters?) {
