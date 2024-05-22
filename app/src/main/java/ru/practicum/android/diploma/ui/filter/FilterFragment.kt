@@ -47,6 +47,12 @@ class FilterFragment : Fragment() {
             binding.salaryEdit.text.clear()
         }
 
+        binding.selectIndustryActionButton.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_choicePlaceFragment_to_regionFragment
+            )
+        }
+
         binding.buttonDecline.setOnClickListener {
             filters.clear()
             setStatements()
