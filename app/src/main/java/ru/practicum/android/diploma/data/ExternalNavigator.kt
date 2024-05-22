@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.data
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import ru.practicum.android.diploma.domain.EmailData
+import ru.practicum.android.diploma.domain.models.EmailData
 
 class ExternalNavigator(
     private val context: Context

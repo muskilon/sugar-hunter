@@ -9,13 +9,14 @@ koinAndroid = "3.3.0"
 kotlinxCoroutinesAndroid = "1.7.1"
 lifecycleLivedataKtx = "2.7.0"
 lifecycleViewmodelKtx = "2.7.0"
-minSdk = "29"
+minSdk = "26"
 compileSdk = "34"
 navigationFragmentKtx = "2.7.7"
 okhttp = "4.10.0"
 retrofit = "2.9.0"
 roomRuntime = "2.5.1"
 targetSdk = "33"
+paging = "3.2.1"
 
 # Detekt
 detekt = "1.23.3"
@@ -62,5 +63,8 @@ unitTests-junit = "junit:junit:4.13.2"
 # UI tests
 uiTests-junitExt = "androidx.test.ext:junit:1.1.5"
 uiTests-espressoCore = "androidx.test.espresso:espresso-core:3.5.1"
+
+# Paging
+paging-library = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
 
 [bundles]

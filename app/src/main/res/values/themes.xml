@@ -6,13 +6,13 @@
     <attr name="secondary_dark_gray" />
 
     <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="prime_color_black">@color/Black_Day</item>
-        <item name="prime_color_white">@color/White_Day</item>
-        <item name="secondary_gray">@color/Light_grey</item>
-        <item name="secondary_dark_gray">@color/Dark_Gray</item>
+        <item name="prime_color_black">@color/black_day</item>
+        <item name="prime_color_white">@color/white_day</item>
+        <item name="secondary_gray">@color/light_grey</item>
+        <item name="secondary_dark_gray">@color/dark_gray</item>
 
-        <item name="android:statusBarColor">@color/White_Day</item>
-        <item name="android:navigationBarColor">@color/White_Day</item>
+        <item name="android:statusBarColor">@color/white_day</item>
+        <item name="android:navigationBarColor">@color/white_day</item>
 
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>

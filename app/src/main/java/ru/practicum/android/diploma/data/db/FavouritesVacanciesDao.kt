@@ -16,4 +16,7 @@ interface FavouritesVacanciesDao {
 
     @Delete(entity = FavouriteVacancy::class)
     fun deleteVacancy(vacancy: FavouriteVacancy)
+
+    @Query("SELECT id FROM favourite_vacancy")
+    fun getFavoritesIds(): List<String>
 }

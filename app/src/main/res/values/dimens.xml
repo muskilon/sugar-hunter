@@ -14,10 +14,10 @@
     <dimen name="padding_4dp">4dp</dimen>
 
     <!--TextSize-->
-    <dimen name="textSize_32sp">32sp</dimen>
-    <dimen name="textSize_22sp">22sp</dimen>
-    <dimen name="textSize_16sp">16sp</dimen>
-    <dimen name="textSize_12sp">12sp</dimen>
+    <dimen name="text_size_32sp">32sp</dimen>
+    <dimen name="text_size_22sp">22sp</dimen>
+    <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="text_size_12sp">12sp</dimen>
 
     <!--    Text Line Hieghts-->
     <dimen name="text_line_height_26dp">26dp</dimen>
@@ -30,4 +30,7 @@
 
     <!--    View Sizes-->
     <dimen name="bottom_navigation_height">56dp</dimen>
+
+    <!--    View Sizes-->
+    <dimen name="rounded_corners">12dp</dimen>
 </resources>

@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.app
 
 import android.app.Application
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -11,6 +12,7 @@ import ru.practicum.android.diploma.di.viewModelModules
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
+        appResources = resources
         startKoin {
             androidContext(this@App)
             modules(dataModules, domainModules, viewModelModules)
@@ -20,5 +22,10 @@ class App : Application() {
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         )
     }
-
+    companion object {
+        private var appResources: Resources? = null
+        fun getAppResources(): Resources? {
+            return appResources
+        }
+    }
 }

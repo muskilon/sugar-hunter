@@ -6,11 +6,11 @@
 
     <!--    Team Fragment Strings-->
     <string name="team">Команда</string>
-    <string name="teamAuthorTitle">Над приложением работали</string>
-    <string name="teamAuthor1">Михаил Шумихин</string>
-    <string name="teamAuthor2">Мария Кузнецова</string>
-    <string name="teamAuthor3">Максим Юрищев</string>
-    <string name="teamAuthor4">Денис Кузьмин</string>
+    <string name="team_author_title">Над приложением работали</string>
+    <string name="team_author1">Михаил Шумихин</string>
+    <string name="team_author2">Мария Кузнецова</string>
+    <string name="team_author3">Максим Юрищев</string>
+    <string name="team_author4">Денис Кузьмин</string>
 
     <!--    Search Fragment Strings-->
     <string name="search">Поиск вакансий</string>
@@ -20,6 +20,33 @@
     <string name="search_error_no_vacancies">Таких вакансий нет</string>
 
     <!--    Favourite Fragment Strings-->
-    <string name="favouriteEmpty">Список пуст</string>
-    <string name="favouriteError">Не удалось получить список вакансий</string>
+    <string name="favourite_empty">Список пуст</string>
+    <string name="favourite_error">Не удалось получить список вакансий</string>
+
+
+    <!--    Vacancy Fragment Strings-->
+    <string name="vacancy_fragment_header">Вакансия</string>
+    <string name="experience_header">Требуемый опыт</string>
+    <string name="about_job_header">Описание вакансии</string>
+    <string name="responsibilities_header">Обязанности</string>
+    <string name="requirements_header">Требования</string>
+    <string name="conditions_header">Условия</string>
+    <string name="keySkills_header">Ключевые навыки</string>
+    <string name="contacts_header">Контакты</string>
+    <string name="contact_face_header">Контактное лицо</string>
+    <string name="contact_email_header">E-mail</string>
+    <string name="contact_phone_header">Телефон</string>
+    <string name="contact_comments_header">Комментарий</string>
+    <string name="vacancy_fragment_placeholder_text">Ошибка сервера</string>
+    <string name="no_salary_string">Зарплата не указана</string>
+
+    <plurals name="vacancy_plurals">
+        <item quantity="zero">Вакансий не найдено</item>
+        <item quantity="one">Найдена %1$d вакансия</item>
+        <item quantity="two">Найдено %1$d вакансии</item>
+        <item quantity="few">Найдено %1$d вакансии</item>
+        <item quantity="many">Найдено %1$d вакансий</item>
+        <item quantity="other">Найдено %1$d вакансии</item>
+    </plurals>
+
 </resources>

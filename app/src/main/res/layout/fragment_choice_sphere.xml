@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.filter.sphere.ChoiceSphereFragment">
+    tools:context=".ui.filter.industry.ChooseIndustryFragment">
 
     <TextView
         android:id="@+id/title"
@@ -13,7 +13,7 @@
         android:layout_marginStart="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_19dp"
         android:text="Выбор отрасли"
-        android:textSize="@dimen/textSize_22sp"
+        android:textSize="@dimen/text_size_22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
