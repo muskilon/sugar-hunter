@@ -28,17 +28,17 @@ class ChoicePlaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-    binding.selectCountryActionButton.setOnClickListener {
-        findNavController().navigate(
-            R.id.action_choicePlaceFragment_to_countryFragment
-        )
-
-        binding.selectRegionButtonGroup.setOnClickListener{
+        binding.selectCountryActionButton.setOnClickListener {
             findNavController().navigate(
-                R.id.action_choicePlaceFragment_to_regionFragment
+                R.id.action_choicePlaceFragment_to_countryFragment
             )
+
+            binding.selectRegionButtonGroup.setOnClickListener {
+                findNavController().navigate(
+                    R.id.action_choicePlaceFragment_to_regionFragment
+                )
+            }
         }
-    }
 
     }
 
