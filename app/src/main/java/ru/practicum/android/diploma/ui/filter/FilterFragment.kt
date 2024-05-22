@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
@@ -45,10 +46,16 @@ class FilterFragment : Fragment() {
 
         binding.salaryClearButton.setOnClickListener {
             binding.salaryEdit.text.clear()
+            salaryHeaderColor(null)
+        }
+
+        binding.salaryEdit.onFocusChangeListener = OnFocusChangeListener { _, isFocus ->
+            salaryEditOnFocusChangeListener(isFocus)
         }
 
         binding.buttonDecline.setOnClickListener {
             filters.clear()
+            salaryHeaderColor(null)
             setStatements()
         }
 
@@ -66,12 +73,7 @@ class FilterFragment : Fragment() {
 //        Для тестирования!
 
         binding.salaryCheckBox.setOnClickListener {
-            binding.salaryEdit.clearFocus()
-            when (binding.salaryCheckBox.isChecked) {
-                true -> filters[ONLY_WITH_SALARY] = "true"
-                false -> filters.remove(ONLY_WITH_SALARY)
-            }
-            setStatements()
+            salaryCheckBoxProcessing()
         }
 
         binding.backButton.setOnClickListener { exit() }
@@ -84,6 +86,41 @@ class FilterFragment : Fragment() {
                 }
             }
         )
+    }
+
+    private fun salaryCheckBoxProcessing() {
+        binding.salaryEdit.clearFocus()
+        when (binding.salaryCheckBox.isChecked) {
+            true -> filters[ONLY_WITH_SALARY] = "true"
+            false -> filters.remove(ONLY_WITH_SALARY)
+        }
+        setStatements()
+    }
+
+    private fun salaryEditOnFocusChangeListener(isFocus: Boolean) {
+        when (isFocus) {
+            true -> salaryHeaderColor(true)
+            false -> {
+                if (filters[SALARY].isNullOrEmpty()) {
+                    salaryHeaderColor(null)
+                } else {
+                    salaryHeaderColor(false)
+                }
+            }
+        }
+    }
+    private fun salaryHeaderColor(isFocus: Boolean?) {
+        when (isFocus) {
+            true -> {
+                binding.salaryHeader.setTextColor(requireContext().getColorStateList(R.color.salary_header_focus))
+            }
+            null -> {
+                binding.salaryHeader.setTextColor(requireContext().getColorStateList(R.color.salary_header_default))
+            }
+            false -> {
+                binding.salaryHeader.setTextColor(requireContext().getColorStateList(R.color.salary_header_not_empty))
+            }
+        }
     }
     private fun test(key: String, value: String) { // Для тестирования!!
         if (filters.contains(key)) {
@@ -101,6 +138,7 @@ class FilterFragment : Fragment() {
                     SALARY -> {
                         binding.salaryEdit.setText(filters[key])
                         binding.salaryClearButton.isVisible = true
+                        salaryHeaderColor(false)
                     }
                     ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
                     INDUSTRY -> Unit

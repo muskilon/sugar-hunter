@@ -36,14 +36,16 @@ class SearchViewModel(
     }
 
     fun getSearchRequest(text: String, page: String?): Map<String, String> {
-        val filter = filtersInterActor.getFilters()
-        val request = filter.filters
+        val request = filtersInterActor.getFilters().filters
         with(request) {
             this[TEXT] = text
             this[PER_PAGE] = PAGE_SIZE
+            this.remove(AREA_NAME)
+            this.remove(INDUSTRY_NAME)
             page?.let {
                 this[PAGE] = page
             }
+
         }
         return request.toMap()
     }
@@ -72,7 +74,6 @@ class SearchViewModel(
     }
 
     fun searchVacancies(request: Map<String, String>) {
-        Log.d("TAG_SEARCH", request.toString())
         request[TEXT]?.let { text ->
             if (latestSearchText == text || text.isEmpty()) {
                 searchJob?.cancel()
@@ -95,10 +96,9 @@ class SearchViewModel(
         if (isNeedAddCounter) {
             currentPage++
         } else {
+            stateLiveData.postValue(SearchFragmentState.Loading)
             currentPage = 0
         }
-//        Log.d("TAG_REPEAT_SEARCH", currentPage.toString())
-//        Log.d("TAG_REPEAT_SEARCH", getSearchRequest(latestSearchText, currentPage.toString()).toString())
         viewModelScope.launch {
             vacanciesInterActor
                 .searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
@@ -218,5 +218,7 @@ class SearchViewModel(
         private const val PAGE = "page"
         private const val PAGE_SIZE = "20"
         private const val PER_PAGE = "per_page"
+        private const val AREA_NAME = "areaName"
+        private const val INDUSTRY_NAME = "industryName"
     }
 }
