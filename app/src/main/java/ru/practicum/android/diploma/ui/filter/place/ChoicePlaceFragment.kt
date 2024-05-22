@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import androidx.room.util.convertByteToUUID
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentChoicePlaceBinding
@@ -28,6 +27,7 @@ class ChoicePlaceFragment : Fragment() {
         _binding = FragmentChoicePlaceBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     private var areaName: String? = null
     private var areaId: String? = null
 
