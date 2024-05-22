@@ -12,7 +12,7 @@ interface VacanciesInterActor {
 
     suspend fun getVacancy(id: String): Flow<Resource<VacancyDetails>>
 
-    suspend fun getIndustries(): Flow<Resource<List<Industries>>> //перенесла в IndustryInteractor
+    suspend fun getIndustries(): Flow<Resource<List<Industries>>>
 
     suspend fun getAreaDictionary(): Flow<Resource<AreasDictionary>>
 }

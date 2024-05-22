@@ -27,7 +27,7 @@ val viewModelModules = module {
         ChoicePlaceViewModel(get())
     }
     viewModel {
-        ChooseIndustryViewModel()
+        ChooseIndustryViewModel(industryInteractor = get())
     }
     viewModel {
         FilterViewModel(filtersInterActor = get())
@@ -41,8 +41,7 @@ val viewModelModules = module {
     viewModel {
         TeamViewModel()
     }
-    viewModel {
-            (id: String) ->
+    viewModel { (id: String) ->
         VacancyViewModel(vacancyId = id, favouriteDataBaseInteractor = get(), vacanciesInterActor = get())
     }
 }

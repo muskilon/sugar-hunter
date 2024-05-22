@@ -18,6 +18,6 @@ class VacanciesInterActorImpl(
     ): Flow<Resource<VacanciesResponse>> = repository.searchVacancies(options)
 
     override suspend fun getVacancy(id: String): Flow<Resource<VacancyDetails>> = repository.getVacancyDetails(id)
-    override suspend fun getIndustries(): Flow<Resource<List<Industries>>> = repository.getIndustries() //IndustryInteractorImpl
+    override suspend fun getIndustries(): Flow<Resource<List<Industries>>> = repository.getIndustries()
     override suspend fun getAreaDictionary(): Flow<Resource<AreasDictionary>> = repository.getAreas()
 }
