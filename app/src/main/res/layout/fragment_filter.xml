@@ -192,7 +192,7 @@
                 android:gravity="start|center"
                 android:lineHeight="@dimen/text_line_height_16dp"
                 android:text="@string/salary_card_header"
-                android:textColor="?attr/secondary_dark_gray"
+                android:textColor="@color/filter_salary_header_default"
                 android:textSize="@dimen/text_size_12sp" />
 
             <EditText

@@ -1,12 +1,18 @@
 package ru.practicum.android.diploma.ui.filter
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.view.WindowId.FocusObserver
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -14,6 +20,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.app.App
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 
 class FilterFragment : Fragment() {
@@ -45,6 +52,20 @@ class FilterFragment : Fragment() {
 
         binding.salaryClearButton.setOnClickListener {
             binding.salaryEdit.text.clear()
+            binding.salaryHeader.setTextColor(requireContext().getColorStateList(R.color.filter_salary_header_default))
+        }
+
+        binding.salaryEdit.onFocusChangeListener = OnFocusChangeListener { _, isFocus ->
+            when (isFocus) {
+                true -> binding.salaryHeader.setTextColor(requireContext().getColorStateList(R.color.filter_salary_header_focus))
+                false -> {
+                    if (filters[SALARY].isNullOrEmpty()) {
+                        binding.salaryHeader.setTextColor(requireContext().getColorStateList(R.color.filter_salary_header_default)) // White (night) / Gray (day)
+                    } else {
+                        binding.salaryHeader.setTextColor(requireContext().getColorStateList(R.color.filter_salary_header_not_empty)) // Black
+                    }
+                }
+            }
         }
 
         binding.buttonDecline.setOnClickListener {
@@ -101,6 +122,9 @@ class FilterFragment : Fragment() {
                     SALARY -> {
                         binding.salaryEdit.setText(filters[key])
                         binding.salaryClearButton.isVisible = true
+                        binding.salaryHeader.setTextColor(requireContext().getColorStateList(
+                            R.color.filter_salary_header_not_empty)
+                        )
                     }
                     ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
                     INDUSTRY -> Unit
