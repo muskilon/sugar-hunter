@@ -8,8 +8,9 @@ import ru.practicum.android.diploma.databinding.ItemIndustryBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.Vacancy
 
-class IndustryAdapter(private val listener: OnItemSelectedListener) : RecyclerView.Adapter<IndustryAdapter.IndustryViewHolder>() {
+class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerView.Adapter<IndustryAdapter.IndustryViewHolder>() {
 
     var industryList = ArrayList<Industries>()
 
@@ -20,10 +21,6 @@ class IndustryAdapter(private val listener: OnItemSelectedListener) : RecyclerVi
         return IndustryViewHolder(ItemIndustryBinding.inflate(layoutInspector, parent, false))
     }
 
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
-//        val layoutInflater = LayoutInflater.from(parent.context)
-//        val view = layoutInflater.inflate(R.layout.row_it)
-//    }
 
     override fun getItemCount(): Int {
         return industryList.size
@@ -39,10 +36,10 @@ class IndustryAdapter(private val listener: OnItemSelectedListener) : RecyclerVi
         }
     }
 
-
-    fun interface OnItemSelectedListener {
-        fun onItemSelected(industries: Industries)
-    }
+// TODO с лямбой в конструкторе не нужно
+//    fun interface OnItemSelectedListener {
+//        fun onItemSelected(industries: Industries)
+//    }
 
     inner class IndustryViewHolder(val binding: ItemIndustryBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -50,6 +47,8 @@ class IndustryAdapter(private val listener: OnItemSelectedListener) : RecyclerVi
         init {
             binding.itemCheck.setOnClickListener {
                 selection(bindingAdapterPosition)
+                onItemClick
+                // TODO сюда теперь прокидываем метод по клику старый класс холдера не нужен
             }
         }
 
