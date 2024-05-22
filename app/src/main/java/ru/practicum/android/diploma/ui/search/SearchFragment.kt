@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,15 +50,14 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        ТУТ ЛОМАЕТСЯ!
 
-//        setFragmentResultListener("requestKey") { _, bundle ->
-//            if (bundle.getBoolean("isApplyButton")){
-//                if (!searchText.isNullOrEmpty()) {
-//                    viewModel.repeatRequest(false)
-//                }
-//            }
-//        }
+        setFragmentResultListener("requestKey") { _, bundle ->
+            if (bundle.getBoolean("isApplyButton")){
+                if (!searchText.isNullOrEmpty()) {
+                    viewModel.repeatRequest(false)
+                }
+            }
+        }
 
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 

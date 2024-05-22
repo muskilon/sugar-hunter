@@ -36,8 +36,7 @@ class SearchViewModel(
     }
 
     fun getSearchRequest(text: String, page: String?): Map<String, String> {
-        val filter = filtersInterActor.getFilters()
-        val request = filter.filters
+        val request = filtersInterActor.getFilters().filters
         with(request) {
             this[TEXT] = text
             this[PER_PAGE] = PAGE_SIZE

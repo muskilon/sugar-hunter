@@ -28,9 +28,12 @@ class SearchAdapter(
     override fun getItemCount(): Int = vacancy.size
 
     fun setData(newVacancies: List<Vacancy>) {
+        if (newVacancies.size < vacancy.size) {
+            notifyItemRangeRemoved(0, vacancy.size)
+        }
+        Log.d("TAG_ADAPTER", "${newVacancies.size} ${vacancy.size}")
         vacancy.clear()
         vacancy.addAll(newVacancies)
-        notifyItemRangeInserted(vacancy.size - 1, newVacancies.size)
-        Log.d("TAG_ADAPTER", "${newVacancies.size} ${vacancy.size}")
+        notifyItemRangeInserted(vacancy.size + 1, newVacancies.size)
     }
 }
