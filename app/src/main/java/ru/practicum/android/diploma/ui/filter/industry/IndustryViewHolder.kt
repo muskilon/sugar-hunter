@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industries
 
+// TODO не нужно
 //class IndustryViewHolder(val binding: ItemIndustryBinding) :
 //    RecyclerView.ViewHolder(binding.root) {
 //
