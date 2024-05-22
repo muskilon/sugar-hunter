@@ -10,7 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.FiltersInterActor
 import ru.practicum.android.diploma.domain.VacanciesInterActor
-import ru.practicum.android.diploma.domain.models.AreaItem
+import ru.practicum.android.diploma.domain.models.Areas
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -22,7 +22,7 @@ class SearchViewModel(
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchFragmentState>()
-    private val foundAreas = mutableListOf<AreaItem>() // Для тестирования
+    private val foundAreas = mutableListOf<Areas>() // Для тестирования
     private var currentPage = 0
     private var totalPages = 0
     private var latestSearchText = ""
@@ -110,20 +110,6 @@ class SearchViewModel(
 
 // ДЛЯ ТЕСТИРОВАНИЯ!!!
 
-    fun getVacancy(id: String) {
-        viewModelScope.launch {
-            vacanciesInterActor.getVacancy(id).collect {
-                when (it) {
-                    is Resource.ConnectionError -> Log.d(TAG, it.message)
-
-                    is Resource.NotFound -> Log.d(TAG, it.message)
-
-                    is Resource.Data -> Log.d(TAG, it.value.toString())
-                }
-            }
-        }
-    }
-
     fun getIndustries() {
         viewModelScope.launch {
             vacanciesInterActor.getIndustries().collect {
@@ -147,7 +133,7 @@ class SearchViewModel(
                     is Resource.NotFound -> Log.d(TAG, it.message)
 
                     is Resource.Data -> {
-                        val areas = it.value.container
+                        val areas = it.value
                         foundAreas.clear()
                         areas.getArea("Мос")
                         Log.d("FILTER", foundAreas.toString())
@@ -157,17 +143,12 @@ class SearchViewModel(
         }
     }
 
-    private fun List<AreaItem>.getArea(name: String): AreaItem? {
+    private fun List<Areas>.getArea(name: String) {
         for (area in this) {
             if (area.name.startsWith(name, true)) {
                 foundAreas.add(area)
             }
-            val found = area.areas?.getArea(name)
-            if (found != null) {
-                return found
-            }
         }
-        return null
     }
 
 // ДЛЯ ТЕСТИРОВАНИЯ!!!
