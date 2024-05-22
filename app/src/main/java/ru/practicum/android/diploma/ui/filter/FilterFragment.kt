@@ -49,7 +49,7 @@ class FilterFragment : Fragment() {
 
         binding.selectIndustryActionButton.setOnClickListener {
             findNavController().navigate(
-                R.id.action_choicePlaceFragment_to_regionFragment
+                R.id.action_filterFragment_to_choiceSphereFragment
             )
         }
 
