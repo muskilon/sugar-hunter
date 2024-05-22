@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.models.SavedFilters
 
@@ -41,6 +43,11 @@ class FilterFragment : Fragment() {
 
         viewModel.getFilters()
 
+        binding.selectIndustryActionButton.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_filterFragment_to_choiceSphereFragment
+            )
+        }
     }
 
     override fun onDestroyView() {
