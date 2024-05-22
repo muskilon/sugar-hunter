@@ -47,7 +47,7 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerV
         init {
             binding.itemCheck.setOnClickListener {
                 selection(bindingAdapterPosition)
-                onItemClick
+                onItemClick.invoke(industryList[bindingAdapterPosition])
                 // TODO сюда теперь прокидываем метод по клику старый класс холдера не нужен
             }
         }
