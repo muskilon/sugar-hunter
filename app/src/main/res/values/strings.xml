@@ -50,6 +50,22 @@
     <string name="decline_button">Сбросить</string>
     <string name="apply_button">Применить</string>
 
+
+    <!--    ChoicePlace Fragment Strings-->
+    <string name="choice_place_screen_header">Выбор места работы</string>
+    <string name="select_country_header">Страна</string>
+    <string name="select_region_header">Область</string>
+    <string name="apply_choice_button_place">Выбрать</string>
+
+    <!--    ChoiceCountry Fragment Strings-->
+    <string name="choice_country_fragment_header">Выбор страны</string>
+
+    <!--    ChoiceCountry Fragment Strings-->
+    <string name="choice_region_fragment_header">Выбор региона</string>
+    <string name="region_input_edittext">Введите регион</string>
+    <string name="region_no_found">Такого региона нет</string>
+    <string name="error_region">Не удалось получить список</string>
+
     <plurals name="vacancy_plurals">
         <item quantity="zero">Вакансий не найдено</item>
         <item quantity="one">Найдена %1$d вакансия</item>

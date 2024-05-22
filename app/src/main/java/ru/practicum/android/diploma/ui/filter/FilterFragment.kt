@@ -132,7 +132,6 @@ class FilterFragment : Fragment() {
                 binding.salaryClearButton.isVisible = true
             }
         }
-
         override fun afterTextChanged(s: Editable?) {
             // empty
         }

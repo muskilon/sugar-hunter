@@ -25,7 +25,7 @@
         android:layout_height="64dp"
         android:fontFamily="@font/ys_display_medium"
         android:lineHeight="@dimen/text_line_height_26dp"
-        android:paddingStart="@dimen/margin_16dp"
+        android:paddingStart="0dp"
         android:paddingTop="@dimen/margin_19dp"
         android:paddingEnd="@dimen/margin_8dp"
         android:paddingBottom="@dimen/margin_19dp"
