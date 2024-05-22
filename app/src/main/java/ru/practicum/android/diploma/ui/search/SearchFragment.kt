@@ -50,12 +50,9 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         setFragmentResultListener("requestKey") { _, bundle ->
-            if (bundle.getBoolean("isApplyButton")){
-                if (!searchText.isNullOrEmpty()) {
-                    viewModel.repeatRequest(false)
-                }
+            if (bundle.getBoolean("isApplyButton") && !searchText.isNullOrEmpty()) {
+                viewModel.repeatRequest(false)
             }
         }
 
@@ -70,13 +67,7 @@ class SearchFragment : Fragment() {
         binding.searchEditText.addTextChangedListener(getTextWatcher())
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                binding.searchEditText.clearFocus()
-                if (!searchText.isNullOrEmpty()) {
-                    viewModel.searchVacancies(viewModel.getSearchRequest(searchText!!, null))
-                    viewModel.searchDebounce(String())
-                }
-            }
+            searchEditActionListener(actionId)
             false
         }
 
@@ -98,6 +89,16 @@ class SearchFragment : Fragment() {
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterFragment
             )
+        }
+    }
+
+    private fun searchEditActionListener(actionId: Int) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            binding.searchEditText.clearFocus()
+            if (!searchText.isNullOrEmpty()) {
+                viewModel.searchVacancies(viewModel.getSearchRequest(searchText!!, null))
+                viewModel.searchDebounce(String())
+            }
         }
     }
 
@@ -170,8 +171,6 @@ class SearchFragment : Fragment() {
     private fun showStart() {
         with(binding) {
             placeholderSearch.visibility = View.VISIBLE
-        }
-        with(binding) {
             noInternet.visibility = View.GONE
             somethingWrong.visibility = View.GONE
             progressBar.visibility = View.GONE
@@ -188,11 +187,8 @@ class SearchFragment : Fragment() {
             somethingWrong.visibility = View.GONE
             vacancyCount.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
+            searchRecyclerView.removeAllViewsInLayout() // очистка RV, что бы не моргали предыдущие результаты поиска
         }
-
-// очистка RV, что бы не моргали предыдущие результаты поиска
-
-        binding.searchRecyclerView.removeAllViewsInLayout()
     }
 
     private fun showError(errorMessage: String) {
@@ -224,7 +220,6 @@ class SearchFragment : Fragment() {
 
     private fun showContent(vacancy: VacanciesResponse) {
         searchAdapter.setData(vacancy.items)
-        Log.d("TAGGGG", "NFGGG")
         isPageLoading = false
         with(binding) {
             vacancyCount.text = App.getAppResources()?.getQuantityString(
@@ -238,7 +233,6 @@ class SearchFragment : Fragment() {
             searchRecyclerView.visibility = View.VISIBLE
             pageLoading.isVisible = false
         }
-        Log.d("TAG_ITEMS_COUNT", searchAdapter.itemCount.toString())
     }
     private fun getAdapter() =
         SearchAdapter { vacancy ->
