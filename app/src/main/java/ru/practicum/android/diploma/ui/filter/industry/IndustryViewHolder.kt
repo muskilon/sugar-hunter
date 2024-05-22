@@ -5,10 +5,31 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industries
 
-class IndustryViewHolder(private val binding: ItemIndustryBinding) :
-    RecyclerView.ViewHolder(binding.root) {
-
-    fun bind(industry: Industries) {
-        binding.itemCheck.text = industry.name
-    }
-}
+//class IndustryViewHolder(val binding: ItemIndustryBinding) :
+//    RecyclerView.ViewHolder(binding.root) {
+//
+//        init {
+//            binding.itemCheck.setOnClickListener {
+//                selection(bindingAdapterPosition)
+//            }
+//        }
+//
+//    fun bind(industry: Industries) {
+//        binding.itemCheck.text = industry.name
+//    }
+//
+//    fun selected() {
+//        binding.itemCheck.isChecked = true
+//    }
+//
+//    fun unselected() {
+//        binding.itemCheck.isChecked = false
+//    }
+//
+//    fun selection(adapterPosition: Int) {
+//        if (adapterPosition == RecyclerView.NO_POSITION) return
+//        notifyItemChanged(ite)
+//    }
+//
+//
+//}
