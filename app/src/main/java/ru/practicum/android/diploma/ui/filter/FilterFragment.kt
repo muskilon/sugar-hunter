@@ -3,15 +3,17 @@ package ru.practicum.android.diploma.ui.filter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 
 class FilterFragment : Fragment() {
@@ -51,10 +53,9 @@ class FilterFragment : Fragment() {
         }
 
         binding.buttonApply.setOnClickListener {
-            exit()
-
-            //            Сделать, что бы поиск запустился
-
+            viewModel.updateFilters(filters)
+            setFragmentResult("requestKey", bundleOf("isApplyButton" to true))
+            findNavController().popBackStack(R.id.searchFragment, false)
         }
 
 //        Для тестирования!
@@ -94,8 +95,6 @@ class FilterFragment : Fragment() {
     }
     private fun setStatements() {
         binding.buttonApply.isVisible = oldFilters != filters
-        Log.d("TAG_OLD", oldFilters.toString())
-        Log.d("TAG_NEW", filters.toString())
         if (filters.isNotEmpty()) {
             filters.keys.forEach { key ->
                 when (key) {
@@ -146,7 +145,8 @@ class FilterFragment : Fragment() {
 
     fun exit() {
         viewModel.updateFilters(filters)
-        findNavController().navigateUp()
+        setFragmentResult("requestKey", bundleOf("isApplyButton" to false))
+        findNavController().popBackStack(R.id.searchFragment, false)
     }
 
     companion object {

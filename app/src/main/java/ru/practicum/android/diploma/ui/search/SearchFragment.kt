@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.App
@@ -50,6 +49,16 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        ТУТ ЛОМАЕТСЯ!
+
+//        setFragmentResultListener("requestKey") { _, bundle ->
+//            if (bundle.getBoolean("isApplyButton")){
+//                if (!searchText.isNullOrEmpty()) {
+//                    viewModel.repeatRequest(false)
+//                }
+//            }
+//        }
+
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         if (viewModel.isFiltersOn()) {
@@ -65,6 +74,7 @@ class SearchFragment : Fragment() {
                 binding.searchEditText.clearFocus()
                 if (!searchText.isNullOrEmpty()) {
                     viewModel.searchVacancies(viewModel.getSearchRequest(searchText!!, null))
+                    viewModel.searchDebounce(String())
                 }
             }
             false
@@ -106,7 +116,7 @@ class SearchFragment : Fragment() {
                 val itemsCount = searchAdapter.itemCount
                 if (pos >= itemsCount - 1 && !isPageLoading && currentPage < pages - 1) {
                     isPageLoading = true
-                    viewModel.onLastItemReached()
+                    viewModel.repeatRequest(true)
                     binding.pageLoading.isVisible = true
                 }
             }
@@ -214,6 +224,7 @@ class SearchFragment : Fragment() {
 
     private fun showContent(vacancy: VacanciesResponse) {
         searchAdapter.setData(vacancy.items)
+        Log.d("TAGGGG", "NFGGG")
         isPageLoading = false
         with(binding) {
             vacancyCount.text = App.getAppResources()?.getQuantityString(
@@ -232,8 +243,6 @@ class SearchFragment : Fragment() {
     private fun getAdapter() =
         SearchAdapter { vacancy ->
             if (viewModel.clickDebounce()) {
-                requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
-
                 findNavController().navigate(
                     R.id.action_searchFragment_to_vacancyFragment,
                     VacancyFragment.createArgs(vacancy.id)

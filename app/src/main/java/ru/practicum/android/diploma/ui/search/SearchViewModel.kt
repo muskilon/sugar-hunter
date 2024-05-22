@@ -72,6 +72,7 @@ class SearchViewModel(
     }
 
     fun searchVacancies(request: Map<String, String>) {
+        Log.d("TAG_SEARCH", request.toString())
         request[TEXT]?.let { text ->
             if (latestSearchText == text || text.isEmpty()) {
                 searchJob?.cancel()
@@ -90,10 +91,17 @@ class SearchViewModel(
         }
     }
 
-    fun onLastItemReached() {
-        currentPage++
+    fun repeatRequest(isNeedAddCounter: Boolean) {
+        if (isNeedAddCounter) {
+            currentPage++
+        } else {
+            currentPage = 0
+        }
+//        Log.d("TAG_REPEAT_SEARCH", currentPage.toString())
+//        Log.d("TAG_REPEAT_SEARCH", getSearchRequest(latestSearchText, currentPage.toString()).toString())
         viewModelScope.launch {
-            vacanciesInterActor.searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
+            vacanciesInterActor
+                .searchVacancies(getSearchRequest(latestSearchText, currentPage.toString()))
                 .collect { result ->
                     processResult(result, false)
                 }
