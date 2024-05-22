@@ -56,8 +56,6 @@ class SearchFragment : Fragment() {
             }
         }
 
-        viewModel.getAreas() // Для тестирования
-
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         if (viewModel.isFiltersOn()) {
