@@ -2,6 +2,8 @@ package ru.practicum.android.diploma.ui.filter.industry
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +22,7 @@ class ChooseIndustryFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<ChooseIndustryViewModel>()
     private val adapter by lazy { IndustryAdapter { industry -> saveIndustry(industry) } }
+    private var searchText: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +36,7 @@ class ChooseIndustryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.checkStateLiveData().observe(viewLifecycleOwner) {state ->
+        viewModel.checkStateLiveData().observe(viewLifecycleOwner) { state ->
             render(state)
         }
 
@@ -45,6 +48,21 @@ class ChooseIndustryFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        binding.industryEditText.addTextChangedListener(getTextWatcher())
+
+    }
+
+    private fun getTextWatcher() = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            binding.clearIcon.visibility = clearButtonVisibility(s)
+            binding.searchIcon.visibility = searchButtonVisibility(s)
+            searchText = s.toString()
+            searchText?.let { viewModel.searchDebounce(it) }
+        }
+
+        override fun afterTextChanged(s: Editable?) {}
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -58,6 +76,22 @@ class ChooseIndustryFragment : Fragment() {
                 adapter.industryList = state.industriesList
                 adapter.notifyDataSetChanged()
             }
+        }
+    }
+
+    private fun clearButtonVisibility(s: CharSequence?): Int {
+        return if (s.isNullOrEmpty()) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+    }
+
+    private fun searchButtonVisibility(s: CharSequence?): Int {
+        return if (!s.isNullOrEmpty()) {
+            View.GONE
+        } else {
+            View.VISIBLE
         }
     }
 
