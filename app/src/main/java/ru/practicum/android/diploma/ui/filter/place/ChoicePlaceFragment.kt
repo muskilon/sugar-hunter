@@ -40,7 +40,25 @@ class ChoicePlaceFragment : Fragment() {
             binding.selectedCountryText.text = areaName
             binding.selectedCountryText.isVisible = true
             binding.selectCountryActionButton.setImageResource(R.drawable.clear_button)
+            binding.selectCountryActionButton.tag = "clear"
             Log.d("TAG", "$areaName $areaId")
+        }
+
+        binding.selectCountryActionButton.setOnClickListener {
+            when (binding.selectCountryActionButton.tag) {
+                "clear" -> {
+                    binding.selectedCountryText.text = null
+                    binding.selectedCountryText.isVisible = false
+                    binding.selectCountryActionButton.setImageResource(R.drawable.leading_icon_filter)
+                    binding.selectCountryActionButton.tag = "arrow"
+                }
+
+                "arrow" -> {
+                    findNavController().navigate(
+                        R.id.action_choicePlaceFragment_to_countryFragment
+                    )
+                }
+            }
         }
 
         binding.selectCountryButtonGroup.setOnClickListener {
