@@ -100,14 +100,31 @@ class DTOToDataMappers {
             result.add(Areas(
                 id = areaItem.id,
                 name = areaItem.name,
-                parentId = areaItem.parentId
+                parentId = areaItem.parentId,
+                countryName = areaItem.name
             ))
             if (areaItem.areas.isNotEmpty()) {
-                result.addAll(areasDictionaryToList(areaItem.areas))
+                result.addAll(setCountry(areaItem.areas, areaItem.name))
             }
         }
         return result
     }
+    private fun setCountry (areasDictionary: List<AreaItemDTO>, countryName: String): List<Areas> {
+        val result = mutableListOf<Areas>()
+        for (areaItem in areasDictionary) {
+            result.add(Areas(
+                id = areaItem.id,
+                name = areaItem.name,
+                parentId = areaItem.parentId,
+                countryName = countryName
+            ))
+            if (areaItem.areas.isNotEmpty()) {
+                result.addAll(setCountry(areaItem.areas, countryName))
+            }
+        }
+        return result
+    }
+
     private fun mapSalaryDTOToSalary(salary: SalaryDTO?) =
         Salary(
             from = salary?.from,

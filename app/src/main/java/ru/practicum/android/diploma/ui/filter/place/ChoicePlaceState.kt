@@ -1,18 +1,18 @@
-package ru.practicum.android.diploma.ui.filter.place.country
+package ru.practicum.android.diploma.ui.filter.place
 
 import ru.practicum.android.diploma.domain.models.Areas
 
-sealed class CountryState {
-    data object Loading : CountryState()
+sealed class ChoicePlaceState {
+    data object Loading : ChoicePlaceState()
     data class Content(
         val countries: List<Areas>
-    ) : CountryState()
+    ) : ChoicePlaceState()
 
     data class Error(
         val error: String
-    ) : CountryState()
+    ) : ChoicePlaceState()
 
     data class Empty(
         val message: String
-    ) : CountryState()
+    ) : ChoicePlaceState()
 }

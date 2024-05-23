@@ -27,30 +27,20 @@ class ChoicePlaceFragment : Fragment() {
         _binding = FragmentChoicePlaceBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-    private var areaName: String? = null
-    private var areaId: String? = null
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setFragmentResultListener("country") { _, bundle ->
-            areaName = bundle.getString("areaName")
-            areaId = bundle.getString("areaId")
-            binding.selectedCountryText.text = areaName
-            binding.selectedCountryText.isVisible = true
-            binding.selectCountryActionButton.setImageResource(R.drawable.clear_button)
-            binding.selectCountryActionButton.tag = "clear"
-            Log.d("TAG", "$areaName $areaId")
+            if (!bundle.isEmpty) viewModel.setArea(bundle)
+        }
+        setFragmentResultListener("region") { _, bundle ->
+            if (!bundle.isEmpty) viewModel.setArea(bundle)
         }
 
         binding.selectCountryActionButton.setOnClickListener {
             when (binding.selectCountryActionButton.tag) {
                 "clear" -> {
-                    binding.selectedCountryText.text = null
-                    binding.selectedCountryText.isVisible = false
-                    binding.selectCountryActionButton.setImageResource(R.drawable.leading_icon_filter)
-                    binding.selectCountryActionButton.tag = "arrow"
+                    viewModel.clearArea()
                 }
 
                 "arrow" -> {
@@ -59,6 +49,10 @@ class ChoicePlaceFragment : Fragment() {
                     )
                 }
             }
+        }
+
+        viewModel.getArea().observe(viewLifecycleOwner){
+            render(it)
         }
 
         binding.selectCountryButtonGroup.setOnClickListener {
@@ -73,6 +67,22 @@ class ChoicePlaceFragment : Fragment() {
             )
         }
 
+    }
+
+    private fun render(area: MutableMap<String, String>) {
+        if (area.isEmpty()) {
+            binding.selectedCountryText.text = null
+            binding.selectedCountryText.isVisible = false
+            binding.selectCountryActionButton.setImageResource(R.drawable.leading_icon_filter)
+            binding.selectCountryActionButton.tag = "arrow"
+            binding.buttonApply.isVisible = false
+        } else {
+            binding.selectedCountryText.text = area["areaName"]
+            binding.selectedCountryText.isVisible = true
+            binding.selectCountryActionButton.setImageResource(R.drawable.clear_button)
+            binding.selectCountryActionButton.tag = "clear"
+            binding.buttonApply.isVisible = true
+        }
     }
 
     override fun onDestroyView() {

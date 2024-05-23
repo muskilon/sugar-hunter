@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentCountryBinding
+import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceAdapter
+import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceState
 
 class CountryFragment : Fragment() {
 
@@ -42,10 +44,10 @@ class CountryFragment : Fragment() {
 
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
-                is CountryState.Loading -> showLoading()
-                is CountryState.Error -> showError()
-                is CountryState.Empty -> showEmpty()
-                is CountryState.Content -> {
+                is ChoicePlaceState.Loading -> showLoading()
+                is ChoicePlaceState.Error -> showError()
+                is ChoicePlaceState.Empty -> showEmpty()
+                is ChoicePlaceState.Content -> {
                     countryAdapter.setData(state.countries)
                     showContent()
                 }
@@ -77,7 +79,7 @@ class CountryFragment : Fragment() {
         binding.getListFailure.getListFailure.isVisible = false
     }
 
-    private fun getAdapter() = CountryAdapter { country ->
+    private fun getAdapter() = ChoicePlaceAdapter { country ->
         setFragmentResult("country", bundleOf("areaName" to country.name, "areaId" to country.id))
         findNavController().popBackStack(R.id.choicePlaceFragment, false)
     }
