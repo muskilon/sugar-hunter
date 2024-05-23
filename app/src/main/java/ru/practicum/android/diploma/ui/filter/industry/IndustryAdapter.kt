@@ -36,11 +36,6 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerV
         }
     }
 
-// TODO с лямбой в конструкторе не нужно
-//    fun interface OnItemSelectedListener {
-//        fun onItemSelected(industries: Industries)
-//    }
-
     inner class IndustryViewHolder(val binding: ItemIndustryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -48,7 +43,6 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerV
             binding.itemCheck.setOnClickListener {
                 selection(bindingAdapterPosition)
                 onItemClick.invoke(industryList[bindingAdapterPosition])
-                // TODO сюда теперь прокидываем метод по клику старый класс холдера не нужен
             }
         }
 
@@ -64,7 +58,7 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerV
             binding.itemCheck.isChecked = false
         }
 
-        fun selection(adapterPosition: Int) {
+        private fun selection(adapterPosition: Int) {
             if (adapterPosition == RecyclerView.NO_POSITION) return
             notifyItemChanged(itemSelected)
             itemSelected = bindingAdapterPosition
@@ -74,13 +68,4 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerV
 
 }
 
-/*   fun selectIndustry(industryList: ArrayList<Pair<Industries, Boolean>>, selectedIndustry: Industries) {
-       for (pair in industryList) {
-           if (pair.first == selectedIndustry) {
-               industryList.forEach {
-                   it.second = (it.first == selectedIndustry)
-               }
-           }
-       }
-   }*/
 
