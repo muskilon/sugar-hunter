@@ -190,9 +190,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone"
         />
+
     <include
         android:id="@+id/get_list_failure"
         layout="@layout/get_list_failure"
+        app:layout_constraintTop_toBottomOf="@id/choiceRegionScreenTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        />
+
+    <include
+        android:id="@+id/no_region"
+        layout="@layout/no_region"
         app:layout_constraintTop_toBottomOf="@id/choiceRegionScreenTitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

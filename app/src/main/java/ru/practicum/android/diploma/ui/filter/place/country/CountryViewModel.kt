@@ -27,10 +27,7 @@ class CountryViewModel(
                     is Resource.NotFound -> liveState.postValue(ChoicePlaceState.Empty(areas.message))
 
                     is Resource.Data -> {
-                        val countries = ArrayList<Areas>()
-                        areas.value.forEach { area ->
-                            if (area.parentId == null) countries.add(area)
-                        }
+                        val countries = areas.value.filter { it.parentId == null }
                         liveState.postValue(ChoicePlaceState.Content(countries))
                     }
                 }

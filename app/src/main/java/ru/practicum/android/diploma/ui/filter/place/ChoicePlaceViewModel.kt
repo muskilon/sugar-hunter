@@ -19,20 +19,35 @@ class ChoicePlaceViewModel(
     fun setArea(bundle: Bundle) {
         val area = HashMap<String, String>()
         with (bundle) {
-            getString("areaName")?.let {
-                area["areaName"] = it
+            getString("regionName")?.let {
+                area["regionName"] = it
             }
-            getString("areaId")?.let {
-                area["areaId"] = it
+            getString("regionId")?.let {
+                area["regionId"] = it
             }
             getString("countryName")?.let {
                 area["countryName"] = it
             }
+            getString("countryId")?.let {
+                area["countryId"] = it
+            }
         }
         workPlace.postValue(area)
     }
-    fun clearArea() {
-        workPlace.postValue(mutableMapOf())
+    fun clearRegion() {
+        val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
+        workPlace.value?.let { tempWorkPlace.putAll(it) }
+            tempWorkPlace.remove("regionName")
+            tempWorkPlace.remove("regionId")
+        workPlace.postValue(tempWorkPlace)
+    }
+
+    fun clearCountry() {
+        val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
+        workPlace.value?.let { tempWorkPlace.putAll(it) }
+        tempWorkPlace.remove("countryName")
+        tempWorkPlace.remove("countryId")
+        workPlace.postValue(tempWorkPlace)
     }
     fun getArea() : LiveData<MutableMap<String, String>> = workPlace
 

@@ -80,7 +80,7 @@ class CountryFragment : Fragment() {
     }
 
     private fun getAdapter() = ChoicePlaceAdapter { country ->
-        setFragmentResult("country", bundleOf("areaName" to country.name, "areaId" to country.id))
+        setFragmentResult("country", bundleOf("countryName" to country.name, "countryId" to country.id))
         findNavController().popBackStack(R.id.choicePlaceFragment, false)
     }
 

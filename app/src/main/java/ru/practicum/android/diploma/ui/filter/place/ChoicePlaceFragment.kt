@@ -1,12 +1,13 @@
 package ru.practicum.android.diploma.ui.filter.place
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -18,6 +19,7 @@ class ChoicePlaceFragment : Fragment() {
     private var _binding: FragmentChoicePlaceBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<ChoicePlaceViewModel>()
+    private var chosenCountry = String()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,14 +41,17 @@ class ChoicePlaceFragment : Fragment() {
 
         binding.selectCountryActionButton.setOnClickListener {
             when (binding.selectCountryActionButton.tag) {
-                "clear" -> {
-                    viewModel.clearArea()
-                }
+                "clear" -> viewModel.clearCountry()
+                "arrow" -> findNavController().navigate(R.id.action_choicePlaceFragment_to_countryFragment)
+            }
+        }
 
+        binding.selectRegionActionButton.setOnClickListener {
+            when (binding.selectRegionActionButton.tag) {
+                "clear" -> viewModel.clearRegion()
                 "arrow" -> {
-                    findNavController().navigate(
-                        R.id.action_choicePlaceFragment_to_countryFragment
-                    )
+                    setFragmentResult("chosenCountry", bundleOf("chosenCountry" to chosenCountry))
+                    findNavController().navigate(R.id.action_choicePlaceFragment_to_regionFragment)
                 }
             }
         }
@@ -56,33 +61,44 @@ class ChoicePlaceFragment : Fragment() {
         }
 
         binding.selectCountryButtonGroup.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_choicePlaceFragment_to_countryFragment
-            )
+            findNavController().navigate(R.id.action_choicePlaceFragment_to_countryFragment)
         }
 
         binding.selectRegionButtonGroup.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_choicePlaceFragment_to_regionFragment
-            )
+            setFragmentResult("chosenCountry", bundleOf("chosenCountry" to chosenCountry))
+            findNavController().navigate(R.id.action_choicePlaceFragment_to_regionFragment)
         }
 
     }
 
     private fun render(area: MutableMap<String, String>) {
-        if (area.isEmpty()) {
-            binding.selectedCountryText.text = null
-            binding.selectedCountryText.isVisible = false
-            binding.selectCountryActionButton.setImageResource(R.drawable.leading_icon_filter)
-            binding.selectCountryActionButton.tag = "arrow"
-            binding.buttonApply.isVisible = false
-        } else {
-            binding.selectedCountryText.text = area["areaName"]
-            binding.selectedCountryText.isVisible = true
-            binding.selectCountryActionButton.setImageResource(R.drawable.clear_button)
-            binding.selectCountryActionButton.tag = "clear"
-            binding.buttonApply.isVisible = true
+        with(binding) {
+            if (area["regionName"].isNullOrEmpty()) {
+                selectedRegionText.text = null
+                selectedRegionText.isVisible = false
+                selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
+                selectRegionActionButton.tag = "arrow"
+            } else {
+                selectedRegionText.text = area["regionName"]
+                selectedRegionText.isVisible = true
+                selectRegionActionButton.setImageResource(R.drawable.clear_button)
+                selectRegionActionButton.tag = "clear"
+            }
+            if (area["countryName"].isNullOrEmpty()) {
+                selectedCountryText.text = null
+                selectedCountryText.isVisible = false
+                selectCountryActionButton.setImageResource(R.drawable.leading_icon_filter)
+                selectCountryActionButton.tag = "arrow"
+                chosenCountry = String()
+            } else {
+                selectedCountryText.text = area["countryName"]
+                selectedCountryText.isVisible = true
+                selectCountryActionButton.setImageResource(R.drawable.clear_button)
+                selectCountryActionButton.tag = "clear"
+                chosenCountry = area["countryName"]!!
+            }
         }
+        binding.buttonApply.isVisible = area.isNotEmpty()
     }
 
     override fun onDestroyView() {
