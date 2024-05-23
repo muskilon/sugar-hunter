@@ -67,8 +67,12 @@ class FilterFragment : Fragment() {
 
 //        Для тестирования!
 
-        binding.selectIndustryLayout.setOnClickListener { test(INDUSTRY, "7") }
-        binding.selectRegionLayout.setOnClickListener { test(AREA, "1") }
+        binding.selectIndustryLayout.setOnClickListener {
+            findNavController().navigate(R.id.action_filterFragment_to_choiceSphereFragment)
+        }
+        binding.selectRegionLayout.setOnClickListener {
+            findNavController().navigate(R.id.action_filterFragment_to_choicePlaceFragment)
+        }
 
 //        Для тестирования!
 
@@ -122,14 +126,7 @@ class FilterFragment : Fragment() {
             }
         }
     }
-    private fun test(key: String, value: String) { // Для тестирования!!
-        if (filters.contains(key)) {
-            filters.remove(key)
-        } else {
-            filters[key] = value
-        }
-        setStatements()
-    }
+
     private fun setStatements() {
         binding.buttonApply.isVisible = oldFilters != filters
         if (filters.isNotEmpty()) {
@@ -173,6 +170,11 @@ class FilterFragment : Fragment() {
         override fun afterTextChanged(s: Editable?) {
             // empty
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.updateFilters(filters)
     }
 
     override fun onDestroyView() {

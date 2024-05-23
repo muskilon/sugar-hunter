@@ -103,7 +103,6 @@
         android:id="@+id/selectIndustryButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
-
         android:paddingEnd="@dimen/padding_4dp"
         android:clickable="true"
         android:orientation="horizontal"
