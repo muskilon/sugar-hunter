@@ -14,8 +14,6 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerV
 
     var industryList = ArrayList<Industries>()
 
-    var itemSelected = -1
-
     var industryId = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {

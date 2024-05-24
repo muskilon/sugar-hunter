@@ -18,7 +18,6 @@ class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor
 
     private var latestSearchText = ""
     private var searchJob: Job? = null
-    private var isClickAllowed = true
     private var industriesList = ArrayList<Industries>()
 
     private var stateMutableLiveData = MutableLiveData<IndustryState>()
@@ -47,19 +46,6 @@ class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor
                 }
             }
         }
-    }
-
-
-    fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            viewModelScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
-                isClickAllowed = true
-            }
-        }
-        return current
     }
 
     fun searchDebounce(text: String) {
@@ -98,7 +84,6 @@ class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
 }

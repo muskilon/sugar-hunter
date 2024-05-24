@@ -8,13 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentChoiceIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.IndustryState
@@ -57,7 +58,6 @@ class ChooseIndustryFragment : Fragment() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 binding.industryEditText.clearFocus()
                 if (!searchText.isNullOrEmpty()) {
-                    // поиск по запросу
                     viewModel.searchDebounce(String())
                 }
             }
@@ -66,6 +66,10 @@ class ChooseIndustryFragment : Fragment() {
 
         binding.clearIcon.setOnClickListener {
             binding.industryEditText.text.clear()
+        }
+
+        binding.buttonApply.setOnClickListener {
+            findNavController().popBackStack()
         }
 
     }
@@ -142,7 +146,13 @@ class ChooseIndustryFragment : Fragment() {
     }
 
     private fun saveIndustry(industry: Industries) {
-        // сохр в шаред
+        binding.buttonApply.isVisible = true
+        setFragmentResult(
+            "setArea",
+            bundleOf(
+                "industryName" to industry.name,
+            )
+        )
     }
 
     override fun onDestroyView() {
