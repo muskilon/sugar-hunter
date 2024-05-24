@@ -86,16 +86,13 @@ class FilterFragment : Fragment() {
             findNavController().popBackStack(R.id.searchFragment, false)
         }
 
-//        Для тестирования!
-
         binding.selectIndustryLayout.setOnClickListener {
             findNavController().navigate(R.id.action_filterFragment_to_choiceSphereFragment)
         }
         binding.selectRegionLayout.setOnClickListener {
+            setFragmentResult("requestKey", bundleOf("isApplyButton" to true))
             findNavController().navigate(R.id.action_filterFragment_to_choicePlaceFragment)
         }
-
-//        Для тестирования!
 
         binding.salaryCheckBox.setOnClickListener {
             salaryCheckBoxProcessing()

@@ -32,10 +32,7 @@ class ChoicePlaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setFragmentResultListener("country") { _, bundle ->
-            if (!bundle.isEmpty) viewModel.setArea(bundle)
-        }
-        setFragmentResultListener("region") { _, bundle ->
+        setFragmentResultListener("setArea") { _, bundle ->
             if (!bundle.isEmpty) viewModel.setArea(bundle)
         }
 
@@ -101,7 +98,7 @@ class ChoicePlaceFragment : Fragment() {
                 selectedCountryText.isVisible = true
                 selectCountryActionButton.setImageResource(R.drawable.clear_button)
                 selectCountryActionButton.tag = "clear"
-                chosenCountry = area["countryId"]!!
+                chosenCountry = area["countryName"]!!
             }
         }
         binding.buttonApply.isVisible = area.isNotEmpty()

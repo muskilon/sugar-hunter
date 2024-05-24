@@ -26,7 +26,7 @@ class RegionViewModel(private val vacanciesInterActor: VacanciesInterActor) : Vi
                     is Resource.Data -> {
                         if (country.isNotEmpty()){
                             regions.clear()
-                            regions.addAll(areas.value.filter { it.parentId != null && it.parentId == country })
+                            regions.addAll(areas.value.filter { it.parentId != null && it.countryName == country })
                         } else {
                             regions.clear()
                             regions.addAll(areas.value.filter { it.parentId != null })
