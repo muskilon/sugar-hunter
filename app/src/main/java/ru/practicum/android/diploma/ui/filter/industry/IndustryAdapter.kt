@@ -16,11 +16,12 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerV
 
     var itemSelected = -1
 
+    var industryId = ""
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
         return IndustryViewHolder(ItemIndustryBinding.inflate(layoutInspector, parent, false))
     }
-
 
     override fun getItemCount(): Int {
         return industryList.size
@@ -28,12 +29,7 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerV
 
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
         val industry = industryList[position]
-        holder.binding.itemCheck.text = industry.name
-        if (itemSelected == position) {
-            holder.selected()
-        } else {
-            holder.unselected()
-        }
+        holder.bind(industry)
     }
 
     inner class IndustryViewHolder(val binding: ItemIndustryBinding) :
@@ -41,31 +37,39 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerV
 
         init {
             binding.itemCheck.setOnClickListener {
-                selection(bindingAdapterPosition)
-                onItemClick.invoke(industryList[bindingAdapterPosition])
+                val industry = industryList[bindingAdapterPosition]
+                selection(industry)
+                onItemClick.invoke(industry)
             }
         }
 
         fun bind(industry: Industries) {
             binding.itemCheck.text = industry.name
+            if (industryId.contains(industry.id.toString())) {
+                selected()
+            } else {
+                unselected()
+            }
         }
 
-        fun selected() {
+        private fun selection(selectedIndustry: Industries) {
+            val currentSelectedIndustry = industryList.find { it.id.toString() == industryId }
+            val selectedIndex = industryList.indexOf(currentSelectedIndustry)
+            if (currentSelectedIndustry != selectedIndustry) {
+                industryId = selectedIndustry.id.toString()
+                if (selectedIndex != -1) {
+                    notifyItemChanged(selectedIndex)
+                }
+                notifyItemChanged(bindingAdapterPosition)
+            }
+        }
+
+        private fun selected() {
             binding.itemCheck.isChecked = true
         }
 
-        fun unselected() {
+        private fun unselected() {
             binding.itemCheck.isChecked = false
         }
-
-        private fun selection(adapterPosition: Int) {
-            if (adapterPosition == RecyclerView.NO_POSITION) return
-            notifyItemChanged(itemSelected)
-            itemSelected = bindingAdapterPosition
-            notifyItemChanged(itemSelected)
-        }
     }
-
 }
-
-
