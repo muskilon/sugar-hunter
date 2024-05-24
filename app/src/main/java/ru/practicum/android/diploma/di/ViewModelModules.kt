@@ -18,13 +18,13 @@ val viewModelModules = module {
         FavouriteViewModel(favouriteDataBaseInteractor = get())
     }
     viewModel {
-        CountryViewModel()
+        CountryViewModel(get())
     }
     viewModel {
-        RegionViewModel()
+        RegionViewModel(get())
     }
     viewModel {
-        ChoicePlaceViewModel(get())
+        ChoicePlaceViewModel()
     }
     viewModel {
         ChooseIndustryViewModel(industryInteractor = get())

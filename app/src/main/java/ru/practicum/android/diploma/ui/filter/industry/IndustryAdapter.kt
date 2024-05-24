@@ -20,11 +20,9 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerV
         val layoutInspector = LayoutInflater.from(parent.context)
         return IndustryViewHolder(ItemIndustryBinding.inflate(layoutInspector, parent, false))
     }
-
     override fun getItemCount(): Int {
         return industryList.size
     }
-
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
         val industry = industryList[position]
         holder.bind(industry)
