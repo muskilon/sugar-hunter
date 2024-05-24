@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -75,6 +76,17 @@ class ChoicePlaceFragment : Fragment() {
             findNavController().navigate(R.id.action_choicePlaceFragment_to_regionFragment)
         }
 
+        binding.backButton.setOnClickListener { exit() }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    exit()
+                }
+            }
+        )
+
     }
 
     private fun render(area: MutableMap<String, String>) {
@@ -105,6 +117,10 @@ class ChoicePlaceFragment : Fragment() {
             }
         }
         binding.buttonApply.isVisible = area.isNotEmpty()
+    }
+
+    fun exit() {
+        findNavController().navigateUp()
     }
 
     override fun onDestroyView() {

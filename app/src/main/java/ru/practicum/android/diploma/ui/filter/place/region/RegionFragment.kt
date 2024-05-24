@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -75,6 +76,16 @@ class RegionFragment : Fragment() {
                 }
             }
         }
+        binding.backButton.setOnClickListener { exit() }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    exit()
+                }
+            }
+        )
     }
     private fun getOnScrollListener(imm: InputMethodManager) = object :
         RecyclerView.OnScrollListener() {
@@ -135,6 +146,10 @@ class RegionFragment : Fragment() {
     private fun getAdapter() = ChoicePlaceAdapter { region ->
         setFragmentResult("setArea", bundleOf("regionName" to region.name, "regionId" to region.id, "countryName" to region.countryName, "countryId" to region.parentId))
         findNavController().popBackStack(R.id.choicePlaceFragment, false)
+    }
+
+    fun exit() {
+        findNavController().navigateUp()
     }
 
     override fun onDestroyView() {

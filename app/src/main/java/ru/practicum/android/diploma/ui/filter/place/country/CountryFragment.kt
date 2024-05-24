@@ -1,9 +1,11 @@
 package ru.practicum.android.diploma.ui.filter.place.country
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -52,6 +54,16 @@ class CountryFragment : Fragment() {
                 }
             }
         }
+        binding.backButton.setOnClickListener { exit() }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    exit()
+                }
+            }
+        )
     }
 
     private fun showError() {
@@ -81,6 +93,10 @@ class CountryFragment : Fragment() {
     private fun getAdapter() = ChoicePlaceAdapter { country ->
         setFragmentResult("setArea", bundleOf("countryName" to country.name, "countryId" to country.id))
         findNavController().popBackStack(R.id.choicePlaceFragment, false)
+    }
+
+    fun exit() {
+        findNavController().navigateUp()
     }
 
     override fun onDestroyView() {
