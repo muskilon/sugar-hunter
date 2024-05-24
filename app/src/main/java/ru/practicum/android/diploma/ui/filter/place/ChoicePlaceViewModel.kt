@@ -65,9 +65,6 @@ class ChoicePlaceViewModel(
             }
         }
         return bundle
-//        bundle.getString("area")
-//        Log.d("TAG", "area=${bundle.getString("area")}, areaName=${bundle.getString("areaName")}, countryName=${bundle.getString(
-//            COUNTRY_NAME)}")
     }
     fun getArea() : LiveData<MutableMap<String, String>> = workPlace
 

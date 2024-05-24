@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.filter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -41,6 +42,7 @@ class FilterFragment : Fragment() {
         setFragmentResultListener("areaFilters") { _, bundle ->
             if (!bundle.isEmpty) {
                 with (bundle) {
+                    Log.d("BUNDLE_TAG", "${bundle.getString("regionName")} ${bundle.getString("regionId")} ${bundle.getString("countryName")}")
                     getString("regionName")?.let {
                         filters["regionName"] = it
                     }
@@ -49,7 +51,7 @@ class FilterFragment : Fragment() {
                     }
                     getString("countryName")?.let {
                         filters["countryName"] = it
-                    }
+                    } ?: filters.remove("countryName")
                 }
                 setStatements()
             }
@@ -78,6 +80,7 @@ class FilterFragment : Fragment() {
         }
 
         binding.buttonApply.setOnClickListener {
+            Log.d("FILTERS_TAG", filters.toString())
             viewModel.updateFilters(filters)
             setFragmentResult("requestKey", bundleOf("isApplyButton" to true))
             findNavController().popBackStack(R.id.searchFragment, false)
@@ -146,6 +149,7 @@ class FilterFragment : Fragment() {
     }
 
     private fun setStatements() {
+        Log.d("SET_STATEMENTS_TAG", filters.toString())
         binding.buttonApply.isVisible = oldFilters != filters
         if (filters.isNotEmpty()) {
             filters.keys.forEach { key ->
@@ -165,6 +169,7 @@ class FilterFragment : Fragment() {
             binding.buttonDecline.isVisible = false
             binding.salaryCheckBox.isChecked = false
             binding.salaryEdit.text.clear()
+            binding.selectedRegionsText.isVisible = false
         }
     }
 
@@ -202,6 +207,7 @@ class FilterFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        Log.d("FILTERS_TAG", filters.toString())
         viewModel.updateFilters(filters)
     }
 
@@ -211,6 +217,7 @@ class FilterFragment : Fragment() {
     }
 
     fun exit() {
+        Log.d("FILTERS_TAG", filters.toString())
         viewModel.updateFilters(filters)
         setFragmentResult("requestKey", bundleOf("isApplyButton" to false))
         findNavController().popBackStack(R.id.searchFragment, false)

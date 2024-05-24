@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.FiltersInterActor
 import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.models.Areas
 import ru.practicum.android.diploma.domain.models.Resource
@@ -27,7 +26,7 @@ class RegionViewModel(private val vacanciesInterActor: VacanciesInterActor) : Vi
                     is Resource.Data -> {
                         if (country.isNotEmpty()){
                             regions.clear()
-                            regions.addAll(areas.value.filter { it.parentId != null && it.countryName == country })
+                            regions.addAll(areas.value.filter { it.parentId != null && it.parentId == country })
                         } else {
                             regions.clear()
                             regions.addAll(areas.value.filter { it.parentId != null })

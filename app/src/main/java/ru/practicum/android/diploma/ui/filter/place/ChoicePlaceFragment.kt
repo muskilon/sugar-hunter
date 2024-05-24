@@ -101,7 +101,7 @@ class ChoicePlaceFragment : Fragment() {
                 selectedCountryText.isVisible = true
                 selectCountryActionButton.setImageResource(R.drawable.clear_button)
                 selectCountryActionButton.tag = "clear"
-                chosenCountry = area["countryName"]!!
+                chosenCountry = area["countryId"]!!
             }
         }
         binding.buttonApply.isVisible = area.isNotEmpty()
