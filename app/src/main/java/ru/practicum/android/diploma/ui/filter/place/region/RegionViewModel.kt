@@ -44,7 +44,7 @@ class RegionViewModel(private val vacanciesInterActor: VacanciesInterActor) : Vi
         } else {
             val foundAreas = arrayListOf<Areas>()
             for (area in regions) {
-                if (area.name.startsWith(text, true)) {
+                if (area.name.contains(text, true)) {
                     foundAreas.add(area)
                 }
             }
