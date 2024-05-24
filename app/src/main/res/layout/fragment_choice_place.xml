@@ -95,7 +95,8 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:src="@drawable/leading_icon_filter"
-            app:tint="?attr/prime_color_black" />
+            app:tint="?attr/prime_color_black"
+            android:tag="arrow"/>
     </LinearLayout>
 
     <LinearLayout
@@ -155,7 +156,8 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:src="@drawable/leading_icon_filter"
-            app:tint="?attr/prime_color_black" />
+            app:tint="?attr/prime_color_black"
+            android:tag="arrow" />
     </LinearLayout>
 
     <Button

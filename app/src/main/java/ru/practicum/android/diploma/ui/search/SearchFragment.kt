@@ -130,8 +130,8 @@ class SearchFragment : Fragment() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            binding.clearIcon.visibility = clearButtonVisibility(s)
-            binding.searchIcon.visibility = searchButtonVisibility(s)
+            binding.clearIcon.isVisible = !s.isNullOrEmpty()
+            binding.searchIcon.isVisible = s.isNullOrEmpty()
             searchText = s.toString()
             searchText?.let { viewModel.searchDebounce(it) }
         }
@@ -243,22 +243,6 @@ class SearchFragment : Fragment() {
                 )
             }
         }
-
-    private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
-
-    private fun searchButtonVisibility(s: CharSequence?): Int {
-        return if (!s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -40,7 +40,8 @@
     <LinearLayout
         android:id="@+id/selectRegionButton"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
         android:layout_marginTop="16dp"
         android:clickable="true"
         android:paddingEnd="@dimen/padding_4dp"
@@ -53,7 +54,8 @@
         <LinearLayout
             android:id="@+id/selectRegionLayout"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
@@ -81,7 +83,7 @@
                 android:textColor="?prime_color_black"
                 android:textFontWeight="400"
                 android:textSize="@dimen/text_size_16sp"
-                tools:text="Россия"
+                tools:text="Россия, Красногорский район (Республика Марий Эл)"
                 android:visibility="gone"
                 tools:visibility="visible" />
         </LinearLayout>
@@ -96,7 +98,8 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:src="@drawable/leading_icon_filter"
-            app:tint="?attr/prime_color_black" />
+            app:tint="?attr/prime_color_black"
+            android:tag="arrow"/>
     </LinearLayout>
 
     <LinearLayout
@@ -158,7 +161,8 @@
             android:paddingStart="12dp"
             android:src="@drawable/leading_icon_filter"
             app:tint="?attr/prime_color_black"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            android:tag="arrow"/>
     </LinearLayout>
 
     <LinearLayout
