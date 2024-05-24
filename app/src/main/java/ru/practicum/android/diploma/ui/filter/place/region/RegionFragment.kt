@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentRegionBinding
+import ru.practicum.android.diploma.ui.Key
 import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceAdapter
 import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceState
 
@@ -42,8 +43,8 @@ class RegionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setFragmentResultListener("chosenCountry") { _, bundle ->
-            bundle.getString("chosenCountry")?.let { viewModel.getAreas(it) } ?: viewModel.getAreas(String()) }
+        setFragmentResultListener(Key.CHOSEN_COUNTRY) { _, bundle ->
+            bundle.getString(Key.CHOSEN_COUNTRY)?.let { viewModel.getAreas(it) } ?: viewModel.getAreas(String()) }
 
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -61,7 +62,7 @@ class RegionFragment : Fragment() {
 
         binding.regionRecycler.adapter = countryAdapter
 
-        binding.clearIcon.setOnClickListener{
+        binding.clearIcon.setOnClickListener {
             binding.regionEditText.text.clear()
         }
 
@@ -144,7 +145,15 @@ class RegionFragment : Fragment() {
     }
 
     private fun getAdapter() = ChoicePlaceAdapter { region ->
-        setFragmentResult("setArea", bundleOf("regionName" to region.name, "regionId" to region.id, "countryName" to region.countryName, "countryId" to region.parentId))
+        setFragmentResult(
+            Key.SET_AREA,
+            bundleOf(
+                Key.REGION_NAME to region.name,
+                Key.REGION_ID to region.id,
+                Key.COUNTRY_NAME to region.countryName,
+                Key.COUNTRY_ID to region.parentId
+            )
+        )
         findNavController().popBackStack(R.id.choicePlaceFragment, false)
     }
 

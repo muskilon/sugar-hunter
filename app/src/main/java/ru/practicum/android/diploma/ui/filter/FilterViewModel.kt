@@ -10,6 +10,7 @@ class FilterViewModel(
     fun getFilters(): MutableMap<String, String> {
         return filtersInterActor.getFilters().filters
     }
+
     fun updateFilters(filters: MutableMap<String, String>) {
         filtersInterActor.updateFilters(SavedFilters(filters))
     }

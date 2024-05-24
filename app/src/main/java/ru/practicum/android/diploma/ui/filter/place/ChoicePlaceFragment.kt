@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentChoicePlaceBinding
+import ru.practicum.android.diploma.ui.Key
 
 class ChoicePlaceFragment : Fragment() {
 
@@ -30,40 +31,30 @@ class ChoicePlaceFragment : Fragment() {
         _binding = FragmentChoicePlaceBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setFragmentResultListener("setArea") { _, bundle ->
+        setFragmentResultListener(Key.SET_AREA) { _, bundle ->
             if (!bundle.isEmpty) viewModel.setArea(bundle)
         }
-        setFragmentResultListener("setAreaFromFilters") { _, bundle ->
+        setFragmentResultListener(Key.SET_AREA_FROM_FILTERS) { _, bundle ->
             if (!bundle.isEmpty) viewModel.setAreaFromFilters(bundle)
         }
 
         binding.buttonApply.setOnClickListener {
             viewModel.savePlace()
-            setFragmentResult("areaFilters", viewModel.savePlace())
+            setFragmentResult(Key.AREA_FILTERS, viewModel.savePlace())
             findNavController().popBackStack(R.id.filterFragment, false)
         }
 
-        binding.selectCountryActionButton.setOnClickListener {
-            when (binding.selectCountryActionButton.tag) {
-                "clear" -> viewModel.clearCountry()
-                "arrow" -> findNavController().navigate(R.id.action_choicePlaceFragment_to_countryFragment)
-            }
-        }
+        binding.selectCountryActionButton.setOnClickListener { selectCountryActionButtonClickListener() }
 
         binding.selectRegionActionButton.setOnClickListener {
-            when (binding.selectRegionActionButton.tag) {
-                "clear" -> viewModel.clearRegion()
-                "arrow" -> {
-                    setFragmentResult("chosenCountry", bundleOf("chosenCountry" to chosenCountry))
-                    findNavController().navigate(R.id.action_choicePlaceFragment_to_regionFragment)
-                }
-            }
+            selectRegionActionButtonClickListener()
         }
 
-        viewModel.getArea().observe(viewLifecycleOwner){
+        viewModel.getArea().observe(viewLifecycleOwner) {
             render(it)
         }
 
@@ -72,48 +63,62 @@ class ChoicePlaceFragment : Fragment() {
         }
 
         binding.selectRegionButtonGroup.setOnClickListener {
-            setFragmentResult("chosenCountry", bundleOf("chosenCountry" to chosenCountry))
+            setFragmentResult(Key.CHOSEN_COUNTRY, bundleOf(Key.CHOSEN_COUNTRY to chosenCountry))
             findNavController().navigate(R.id.action_choicePlaceFragment_to_regionFragment)
         }
 
         binding.backButton.setOnClickListener { exit() }
 
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    exit()
-                }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                exit()
             }
-        )
+        })
 
+    }
+
+    private fun selectCountryActionButtonClickListener() {
+        when (binding.selectCountryActionButton.tag) {
+            Key.CLEAR -> viewModel.clearCountry()
+            Key.ARROW -> findNavController().navigate(R.id.action_choicePlaceFragment_to_countryFragment)
+        }
+    }
+
+    private fun selectRegionActionButtonClickListener() {
+        when (binding.selectRegionActionButton.tag) {
+            Key.CLEAR -> viewModel.clearRegion()
+            Key.ARROW -> {
+                setFragmentResult(Key.CHOSEN_COUNTRY, bundleOf(Key.CHOSEN_COUNTRY to chosenCountry))
+                findNavController().navigate(R.id.action_choicePlaceFragment_to_regionFragment)
+            }
+        }
     }
 
     private fun render(area: MutableMap<String, String>) {
         with(binding) {
-            if (area["regionName"].isNullOrEmpty()) {
+            if (area[Key.REGION_NAME].isNullOrEmpty()) {
                 selectedRegionText.text = null
                 selectedRegionText.isVisible = false
                 selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
-                selectRegionActionButton.tag = "arrow"
+                selectRegionActionButton.tag = Key.ARROW
             } else {
-                selectedRegionText.text = area["regionName"]
+                selectedRegionText.text = area[Key.REGION_NAME]
                 selectedRegionText.isVisible = true
                 selectRegionActionButton.setImageResource(R.drawable.clear_button)
-                selectRegionActionButton.tag = "clear"
+                selectRegionActionButton.tag = Key.CLEAR
             }
-            if (area["countryName"].isNullOrEmpty()) {
+            if (area[Key.COUNTRY_NAME].isNullOrEmpty()) {
                 selectedCountryText.text = null
                 selectedCountryText.isVisible = false
                 selectCountryActionButton.setImageResource(R.drawable.leading_icon_filter)
-                selectCountryActionButton.tag = "arrow"
+                selectCountryActionButton.tag = Key.ARROW
                 chosenCountry = String()
             } else {
-                selectedCountryText.text = area["countryName"]
+                selectedCountryText.text = area[Key.COUNTRY_NAME]
                 selectedCountryText.isVisible = true
                 selectCountryActionButton.setImageResource(R.drawable.clear_button)
-                selectCountryActionButton.tag = "clear"
-                chosenCountry = area["countryName"]!!
+                selectCountryActionButton.tag = Key.CLEAR
+                chosenCountry = area[Key.COUNTRY_NAME]!!
             }
         }
         binding.buttonApply.isVisible = area.isNotEmpty()

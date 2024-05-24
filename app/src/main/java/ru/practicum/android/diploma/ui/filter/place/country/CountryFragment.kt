@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.filter.place.country
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentCountryBinding
+import ru.practicum.android.diploma.ui.Key
 import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceAdapter
 import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceState
 
@@ -56,14 +56,11 @@ class CountryFragment : Fragment() {
         }
         binding.backButton.setOnClickListener { exit() }
 
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    exit()
-                }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                exit()
             }
-        )
+        })
     }
 
     private fun showError() {
@@ -91,7 +88,13 @@ class CountryFragment : Fragment() {
     }
 
     private fun getAdapter() = ChoicePlaceAdapter { country ->
-        setFragmentResult("setArea", bundleOf("countryName" to country.name, "countryId" to country.id))
+        setFragmentResult(
+            Key.SET_AREA,
+            bundleOf(
+                Key.COUNTRY_NAME to country.name,
+                Key.COUNTRY_ID to country.id
+            )
+        )
         findNavController().popBackStack(R.id.choicePlaceFragment, false)
     }
 

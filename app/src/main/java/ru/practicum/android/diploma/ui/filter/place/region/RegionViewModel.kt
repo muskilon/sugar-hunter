@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceState
 
 class RegionViewModel(private val vacanciesInterActor: VacanciesInterActor) : ViewModel() {
     private val liveState = MutableLiveData<ChoicePlaceState>()
-    private val regions =arrayListOf<Areas>()
+    private val regions = arrayListOf<Areas>()
 
     fun getAreas(country: String) {
         liveState.postValue(ChoicePlaceState.Loading)
@@ -24,7 +24,7 @@ class RegionViewModel(private val vacanciesInterActor: VacanciesInterActor) : Vi
                     is Resource.NotFound -> liveState.postValue(ChoicePlaceState.Empty(areas.message))
 
                     is Resource.Data -> {
-                        if (country.isNotEmpty()){
+                        if (country.isNotEmpty()) {
                             regions.clear()
                             regions.addAll(areas.value.filter { it.parentId != null && it.countryName == country })
                         } else {
@@ -47,10 +47,9 @@ class RegionViewModel(private val vacanciesInterActor: VacanciesInterActor) : Vi
                     foundAreas.add(area)
                 }
             }
-            if(foundAreas.isEmpty()) {
+            if (foundAreas.isEmpty()) {
                 liveState.postValue(ChoicePlaceState.Empty(""))
-            }
-            else {
+            } else {
                 liveState.postValue(ChoicePlaceState.Content(foundAreas))
             }
         }

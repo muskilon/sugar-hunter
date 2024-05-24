@@ -109,7 +109,7 @@ class DTOToDataMappers {
         }
         return result
     }
-    private fun setCountry (areasDictionary: List<AreaItemDTO>, countryName: String, countryId: String): List<Areas> {
+    private fun setCountry(areasDictionary: List<AreaItemDTO>, countryName: String, countryId: String): List<Areas> {
         val result = mutableListOf<Areas>()
         for (areaItem in areasDictionary) {
             result.add(Areas(
