@@ -21,7 +21,7 @@ val viewModelModules = module {
         CountryViewModel(get(), get())
     }
     viewModel {
-        RegionViewModel(get(), get())
+        RegionViewModel(get())
     }
     viewModel {
         ChoicePlaceViewModel(get())

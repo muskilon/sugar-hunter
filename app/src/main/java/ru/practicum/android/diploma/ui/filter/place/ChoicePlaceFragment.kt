@@ -39,6 +39,12 @@ class ChoicePlaceFragment : Fragment() {
             if (!bundle.isEmpty) viewModel.setArea(bundle)
         }
 
+        binding.buttonApply.setOnClickListener {
+            viewModel.savePlace()
+            setFragmentResult("areaFilters", viewModel.savePlace())
+            findNavController().popBackStack(R.id.filterFragment, false)
+        }
+
         binding.selectCountryActionButton.setOnClickListener {
             when (binding.selectCountryActionButton.tag) {
                 "clear" -> viewModel.clearCountry()

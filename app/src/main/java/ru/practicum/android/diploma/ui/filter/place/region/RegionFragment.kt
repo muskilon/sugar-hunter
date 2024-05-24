@@ -43,7 +43,6 @@ class RegionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setFragmentResultListener("chosenCountry") { _, bundle ->
-            Log.d("TAG", "bundle.toString()")
             bundle.getString("chosenCountry")?.let { viewModel.getAreas(it) } ?: viewModel.getAreas(String()) }
 
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

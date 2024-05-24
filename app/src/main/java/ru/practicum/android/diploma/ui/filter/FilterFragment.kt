@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.filter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -12,10 +13,12 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceViewModel
 
 class FilterFragment : Fragment() {
 
@@ -36,6 +39,23 @@ class FilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setFragmentResultListener("areaFilters") { _, bundle ->
+            if (!bundle.isEmpty) {
+                with (bundle) {
+                    getString("regionName")?.let {
+                        filters["regionName"] = it
+                    }
+                    getString("regionId")?.let {
+                        filters["area"] = it
+                    }
+                    getString("countryName")?.let {
+                        filters["countryName"] = it
+                    }
+                }
+                setStatements()
+            }
+        }
 
         filters = viewModel.getFilters()
         oldFilters.putAll(filters)
@@ -139,7 +159,7 @@ class FilterFragment : Fragment() {
                     }
                     ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
                     INDUSTRY -> Unit
-                    AREA -> Unit
+                    AREA -> renderArea()
                 }
                 binding.buttonDecline.isVisible = true
             }
@@ -148,6 +168,16 @@ class FilterFragment : Fragment() {
             binding.salaryCheckBox.isChecked = false
             binding.salaryEdit.text.clear()
         }
+    }
+
+    private fun renderArea() {
+        if (filters["countryName"].isNullOrEmpty()) {
+            binding.selectedRegionsText.text = filters["regionName"]
+        } else {
+            val st = "${filters["countryName"]}, ${filters["regionName"]}"
+            binding.selectedRegionsText.text = st
+        }
+        binding.selectedRegionsText.isVisible = true
     }
 
     private fun getTextWatcher() = object : TextWatcher {

@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +9,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.FiltersInterActor
 import ru.practicum.android.diploma.domain.VacanciesInterActor
-import ru.practicum.android.diploma.domain.models.Areas
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -22,7 +20,6 @@ class SearchViewModel(
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchFragmentState>()
-    private val foundAreas = mutableListOf<Areas>() // Для тестирования
     private var currentPage = 0
     private var totalPages = 0
     private var latestSearchText = ""
@@ -40,8 +37,9 @@ class SearchViewModel(
         with(request) {
             this[TEXT] = text
             this[PER_PAGE] = PAGE_SIZE
-            this.remove(AREA_NAME)
+            this.remove(REGION_MAME)
             this.remove(INDUSTRY_NAME)
+            this.remove(COUNTRY_NAME)
             page?.let {
                 this[PAGE] = page
             }
@@ -108,51 +106,6 @@ class SearchViewModel(
         }
     }
 
-// ДЛЯ ТЕСТИРОВАНИЯ!!!
-
-    fun getIndustries() {
-        viewModelScope.launch {
-            vacanciesInterActor.getIndustries().collect {
-                when (it) {
-                    is Resource.ConnectionError -> Log.d(TAG, it.message)
-
-                    is Resource.NotFound -> Log.d(TAG, it.message)
-
-                    is Resource.Data -> Log.d(TAG, it.value.toString())
-                }
-            }
-        }
-    }
-
-    fun getAreas() {
-        viewModelScope.launch {
-            vacanciesInterActor.getAreaDictionary().collect {
-                when (it) {
-                    is Resource.ConnectionError -> Log.d(TAG, it.message)
-
-                    is Resource.NotFound -> Log.d(TAG, it.message)
-
-                    is Resource.Data -> {
-                        val areas = it.value
-                        foundAreas.clear()
-                        areas.getArea("Мос")
-                        Log.d("FILTER", foundAreas.toString())
-                    }
-                }
-            }
-        }
-    }
-
-    private fun List<Areas>.getArea(name: String) {
-        for (area in this) {
-            if (area.name.startsWith(name, true)) {
-                foundAreas.add(area)
-            }
-        }
-    }
-
-// ДЛЯ ТЕСТИРОВАНИЯ!!!
-
     private fun processResult(foundVacancies: Resource<VacanciesResponse>, isSearch: Boolean) {
         when (foundVacancies) {
             is Resource.ConnectionError -> {
@@ -191,7 +144,6 @@ class SearchViewModel(
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val TAG = "process"
 
 //        API параметры
 
@@ -199,7 +151,8 @@ class SearchViewModel(
         private const val PAGE = "page"
         private const val PAGE_SIZE = "20"
         private const val PER_PAGE = "per_page"
-        private const val AREA_NAME = "areaName"
+        private const val REGION_MAME = "regionName"
+        private const val COUNTRY_NAME = "countryName"
         private const val INDUSTRY_NAME = "industryName"
     }
 }

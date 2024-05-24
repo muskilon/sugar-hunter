@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_choicePlaceFragment_to_regionFragment"
             app:destination="@id/regionFragment" />
+        <action
+            android:id="@+id/action_choicePlaceFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
     </fragment>
     <fragment
         android:id="@+id/choiceSphereFragment"

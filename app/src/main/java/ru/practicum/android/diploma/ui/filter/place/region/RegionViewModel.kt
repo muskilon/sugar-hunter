@@ -11,10 +11,7 @@ import ru.practicum.android.diploma.domain.models.Areas
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceState
 
-class RegionViewModel(
-    private val vacanciesInterActor: VacanciesInterActor,
-    private val filtersInterActor: FiltersInterActor
-) : ViewModel() {
+class RegionViewModel(private val vacanciesInterActor: VacanciesInterActor) : ViewModel() {
     private val liveState = MutableLiveData<ChoicePlaceState>()
     private val regions =arrayListOf<Areas>()
 
