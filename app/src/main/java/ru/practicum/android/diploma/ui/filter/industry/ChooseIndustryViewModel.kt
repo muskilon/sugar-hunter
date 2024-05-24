@@ -12,16 +12,14 @@ import ru.practicum.android.diploma.domain.IndustryInteractor
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.IndustryState
 import ru.practicum.android.diploma.domain.models.Resource
+import java.util.Locale
 
 class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor) : ViewModel() {
 
     private var latestSearchText = ""
     private var searchJob: Job? = null
     private var isClickAllowed = true
-    private var currentIndustry = ArrayList<Industries>()
-
-   // private var industryMutableListLiveData = MutableLiveData<ArrayList<Industries>>()
-  //  fun industryListLiveData(): LiveData<ArrayList<Industries>> = industryMutableListLiveData
+    private var industriesList = ArrayList<Industries>()
 
     private var stateMutableLiveData = MutableLiveData<IndustryState>()
     fun checkStateLiveData(): LiveData<IndustryState> = stateMutableLiveData
@@ -32,9 +30,7 @@ class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor
         }
     }
 
-    suspend fun renderState() {
-        val industriesList = ArrayList<Industries>()
-
+    private suspend fun renderState() {
         industryInteractor.getIndustries().collect { resource ->
             when (resource) {
                 is Resource.Data -> {
@@ -53,9 +49,6 @@ class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor
         }
     }
 
-    fun getProgressBar() {
-        stateMutableLiveData.postValue(IndustryState.Loading)
-    }
 
     fun clickDebounce(): Boolean {
         val current = isClickAllowed
@@ -72,39 +65,40 @@ class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor
     fun searchDebounce(text: String) {
         if (latestSearchText == text || text.isEmpty()) {
             searchJob?.cancel()
+            viewModelScope.launch {
+                renderState()
+            }
         } else {
+            getProgressBar()
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
                 delay(SEARCH_DEBOUNCE_DELAY)
-                searchIndustry(text)
+                sortIndustriesListByInput(text)
             }
         }
     }
 
-    fun searchIndustry(request: String) {
-        if (request.isNotEmpty()){
-            getProgressBar()
-            //todo поиск
+    private fun sortIndustriesListByInput(request: String) {
+        if (request.isNotEmpty()) {
+            val filteredList = industriesList.filter {
+                it.name?.lowercase(Locale.getDefault())?.startsWith(request) == true }
+            val sortedList = filteredList.sortedBy { it.name }
+            val sortedArrayList = ArrayList(sortedList)
+            if (ArrayList(sortedList).isEmpty()) {
+                stateMutableLiveData.postValue(IndustryState.NotFound)
+            } else {
+                stateMutableLiveData.postValue(IndustryState.Content(sortedArrayList))
+            }
         }
     }
 
-    private fun processResult(industries: ArrayList<Industries>?, error: String?) {
-        val currentIndustry = ArrayList<Industries>()
-        if (industries != null && industries.size != 0){
-            currentIndustry.clear()
-            currentIndustry.addAll(industries)
-            stateMutableLiveData.postValue(IndustryState.Content(currentIndustry))
-        } else if (error == OFFLINE) {
-            stateMutableLiveData.postValue(IndustryState.ConnectionError)
-        } else {
-            stateMutableLiveData.postValue(IndustryState.NotFound)
-        }
+    private fun getProgressBar() {
+        stateMutableLiveData.postValue(IndustryState.Loading)
     }
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val OFFLINE = "Проверьте подключение к интернету"
     }
 
 }
