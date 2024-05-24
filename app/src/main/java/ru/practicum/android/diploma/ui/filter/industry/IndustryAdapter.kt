@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industries
 
-class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerView.Adapter<IndustryAdapter.IndustryViewHolder>() {
+class IndustryAdapter(private val onItemClick: (Industries) -> Unit)
+    : RecyclerView.Adapter<IndustryAdapter.IndustryViewHolder>() {
 
     var industryList = ArrayList<Industries>()
 
