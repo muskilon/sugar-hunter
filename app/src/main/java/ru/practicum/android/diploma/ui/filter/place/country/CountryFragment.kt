@@ -17,7 +17,6 @@ import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceAdapter
 import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceState
 
 class CountryFragment : Fragment() {
-
     private var _binding: FragmentCountryBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<CountryViewModel>()

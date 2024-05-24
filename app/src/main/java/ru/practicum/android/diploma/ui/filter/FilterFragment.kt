@@ -90,7 +90,14 @@ class FilterFragment : Fragment() {
             findNavController().navigate(R.id.action_filterFragment_to_choiceSphereFragment)
         }
         binding.selectRegionLayout.setOnClickListener {
-            setFragmentResult("requestKey", bundleOf("isApplyButton" to true))
+            setFragmentResult(
+                "setAreaFromFilters", bundleOf(
+                    "regionName" to filters["regionName"],
+                    "regionId" to filters["area"],
+                    "countryName" to filters["countryName"],
+//                    "countryId" to region.parentId
+                )
+            )
             findNavController().navigate(R.id.action_filterFragment_to_choicePlaceFragment)
         }
 

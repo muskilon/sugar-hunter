@@ -24,7 +24,7 @@ val viewModelModules = module {
         RegionViewModel(get())
     }
     viewModel {
-        ChoicePlaceViewModel(get())
+        ChoicePlaceViewModel()
     }
     viewModel {
         ChooseSphereViewModel()

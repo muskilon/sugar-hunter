@@ -1,18 +1,12 @@
 package ru.practicum.android.diploma.ui.filter.place
 
 import android.os.Bundle
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.practicum.android.diploma.domain.FiltersInterActor
-import ru.practicum.android.diploma.domain.VacanciesInterActor
-import ru.practicum.android.diploma.domain.models.Areas
 
-class ChoicePlaceViewModel(
-    private val filtersInterActor: FiltersInterActor
-) : ViewModel() {
+class ChoicePlaceViewModel : ViewModel() {
     private val workPlace = MutableLiveData<MutableMap<String, String>>()
 
     fun setArea(bundle: Bundle) {
@@ -29,6 +23,31 @@ class ChoicePlaceViewModel(
             }
             getString(COUNTRY_ID)?.let {
                 area[COUNTRY_ID] = it
+            }
+        }
+        workPlace.postValue(area)
+    }
+
+    fun setAreaFromFilters(bundle: Bundle) {
+        val area = HashMap<String, String>()
+        with (bundle) {
+            if (getString(COUNTRY_NAME).isNullOrEmpty()) {
+                getString(REGION_NAME)?.let {
+                    area[COUNTRY_NAME] = it
+                }
+                getString(REGION_ID)?.let {
+                    area[REGION_ID] = it
+                }
+            } else {
+                getString(REGION_NAME)?.let {
+                    area[REGION_NAME] = it
+                }
+                getString(REGION_ID)?.let {
+                    area[REGION_ID] = it
+                }
+                getString(COUNTRY_NAME)?.let {
+                    area[COUNTRY_NAME] = it
+                }
             }
         }
         workPlace.postValue(area)
