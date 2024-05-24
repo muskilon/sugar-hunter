@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.filter.industry
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

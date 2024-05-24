@@ -3,12 +3,8 @@ package ru.practicum.android.diploma.ui.filter.industry
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemIndustryBinding
-import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.domain.models.Industries
-import ru.practicum.android.diploma.domain.models.Industry
-import ru.practicum.android.diploma.domain.models.Vacancy
 
 class IndustryAdapter(private val onItemClick: (Industries) -> Unit) : RecyclerView.Adapter<IndustryAdapter.IndustryViewHolder>() {
 
