@@ -62,6 +62,20 @@ class FilterFragment : Fragment() {
 
         setStatements()
 
+        binding.selectRegionActionButton.setOnClickListener{
+            when (binding.selectRegionActionButton.tag) {
+                "clear" -> {
+                    filters.remove("regionName")
+                    filters.remove("area")
+                    filters.remove("countryName")
+                    binding.selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
+                    binding.selectRegionActionButton.tag = "arrow"
+                    setStatements()
+                }
+                "arrow" -> selectRegionClick()
+            }
+        }
+
         binding.salaryEdit.addTextChangedListener(getTextWatcher())
 
         binding.salaryClearButton.setOnClickListener {
@@ -89,17 +103,7 @@ class FilterFragment : Fragment() {
         binding.selectIndustryLayout.setOnClickListener {
             findNavController().navigate(R.id.action_filterFragment_to_choiceSphereFragment)
         }
-        binding.selectRegionLayout.setOnClickListener {
-            setFragmentResult(
-                "setAreaFromFilters", bundleOf(
-                    "regionName" to filters["regionName"],
-                    "regionId" to filters["area"],
-                    "countryName" to filters["countryName"],
-//                    "countryId" to region.parentId
-                )
-            )
-            findNavController().navigate(R.id.action_filterFragment_to_choicePlaceFragment)
-        }
+        binding.selectRegionLayout.setOnClickListener { selectRegionClick() }
 
         binding.salaryCheckBox.setOnClickListener {
             salaryCheckBoxProcessing()
@@ -137,6 +141,17 @@ class FilterFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun selectRegionClick() {
+        setFragmentResult(
+            "setAreaFromFilters", bundleOf(
+                "regionName" to filters["regionName"],
+                "regionId" to filters["area"],
+                "countryName" to filters["countryName"],
+            )
+        )
+        findNavController().navigate(R.id.action_filterFragment_to_choicePlaceFragment)
     }
     private fun salaryHeaderColor(isFocus: Boolean?) {
         when (isFocus) {
@@ -184,6 +199,8 @@ class FilterFragment : Fragment() {
             val st = "${filters["countryName"]}, ${filters["regionName"]}"
             binding.selectedRegionsText.text = st
         }
+        binding.selectRegionActionButton.setImageResource(R.drawable.clear_button)
+        binding.selectRegionActionButton.tag = "clear"
         binding.selectedRegionsText.isVisible = true
     }
 
