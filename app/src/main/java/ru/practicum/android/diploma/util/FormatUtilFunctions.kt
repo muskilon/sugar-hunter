@@ -107,17 +107,19 @@ class FormatUtilFunctions {
         theme.resolveAttribute(R.attr.prime_color_black, typedValue, true)
         val color = typedValue.data
         textView.setTextColor(ColorStateList.valueOf(color))
-        textView.textSize = 12F
+        textView.textSize = TEXT_SIZE_12SP
     }
 
     fun formatUnselectedFilterTextHeader(textView: TextView) {
         textView.setTextColor(textView.context.getColor(R.color.dark_gray))
-        textView.textSize = 16F
+        textView.textSize = TEXT_SIZE_16SP
     }
 
     companion object {
         const val ROUNDED_CORNERS_12PX = 12f
         const val THREE_DIGITS_FOR_SPACE = 3
+        const val TEXT_SIZE_12SP = 12F
+        const val TEXT_SIZE_16SP = 16f
     }
 
 }

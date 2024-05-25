@@ -18,6 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.ui.Key
+import ru.practicum.android.diploma.util.FormatUtilFunctions
 
 class FilterFragment : Fragment() {
 
@@ -26,6 +27,8 @@ class FilterFragment : Fragment() {
     private val viewModel by viewModel<FilterViewModel>()
     private var filters: MutableMap<String, String> = mutableMapOf()
     private var oldFilters: MutableMap<String, String> = mutableMapOf()
+
+    private val formatUtil = FormatUtilFunctions()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -101,6 +104,9 @@ class FilterFragment : Fragment() {
         }
     }
     private fun buttonApplyListener() {
+        if (filters[Key.REGION_NAME].isNullOrEmpty() && filters[Key.COUNTRY_NAME].isNullOrEmpty()) {
+            filters.remove(Key.AREA)
+        }
         viewModel.updateFilters(filters)
         setFragmentResult(
             Key.REQUEST_KEY,
@@ -112,7 +118,7 @@ class FilterFragment : Fragment() {
         when (binding.selectRegionActionButton.tag) {
             Key.CLEAR -> {
                 filters.remove(Key.REGION_NAME)
-                filters.remove(Key.AREA)
+//                filters.remove(Key.AREA)
                 filters.remove(Key.COUNTRY_NAME)
                 binding.selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
                 binding.selectRegionActionButton.tag = Key.ARROW
@@ -186,7 +192,7 @@ class FilterFragment : Fragment() {
 
                     Key.ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
                     Key.INDUSTRY -> Unit
-                    Key.AREA -> renderArea()
+                    Key.AREA -> { renderArea() }
                 }
                 binding.buttonDecline.isVisible = true
             }
@@ -194,26 +200,36 @@ class FilterFragment : Fragment() {
             binding.buttonDecline.isVisible = false
             binding.salaryCheckBox.isChecked = false
             binding.salaryEdit.text.clear()
-            binding.selectedRegionsText.isVisible = false
         }
     }
 
     private fun renderArea() {
-        if (filters[Key.COUNTRY_NAME].isNullOrEmpty()) {
+        if (filters[Key.COUNTRY_NAME].isNullOrEmpty() && filters[Key.REGION_NAME].isNullOrEmpty()) {
             binding.selectedRegionsText.text = filters[Key.COUNTRY_NAME]
+            formatUtil.formatUnselectedFilterTextHeader(binding.selectRegionHeader)
+            binding.selectRegionActionButton.tag = Key.ARROW
+            binding.selectedRegionsText.isVisible = false
         } else {
-            val st = "${filters[Key.COUNTRY_NAME]}, ${filters[Key.REGION_NAME]}"
+            formatUtil.formatSelectedFilterTextHeader(binding.selectRegionHeader)
+            var st = ""
+            if (!filters[Key.COUNTRY_NAME].isNullOrEmpty()) {
+                st = st.plus(filters[Key.COUNTRY_NAME])
+            }
+            if (st.isNotEmpty()) {
+                st = st.plus(", ")
+            }
+            if (!filters[Key.REGION_NAME].isNullOrEmpty()) {
+                st = st.plus(filters[Key.REGION_NAME])
+            }
             binding.selectedRegionsText.text = st
+            binding.selectRegionActionButton.setImageResource(R.drawable.clear_button)
+            binding.selectRegionActionButton.tag = Key.CLEAR
+            binding.selectedRegionsText.isVisible = true
         }
-        binding.selectRegionActionButton.setImageResource(R.drawable.clear_button)
-        binding.selectRegionActionButton.tag = Key.CLEAR
-        binding.selectedRegionsText.isVisible = true
     }
 
     private fun getTextWatcher() = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            // empty
-        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             if (s.isNullOrEmpty()) {
@@ -228,9 +244,7 @@ class FilterFragment : Fragment() {
             }
         }
 
-        override fun afterTextChanged(s: Editable?) {
-            // empty
-        }
+        override fun afterTextChanged(s: Editable?) = Unit
     }
 
     override fun onStop() {
@@ -244,6 +258,9 @@ class FilterFragment : Fragment() {
     }
 
     fun exit() {
+        if (filters[Key.REGION_NAME].isNullOrEmpty() && filters[Key.COUNTRY_NAME].isNullOrEmpty()) {
+            filters.remove(Key.AREA)
+        }
         viewModel.updateFilters(filters)
         setFragmentResult(
             Key.REQUEST_KEY,
