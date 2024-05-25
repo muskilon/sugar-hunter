@@ -33,6 +33,7 @@ class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor
         industryInteractor.getIndustries().collect { resource ->
             when (resource) {
                 is Resource.Data -> {
+                    industriesList.clear()
                     industriesList.addAll(resource.value)
                     stateMutableLiveData.postValue(IndustryState.Content(industriesList))
                 }
@@ -67,10 +68,15 @@ class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor
     private fun sortIndustriesListByInput(request: String) {
         if (request.isNotEmpty()) {
             val filteredList = industriesList.filter {
-                it.name?.lowercase(Locale.getDefault())?.startsWith(request) == true }
-            val sortedList = filteredList.sortedBy { it.name }
+                it.name?.lowercase(Locale.getDefault())?.startsWith(request) == true ||
+                    it.name?.lowercase(Locale.getDefault())?.contains(request) == true
+            }
+            val sortedList = filteredList.sortedWith(compareBy(
+                { it.name?.startsWith(request, ignoreCase = true) == false },
+                { it.name }
+            ))
             val sortedArrayList = ArrayList(sortedList)
-            if (ArrayList(sortedList).isEmpty()) {
+            if (sortedArrayList.isEmpty()) {
                 stateMutableLiveData.postValue(IndustryState.NotFound)
             } else {
                 stateMutableLiveData.postValue(IndustryState.Content(sortedArrayList))
