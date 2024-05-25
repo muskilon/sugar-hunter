@@ -15,6 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentChoicePlaceBinding
 import ru.practicum.android.diploma.ui.Key
+import ru.practicum.android.diploma.util.FormatUtilFunctions
 
 class ChoicePlaceFragment : Fragment() {
 
@@ -22,6 +23,8 @@ class ChoicePlaceFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<ChoicePlaceViewModel>()
     private var chosenCountry = String()
+
+    private val formatUtil = FormatUtilFunctions()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -101,11 +104,14 @@ class ChoicePlaceFragment : Fragment() {
                 selectedRegionText.isVisible = false
                 selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
                 selectRegionActionButton.tag = Key.ARROW
+                formatUtil.formatUnselectedFilterTextHeader(selectRegionHeader)
+
             } else {
                 selectedRegionText.text = area[Key.REGION_NAME]
                 selectedRegionText.isVisible = true
                 selectRegionActionButton.setImageResource(R.drawable.clear_button)
                 selectRegionActionButton.tag = Key.CLEAR
+                formatUtil.formatSelectedFilterTextHeader(selectRegionHeader)
             }
             if (area[Key.COUNTRY_NAME].isNullOrEmpty()) {
                 selectedCountryText.text = null
@@ -113,12 +119,14 @@ class ChoicePlaceFragment : Fragment() {
                 selectCountryActionButton.setImageResource(R.drawable.leading_icon_filter)
                 selectCountryActionButton.tag = Key.ARROW
                 chosenCountry = String()
+                formatUtil.formatUnselectedFilterTextHeader(selectCountryHeader)
             } else {
                 selectedCountryText.text = area[Key.COUNTRY_NAME]
                 selectedCountryText.isVisible = true
                 selectCountryActionButton.setImageResource(R.drawable.clear_button)
                 selectCountryActionButton.tag = Key.CLEAR
                 chosenCountry = area[Key.COUNTRY_NAME]!!
+                formatUtil.formatSelectedFilterTextHeader(selectCountryHeader)
             }
         }
         binding.buttonApply.isVisible = area.isNotEmpty()

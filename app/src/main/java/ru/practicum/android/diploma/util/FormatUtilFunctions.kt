@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.util
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.Log
 import android.util.TypedValue
 import android.widget.ImageView
@@ -98,6 +99,20 @@ class FormatUtilFunctions {
             textView.isVisible = true
             textView.text = salaryText
         }
+    }
+
+    fun formatSelectedFilterTextHeader(textView: TextView) {
+        val typedValue = TypedValue()
+        val theme = textView.context.theme
+        theme.resolveAttribute(R.attr.prime_color_black, typedValue, true)
+        val color = typedValue.data
+        textView.setTextColor(ColorStateList.valueOf(color))
+        textView.textSize = 12F
+    }
+
+    fun formatUnselectedFilterTextHeader(textView: TextView) {
+        textView.setTextColor(textView.context.getColor(R.color.dark_gray))
+        textView.textSize = 16F
     }
 
     companion object {
