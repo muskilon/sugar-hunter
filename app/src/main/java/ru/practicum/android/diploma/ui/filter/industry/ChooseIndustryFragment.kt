@@ -15,7 +15,6 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentChoiceIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.IndustryState
@@ -75,7 +74,7 @@ class ChooseIndustryFragment : Fragment() {
     }
 
     private fun getTextWatcher() = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             binding.clearIcon.visibility = clearButtonVisibility(s)
@@ -84,7 +83,7 @@ class ChooseIndustryFragment : Fragment() {
             searchText?.let { viewModel.searchDebounce(it) }
         }
 
-        override fun afterTextChanged(s: Editable?) {}
+        override fun afterTextChanged(s: Editable?) = Unit
     }
 
     @SuppressLint("NotifyDataSetChanged")

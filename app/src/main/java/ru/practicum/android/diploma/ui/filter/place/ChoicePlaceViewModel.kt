@@ -1,53 +1,97 @@
 package ru.practicum.android.diploma.ui.filter.place
 
-import android.util.Log
+import android.os.Bundle
+import androidx.core.os.bundleOf
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.VacanciesInterActor
-import ru.practicum.android.diploma.domain.models.AreaItem
-import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.ui.Key
 
-class ChoicePlaceViewModel(
-    private val vacanciesInterActor: VacanciesInterActor
-) : ViewModel() {
+class ChoicePlaceViewModel : ViewModel() {
+    private val workPlace = MutableLiveData<MutableMap<String, String>>()
 
-    val mutable = MutableLiveData<Int>()
-    private val foundAreas = mutableListOf<AreaItem>()
+    fun setArea(bundle: Bundle) {
+        val area = HashMap<String, String>()
+        with(bundle) {
+            getString(Key.REGION_NAME)?.let {
+                area[Key.REGION_NAME] = it
+            }
+            getString(Key.REGION_ID)?.let {
+                area[Key.REGION_ID] = it
+            }
+            getString(Key.COUNTRY_NAME)?.let {
+                area[Key.COUNTRY_NAME] = it
+            }
+            getString(Key.COUNTRY_ID)?.let {
+                area[Key.COUNTRY_ID] = it
+            }
+        }
+        workPlace.postValue(area)
+    }
 
-    fun getAreas() {
-        viewModelScope.launch {
-            vacanciesInterActor.getAreaDictionary().collect {
-                when (it) {
-                    is Resource.ConnectionError -> Log.d(TAG, it.message)
-
-                    is Resource.NotFound -> Log.d(TAG, it.message)
-
-                    is Resource.Data -> {
-                        val areas = it.value.container
-                        foundAreas.clear()
-                        areas.getArea("Мос")
-                        Log.d(TAG, foundAreas.toString())
-                    }
+    fun setAreaFromFilters(bundle: Bundle) {
+        val area = HashMap<String, String>()
+        with(bundle) {
+            if (getString(Key.COUNTRY_NAME).isNullOrEmpty()) {
+                getString(Key.REGION_NAME)?.let {
+                    area[Key.COUNTRY_NAME] = it
+                }
+                getString(Key.REGION_ID)?.let {
+                    area[Key.REGION_ID] = it
+                }
+            } else {
+                getString(Key.REGION_NAME)?.let {
+                    area[Key.REGION_NAME] = it
+                }
+                getString(Key.REGION_ID)?.let {
+                    area[Key.REGION_ID] = it
+                }
+                getString(Key.COUNTRY_NAME)?.let {
+                    area[Key.COUNTRY_NAME] = it
                 }
             }
         }
+        workPlace.postValue(area)
     }
 
-    private fun List<AreaItem>.getArea(name: String): AreaItem? {
-        for (area in this) {
-            if (area.name.startsWith(name, true)) {
-                foundAreas.add(area)
-            }
-            val found = area.areas?.getArea(name)
-            if (found != null) {
-                return found
+    fun clearRegion() {
+        val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
+        workPlace.value?.let { tempWorkPlace.putAll(it) }
+        tempWorkPlace.remove(Key.REGION_NAME)
+        tempWorkPlace.remove(Key.REGION_ID)
+        workPlace.postValue(tempWorkPlace)
+    }
+
+    fun clearCountry() {
+        val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
+        workPlace.value?.let { tempWorkPlace.putAll(it) }
+        tempWorkPlace.remove(Key.COUNTRY_NAME)
+        tempWorkPlace.remove(Key.COUNTRY_ID)
+        workPlace.postValue(tempWorkPlace)
+    }
+
+    fun savePlace(): Bundle {
+        var bundle = bundleOf()
+        val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
+        workPlace.value?.let { tempWorkPlace.putAll(it) }
+        tempWorkPlace[Key.COUNTRY_ID]?.let { id ->
+            tempWorkPlace[Key.COUNTRY_NAME]?.let { name ->
+                bundle = bundleOf(
+                    Key.REGION_ID to id, Key.REGION_NAME to name
+                )
             }
         }
-        return null
+        tempWorkPlace[Key.REGION_ID]?.let { id ->
+            tempWorkPlace[Key.REGION_NAME]?.let { name ->
+                tempWorkPlace[Key.COUNTRY_NAME]?.let { countryName ->
+                    bundle = bundleOf(
+                        Key.REGION_ID to id, Key.REGION_NAME to name, Key.COUNTRY_NAME to countryName
+                    )
+                }
+            }
+        }
+        return bundle
     }
-    companion object {
-        private const val TAG = "CHOOSE_PLACE"
-    }
+
+    fun getArea(): LiveData<MutableMap<String, String>> = workPlace
 }

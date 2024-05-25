@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.domain.models
 
-
-
 sealed class IndustryState {
 
     data object Loading : IndustryState()

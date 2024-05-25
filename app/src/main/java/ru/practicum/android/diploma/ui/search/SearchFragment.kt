@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,15 +50,11 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        ТУТ ЛОМАЕТСЯ!
-
-//        setFragmentResultListener("requestKey") { _, bundle ->
-//            if (bundle.getBoolean("isApplyButton")){
-//                if (!searchText.isNullOrEmpty()) {
-//                    viewModel.repeatRequest(false)
-//                }
-//            }
-//        }
+        setFragmentResultListener("requestKey") { _, bundle ->
+            if (bundle.getBoolean("isApplyButton") && !searchText.isNullOrEmpty()) {
+                viewModel.repeatRequest(false)
+            }
+        }
 
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -70,13 +67,7 @@ class SearchFragment : Fragment() {
         binding.searchEditText.addTextChangedListener(getTextWatcher())
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                binding.searchEditText.clearFocus()
-                if (!searchText.isNullOrEmpty()) {
-                    viewModel.searchVacancies(viewModel.getSearchRequest(searchText!!, null))
-                    viewModel.searchDebounce(String())
-                }
-            }
+            searchEditActionListener(actionId)
             false
         }
 
@@ -98,6 +89,16 @@ class SearchFragment : Fragment() {
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterFragment
             )
+        }
+    }
+
+    private fun searchEditActionListener(actionId: Int) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            binding.searchEditText.clearFocus()
+            if (!searchText.isNullOrEmpty()) {
+                viewModel.searchVacancies(viewModel.getSearchRequest(searchText!!, null))
+                viewModel.searchDebounce(String())
+            }
         }
     }
 
@@ -129,8 +130,8 @@ class SearchFragment : Fragment() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            binding.clearIcon.visibility = clearButtonVisibility(s)
-            binding.searchIcon.visibility = searchButtonVisibility(s)
+            binding.clearIcon.isVisible = !s.isNullOrEmpty()
+            binding.searchIcon.isVisible = s.isNullOrEmpty()
             searchText = s.toString()
             searchText?.let { viewModel.searchDebounce(it) }
         }
@@ -170,8 +171,6 @@ class SearchFragment : Fragment() {
     private fun showStart() {
         with(binding) {
             placeholderSearch.visibility = View.VISIBLE
-        }
-        with(binding) {
             noInternet.visibility = View.GONE
             somethingWrong.visibility = View.GONE
             progressBar.visibility = View.GONE
@@ -188,11 +187,8 @@ class SearchFragment : Fragment() {
             somethingWrong.visibility = View.GONE
             vacancyCount.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
+            searchRecyclerView.removeAllViewsInLayout() // очистка RV, что бы не моргали предыдущие результаты поиска
         }
-
-// очистка RV, что бы не моргали предыдущие результаты поиска
-
-        binding.searchRecyclerView.removeAllViewsInLayout()
     }
 
     private fun showError(errorMessage: String) {
@@ -224,7 +220,6 @@ class SearchFragment : Fragment() {
 
     private fun showContent(vacancy: VacanciesResponse) {
         searchAdapter.setData(vacancy.items)
-        Log.d("TAGGGG", "NFGGG")
         isPageLoading = false
         with(binding) {
             vacancyCount.text = App.getAppResources()?.getQuantityString(
@@ -238,7 +233,6 @@ class SearchFragment : Fragment() {
             searchRecyclerView.visibility = View.VISIBLE
             pageLoading.isVisible = false
         }
-        Log.d("TAG_ITEMS_COUNT", searchAdapter.itemCount.toString())
     }
     private fun getAdapter() =
         SearchAdapter { vacancy ->
@@ -249,22 +243,6 @@ class SearchFragment : Fragment() {
                 )
             }
         }
-
-    private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
-
-    private fun searchButtonVisibility(s: CharSequence?): Int {
-        return if (!s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

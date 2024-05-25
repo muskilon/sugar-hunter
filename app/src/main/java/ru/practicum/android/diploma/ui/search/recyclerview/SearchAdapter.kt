@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.search.recyclerview
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -28,9 +27,11 @@ class SearchAdapter(
     override fun getItemCount(): Int = vacancy.size
 
     fun setData(newVacancies: List<Vacancy>) {
+        if (newVacancies.size < vacancy.size) {
+            notifyItemRangeRemoved(0, vacancy.size)
+        }
         vacancy.clear()
         vacancy.addAll(newVacancies)
-        notifyItemRangeInserted(vacancy.size - 1, newVacancies.size)
-        Log.d("TAG_ADAPTER", "${newVacancies.size} ${vacancy.size}")
+        notifyItemRangeInserted(vacancy.size + 1, newVacancies.size)
     }
 }
