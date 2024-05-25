@@ -18,6 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentChoiceIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.IndustryState
+import ru.practicum.android.diploma.ui.Key
 
 class ChooseIndustryFragment : Fragment() {
 
@@ -147,9 +148,9 @@ class ChooseIndustryFragment : Fragment() {
     private fun saveIndustry(industry: Industries) {
         binding.buttonApply.isVisible = true
         setFragmentResult(
-            "setArea",
+            Key.SET_AREA,
             bundleOf(
-                "industryName" to industry.name,
+                Key.INDUSTRY to industry.name,
             )
         )
     }
