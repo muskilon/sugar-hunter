@@ -50,6 +50,7 @@ class FilterFragment : Fragment() {
         setStatements()
 
         binding.selectRegionActionButton.setOnClickListener { selectRegionActionButtonClickListener() }
+        binding.selectIndustryActionButton.setOnClickListener { selectIndustryActionButtonClickListener() }
 
         binding.salaryEdit.addTextChangedListener(getTextWatcher())
 
@@ -70,9 +71,7 @@ class FilterFragment : Fragment() {
 
         binding.buttonApply.setOnClickListener { buttonApplyListener() }
 
-        binding.selectIndustryLayout.setOnClickListener {
-            findNavController().navigate(R.id.action_filterFragment_to_choiceSphereFragment)
-        }
+        binding.selectIndustryLayout.setOnClickListener { selectIndustryClick() }
         binding.selectRegionLayout.setOnClickListener { selectRegionClick() }
 
         binding.salaryCheckBox.setOnClickListener {
@@ -129,6 +128,22 @@ class FilterFragment : Fragment() {
         }
     }
 
+    private fun selectIndustryActionButtonClickListener() {
+        when (binding.selectRegionActionButton.tag) {
+            //  TODO Отредактировать
+            Key.CLEAR -> {
+                filters.remove(Key.REGION_NAME)
+//                filters.remove(Key.AREA)
+                filters.remove(Key.COUNTRY_NAME)
+                binding.selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
+                binding.selectRegionActionButton.tag = Key.ARROW
+                setStatements()
+            }
+
+            Key.ARROW -> selectRegionClick()
+        }
+    }
+
     private fun salaryCheckBoxProcessing() {
         binding.salaryEdit.clearFocus()
         when (binding.salaryCheckBox.isChecked) {
@@ -163,6 +178,12 @@ class FilterFragment : Fragment() {
         findNavController().navigate(R.id.action_filterFragment_to_choicePlaceFragment)
     }
 
+    private fun selectIndustryClick() {
+        // TODO Сделать клон метода выше
+        findNavController().navigate(R.id.action_filterFragment_to_choiceSphereFragment)
+
+    }
+
     private fun salaryHeaderColor(isFocus: Boolean?) {
         when (isFocus) {
             true -> {
@@ -191,8 +212,9 @@ class FilterFragment : Fragment() {
                     }
 
                     Key.ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
-                    Key.INDUSTRY -> Unit
+                    Key.INDUSTRY -> Unit // TODO подключить renderIndustry
                     Key.AREA -> { renderArea() }
+
                 }
                 binding.buttonDecline.isVisible = true
             }
@@ -226,6 +248,10 @@ class FilterFragment : Fragment() {
             binding.selectRegionActionButton.tag = Key.CLEAR
             binding.selectedRegionsText.isVisible = true
         }
+    }
+
+    private fun renderIndustry() {
+        TODO("Сделать метод для отрасли как метод выше")
     }
 
     private fun getTextWatcher() = object : TextWatcher {
