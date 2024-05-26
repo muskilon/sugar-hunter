@@ -53,8 +53,9 @@ class ChoicePlaceFragment : Fragment() {
         binding.selectRegionActionButton.setOnClickListener { selectRegionActionButtonClickListener() }
 
         viewModel.getArea().observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) renderContent(it)
-            else {
+            if (it.isNotEmpty()) {
+                renderContent(it)
+            } else {
                 renderEmpty()
             }
         }
@@ -127,7 +128,6 @@ class ChoicePlaceFragment : Fragment() {
 
     private fun renderContent(area: MutableMap<String, String>) {
         with(binding) {
-
             if (area[Key.COUNTRY_ID] == area[Key.REGION_ID]) {
                 selectedRegionText.text = null
                 selectedRegionText.isVisible = false

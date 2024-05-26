@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,7 +35,6 @@ class SearchViewModel(
 
     fun getSearchRequest(text: String, page: String?): Map<String, String> {
         val filters = filtersInterActor.getFilters().filters
-        Log.d("FILTERS_SHARED_TAG", filters.toString())
         with(filters) {
             this[TEXT] = text
             this[PER_PAGE] = PAGE_SIZE
@@ -47,8 +45,7 @@ class SearchViewModel(
             }
 
         }
-        val request = filters.filterNot { it.key.startsWith(Key.NOT_REQUEST)}.toMap()
-        Log.d("SEARCH_REQUEST_TAG", request.toString())
+        val request = filters.filterNot { it.key.startsWith(Key.NOT_REQUEST) }.toMap()
         return request
     }
 

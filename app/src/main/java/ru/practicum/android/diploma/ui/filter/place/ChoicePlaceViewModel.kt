@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.filter.place
 
 import android.os.Bundle
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,7 +26,6 @@ class ChoicePlaceViewModel : ViewModel() {
                 area[Key.COUNTRY_ID] = it
             }
         }
-        Log.d("SET_AREA_TAG", area.toString())
         workPlace.postValue(area)
     }
 
@@ -40,14 +38,10 @@ class ChoicePlaceViewModel : ViewModel() {
         } else {
             tempWorkPlace.clear()
         }
-        Log.d("CLEAR_REGION_TAG", tempWorkPlace.toString())
         workPlace.postValue(tempWorkPlace)
     }
 
     fun clearCountry() {
-        val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
-        workPlace.value?.let { tempWorkPlace.putAll(it) }
-        tempWorkPlace.clear() // TODO почистить
         workPlace.postValue(mutableMapOf())
     }
 
@@ -55,10 +49,9 @@ class ChoicePlaceViewModel : ViewModel() {
         val bundle = bundleOf()
         val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
         workPlace.value?.let { tempWorkPlace.putAll(it) }
-        tempWorkPlace.forEach{
+        tempWorkPlace.forEach {
             bundle.putString(it.key, it.value)
         }
-        Log.d("BUNDLE_TAG", "${ bundle.getString(Key.REGION_ID, null) }, ${ bundle.getString(Key.REGION_NAME, null) }, ${ bundle.getString(Key.COUNTRY_ID, null)}, ${ bundle.getString(Key.COUNTRY_NAME, null) }")
         return bundle
     }
 

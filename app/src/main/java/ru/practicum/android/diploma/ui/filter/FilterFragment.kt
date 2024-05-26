@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.ui.filter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -109,7 +108,6 @@ class FilterFragment : Fragment() {
                     filters[Key.COUNTRY_ID] = it
                 }
             }
-            Log.d("PROCESS_BUNDLE_TAG", filters.toString())
             setStatements()
         }
     }
@@ -250,29 +248,6 @@ class FilterFragment : Fragment() {
             binding.selectRegionActionButton.tag = Key.ARROW
             binding.selectedRegionsText.isVisible = false
         }
-
-//        if (filters[Key.COUNTRY_NAME].isNullOrEmpty() && filters[Key.REGION_NAME].isNullOrEmpty()) {
-//            binding.selectedRegionsText.text = filters[Key.COUNTRY_NAME]
-//            formatUtil.formatUnselectedFilterTextHeader(binding.selectRegionHeader)
-//            binding.selectRegionActionButton.tag = Key.ARROW
-//            binding.selectedRegionsText.isVisible = false
-//        } else {
-//            formatUtil.formatSelectedFilterTextHeader(binding.selectRegionHeader)
-//            var st = ""
-//            if (!filters[Key.COUNTRY_NAME].isNullOrEmpty()) {
-//                st = st.plus(filters[Key.COUNTRY_NAME])
-//            }
-//            if (st.isNotEmpty()) {
-//                st = st.plus(", ")
-//            }
-//            if (!filters[Key.REGION_NAME].isNullOrEmpty()) {
-//                st = st.plus(filters[Key.REGION_NAME])
-//            }
-//            binding.selectedRegionsText.text = st
-//            binding.selectRegionActionButton.setImageResource(R.drawable.clear_button)
-//            binding.selectRegionActionButton.tag = Key.CLEAR
-//            binding.selectedRegionsText.isVisible = true
-//        }
     }
 
     private fun renderIndustry() {
