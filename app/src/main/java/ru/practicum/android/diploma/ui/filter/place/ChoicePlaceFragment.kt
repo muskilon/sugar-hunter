@@ -41,9 +41,6 @@ class ChoicePlaceFragment : Fragment() {
         setFragmentResultListener(Key.SET_AREA) { _, bundle ->
             if (!bundle.isEmpty) viewModel.setArea(bundle)
         }
-        setFragmentResultListener(Key.SET_AREA_FROM_FILTERS) { _, bundle ->
-            if (!bundle.isEmpty) viewModel.setAreaFromFilters(bundle)
-        }
 
         binding.buttonApply.setOnClickListener {
             viewModel.savePlace()

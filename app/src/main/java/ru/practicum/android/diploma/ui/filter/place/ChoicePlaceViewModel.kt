@@ -31,26 +31,6 @@ class ChoicePlaceViewModel : ViewModel() {
         workPlace.postValue(area)
     }
 
-    fun setAreaFromFilters(bundle: Bundle) {
-        val area = HashMap<String, String>()
-            with(bundle) {
-                getString(Key.REGION_NAME)?.let {
-                    area[Key.REGION_NAME] = it
-                }
-                getString(Key.REGION_ID)?.let {
-                    area[Key.REGION_ID] = it
-                }
-                getString(Key.COUNTRY_NAME)?.let {
-                    area[Key.COUNTRY_NAME] = it
-                }
-                getString(Key.COUNTRY_ID)?.let {
-                    area[Key.COUNTRY_ID] = it
-                }
-            }
-        Log.d("SET_AREA_FROM_FILTERS_TAG", area.toString())
-        workPlace.postValue(area)
-    }
-
     fun clearRegion(isCountryVisible: Boolean) {
         val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
         workPlace.value?.let { tempWorkPlace.putAll(it) }
@@ -60,6 +40,7 @@ class ChoicePlaceViewModel : ViewModel() {
         } else {
             tempWorkPlace.clear()
         }
+        Log.d("CLEAR_REGION_TAG", tempWorkPlace.toString())
         workPlace.postValue(tempWorkPlace)
     }
 

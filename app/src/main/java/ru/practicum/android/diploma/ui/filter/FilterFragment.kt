@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.filter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -108,6 +109,7 @@ class FilterFragment : Fragment() {
                     filters[Key.COUNTRY_ID] = it
                 }
             }
+            Log.d("PROCESS_BUNDLE_TAG", filters.toString())
             setStatements()
         }
     }
@@ -174,10 +176,10 @@ class FilterFragment : Fragment() {
 
     private fun selectRegionClick() {
         setFragmentResult(
-            Key.SET_AREA_FROM_FILTERS,
+            Key.SET_AREA,
             bundleOf(
                 Key.REGION_NAME to filters[Key.REGION_NAME],
-                Key.REGION_ID to filters[Key.REGION_NAME],
+                Key.REGION_ID to filters[Key.REGION_ID],
                 Key.COUNTRY_NAME to filters[Key.COUNTRY_NAME],
                 Key.COUNTRY_ID to filters[Key.COUNTRY_ID]
             )
