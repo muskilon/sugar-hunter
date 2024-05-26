@@ -23,7 +23,6 @@
     <string name="favourite_empty">Список пуст</string>
     <string name="favourite_error">Не удалось получить список вакансий</string>
 
-
     <!--    Vacancy Fragment Strings-->
     <string name="vacancy_fragment_header">Вакансия</string>
     <string name="experience_header">Требуемый опыт</string>
@@ -67,6 +66,11 @@
     <string name="error_region">Не удалось получить список</string>
     <string name="get_list_failure">Не удалось получить\nсписок</string>
     <string name="no_region">Такого региона нет</string>
+
+    <!--    ChoiceIndustry Fragment Strings-->
+    <string name="choice_industry_header">Выбор отрасли</string>
+    <string name="search_industry_text">Введите отрасль</string>
+    <string name="nothing_industry">Такой отрасли нет</string>
 
     <plurals name="vacancy_plurals">
         <item quantity="zero">Вакансий не найдено</item>
