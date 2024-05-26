@@ -63,6 +63,12 @@ class FilterFragment : Fragment() {
             salaryEditOnFocusChangeListener(isFocus)
         }
 
+        binding.selectIndustryActionButton.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_filterFragment_to_choiceSphereFragment
+            )
+        }
+
         binding.buttonDecline.setOnClickListener {
             filters.clear()
             salaryHeaderColor(null)

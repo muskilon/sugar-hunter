@@ -4,7 +4,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.practicum.android.diploma.ui.favourite.FavouriteViewModel
 import ru.practicum.android.diploma.ui.filter.FilterViewModel
-import ru.practicum.android.diploma.ui.filter.industry.ChooseSphereViewModel
+import ru.practicum.android.diploma.ui.filter.industry.ChooseIndustryViewModel
 import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceViewModel
 import ru.practicum.android.diploma.ui.filter.place.country.CountryViewModel
 import ru.practicum.android.diploma.ui.filter.place.region.RegionViewModel
@@ -27,7 +27,7 @@ val viewModelModules = module {
         ChoicePlaceViewModel()
     }
     viewModel {
-        ChooseSphereViewModel()
+        ChooseIndustryViewModel(industryInteractor = get())
     }
     viewModel {
         FilterViewModel(filtersInterActor = get())
@@ -41,8 +41,7 @@ val viewModelModules = module {
     viewModel {
         TeamViewModel()
     }
-    viewModel {
-            (id: String) ->
+    viewModel { (id: String) ->
         VacancyViewModel(vacancyId = id, favouriteDataBaseInteractor = get(), vacanciesInterActor = get())
     }
 }

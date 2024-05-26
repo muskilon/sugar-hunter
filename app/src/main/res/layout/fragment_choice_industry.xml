@@ -104,4 +104,99 @@
         app:layout_constraintTop_toBottomOf="@+id/industry_input_text_frame"
         tools:listitem="@layout/item_industry" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/blue"
+        android:paddingVertical="@dimen/padding_16dp"
+        android:visibility="gone"
+        tools:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/no_internet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="223dp"
+            android:layout_gravity="center_horizontal"
+            android:importantForAccessibility="no"
+            android:src="@drawable/placeholder_no_ethernet" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:lineHeight="@dimen/text_line_height_26dp"
+            android:text="@string/search_error_no_internet"
+            android:textAlignment="center"
+            android:textColor="?attr/prime_color_black"
+            android:textSize="@dimen/text_size_22sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/not_found_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="223dp"
+            android:layout_gravity="center_horizontal"
+            android:importantForAccessibility="no"
+            android:src="@drawable/placeholder_something_wrong" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:lineHeight="@dimen/text_line_height_26dp"
+            android:text="Такой отрасли нет"
+            android:textAlignment="center"
+            android:textColor="?attr/prime_color_black"
+            android:textSize="@dimen/text_size_22sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonApply"
+        style="@style/filterButtonsStyle"
+        android:layout_width="0dp"
+        android:layout_height="59dp"
+        android:layout_marginHorizontal="17dp"
+        android:layout_marginBottom="@dimen/margin_24dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:text="@string/apply_choice_button_place"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

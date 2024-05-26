@@ -54,7 +54,7 @@ class VacanciesRepositoryImpl(
                 emit(Resource.ConnectionError(response.message))
             }
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO) // перенесла
 
     override suspend fun getIndustries(): Flow<Resource<List<Industries>>> = flow {
         when (val response = networkClient.getIndustry()) {

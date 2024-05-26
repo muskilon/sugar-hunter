@@ -24,7 +24,7 @@
         android:id="@+id/choiceSphereFragment"
         android:name="ru.practicum.android.diploma.ui.filter.industry.ChooseIndustryFragment"
         android:label="fragment_choice_sphere"
-        tools:layout="@layout/fragment_choice_sphere" />
+        tools:layout="@layout/fragment_choice_industry" />
     <fragment
         android:id="@+id/countryFragment"
         android:name="ru.practicum.android.diploma.ui.filter.place.country.CountryFragment"

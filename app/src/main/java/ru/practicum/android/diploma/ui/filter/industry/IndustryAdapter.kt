@@ -4,11 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemIndustryBinding
-import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.Industries
 
-class IndustryAdapter(private val clickListener: IndustryClickListener) : RecyclerView.Adapter<IndustryViewHolder>() {
+class IndustryAdapter(private val onItemClick: (Industries) -> Unit) :
+    RecyclerView.Adapter<IndustryAdapter.IndustryViewHolder>() {
 
-    private var industryList = ArrayList<Industry>()
+    var industryList = ArrayList<Industries>()
+
+    var industryId = ""
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
         return IndustryViewHolder(ItemIndustryBinding.inflate(layoutInspector, parent, false))
@@ -17,12 +21,48 @@ class IndustryAdapter(private val clickListener: IndustryClickListener) : Recycl
         return industryList.size
     }
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
-        holder.bind(industryList[position])
-        holder.itemView.setOnClickListener {
-            clickListener.onIndustryClick(industryList[position])
-        }
+        val industry = industryList[position]
+        holder.bind(industry)
     }
-    fun interface IndustryClickListener {
-        fun onIndustryClick(industry: Industry)
+
+    inner class IndustryViewHolder(val binding: ItemIndustryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.itemCheck.setOnClickListener {
+                val industry = industryList[bindingAdapterPosition]
+                selection(industry)
+                onItemClick.invoke(industry)
+            }
+        }
+
+        fun bind(industry: Industries) {
+            binding.itemCheck.text = industry.name
+            if (industryId.contains(industry.id.toString())) {
+                selected()
+            } else {
+                unselected()
+            }
+        }
+
+        private fun selection(selectedIndustry: Industries) {
+            val currentSelectedIndustry = industryList.find { it.id.toString() == industryId }
+            val selectedIndex = industryList.indexOf(currentSelectedIndustry)
+            if (currentSelectedIndustry != selectedIndustry) {
+                industryId = selectedIndustry.id.toString()
+                if (selectedIndex != -1) {
+                    notifyItemChanged(selectedIndex)
+                }
+                notifyItemChanged(bindingAdapterPosition)
+            }
+        }
+
+        private fun selected() {
+            binding.itemCheck.isChecked = true
+        }
+
+        private fun unselected() {
+            binding.itemCheck.isChecked = false
+        }
     }
 }
