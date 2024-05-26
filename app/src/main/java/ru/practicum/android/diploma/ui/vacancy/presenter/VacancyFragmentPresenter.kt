@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.vacancy.presenter
 
-import android.content.Context
 import android.text.Html
 import android.text.util.Linkify
 import android.util.Log
@@ -12,7 +11,7 @@ import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.ui.vacancy.models.VacancyFragmentState
 import ru.practicum.android.diploma.util.FormatUtilFunctions
 
-class VacancyFragmentPresenter(val binding: FragmentVacancyBinding, val context: Context) {
+class VacancyFragmentPresenter(val binding: FragmentVacancyBinding) {
     val util = FormatUtilFunctions()
 
     fun render(state: VacancyFragmentState) {

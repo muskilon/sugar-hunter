@@ -33,6 +33,13 @@ class FavouriteDataBaseRepositoryImpl(
         emit(convertFromFavouriteVacancy(favouritesVacancies))
     }
 
+    override suspend fun getVacancyById(id: String): VacancyDetails {
+        return withContext(Dispatchers.IO) {
+            val returnableVacancy = database.favouritesVacanciesDao().getVacancyById(id)
+            convertor.mapFromFavourite(returnableVacancy)
+        }
+    }
+
     private fun convertFromFavouriteVacancy(vacancies: List<FavouriteVacancy>): List<VacancyDetails> {
         return vacancies.map { convertor.mapFromFavourite(it) }
     }

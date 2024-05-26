@@ -19,4 +19,7 @@ interface FavouritesVacanciesDao {
 
     @Query("SELECT id FROM favourite_vacancy")
     fun getFavoritesIds(): List<String>
+
+    @Query("SELECT * FROM favourite_vacancy WHERE id = :id")
+    fun getVacancyById(id: String): FavouriteVacancy
 }

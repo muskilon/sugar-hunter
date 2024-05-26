@@ -11,6 +11,8 @@ interface FavouriteDataBaseRepository {
 
     suspend fun checkIdInFavourites(id: String): Boolean
 
+    suspend fun getVacancyById(id: String): VacancyDetails
+
     fun getFavouritesVacancies(): Flow<List<VacancyDetails>>
 
 }

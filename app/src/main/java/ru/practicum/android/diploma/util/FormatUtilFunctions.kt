@@ -61,7 +61,7 @@ class FormatUtilFunctions {
         }
     }
 
-    private fun dpToPx(context: Context): Int {
+    fun dpToPx(context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             ROUNDED_CORNERS_12PX,
