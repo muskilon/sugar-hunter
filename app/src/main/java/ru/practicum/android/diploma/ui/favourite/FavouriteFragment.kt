@@ -18,12 +18,10 @@ import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
 import ru.practicum.android.diploma.domain.models.FavouritesState
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
-import java.lang.ref.WeakReference
 
 class FavouriteFragment : Fragment() {
 
-    private val context by lazy { WeakReference(requireContext()) }
-    private val adapter by lazy { FavouriteAdapter({ vacancy -> goToVacancy(vacancy) }, context) }
+    private val adapter by lazy { FavouriteAdapter { vacancy -> goToVacancy(vacancy) } }
     private var _binding: FragmentFavouriteBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<FavouriteViewModel>()

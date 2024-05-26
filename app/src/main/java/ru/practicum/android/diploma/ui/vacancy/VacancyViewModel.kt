@@ -18,7 +18,7 @@ import ru.practicum.android.diploma.ui.vacancy.models.VacancyFragmentState
 class VacancyViewModel(
     private val vacancyId: String,
     private val favouriteDataBaseInteractor: FavouriteDataBaseInteractor,
-    private val vacanciesInterActor: VacanciesInterActor
+    private val vacanciesInterActor: VacanciesInterActor,
 ) : ViewModel() {
 
     private var checkInFavouritesMutableLiveData = MutableLiveData<Boolean>()
@@ -29,21 +29,34 @@ class VacancyViewModel(
 
     init {
         viewModelScope.launch {
-            searchVacancyById(vacancyId)
             checkIdInFavourites(vacancyId)
+
+            if (checkInFavouritesMutableLiveData.value == true) {
+                searchVacancyInBD(vacancyId)
+                Log.d("bd", true.toString())
+            } else {
+                searchVacancyById(vacancyId)
+                Log.d("bd", false.toString())
+            }
         }
     }
 
-    private fun searchVacancyById(vacancyId: String) {
-        viewModelScope.launch {
-            vacancyScreenState.postValue(VacancyFragmentState.Loading)
-            vacanciesInterActor
-                .getVacancy(vacancyId)
-                .collect { result ->
-                    processResult(result)
-                }
+    private suspend fun searchVacancyById(vacancyId: String) {
+        vacancyScreenState.postValue(VacancyFragmentState.Loading)
+        vacanciesInterActor
+            .getVacancy(vacancyId)
+            .collect { result ->
+                processResult(result)
+            }
+    }
 
-        }
+    private suspend fun searchVacancyInBD(vacancyId: String) {
+        vacancyScreenState.postValue(VacancyFragmentState.Loading)
+        vacancyScreenState.postValue(
+            VacancyFragmentState.Content(
+                favouriteDataBaseInteractor.getVacancyBiId(vacancyId)
+            )
+        )
     }
 
     private fun processResult(foundVacancy: Resource<VacancyDetails>) {
@@ -78,7 +91,6 @@ class VacancyViewModel(
 
     private suspend fun addFavouriteVacancy() {
         if (vacancyScreenState.value is VacancyFragmentState.Content) {
-            Log.d("add", "y")
             withContext(Dispatchers.IO) {
                 favouriteDataBaseInteractor.addFavouriteVacancy(
                     (vacancyScreenState.value as VacancyFragmentState.Content).vacancy
@@ -90,7 +102,6 @@ class VacancyViewModel(
 
     private suspend fun deleteFavouriteVacancy() {
         if (vacancyScreenState.value is VacancyFragmentState.Content) {
-            Log.d("add", "n")
             withContext(Dispatchers.IO) {
                 favouriteDataBaseInteractor.deleteFavouriteVacancy(
                     (vacancyScreenState.value as VacancyFragmentState.Content).vacancy

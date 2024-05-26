@@ -49,19 +49,19 @@ class FormatUtilFunctions {
         return string
     }
 
-    fun downloadImage(url: String?, imageView: ImageView, context: Context) {
+    fun downloadImage(url: String?, imageView: ImageView) {
         if (url.isNullOrEmpty()) {
             return
         } else {
             Glide.with(imageView)
                 .load(url)
                 .placeholder(R.drawable.vacancy_no_image_holder)
-                .transform(RoundedCorners(dpToPx(context)))
+                .transform(RoundedCorners(dpToPx(imageView.context)))
                 .into(imageView)
         }
     }
 
-    private fun dpToPx(context: Context): Int {
+    fun dpToPx(context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             ROUNDED_CORNERS_12PX,

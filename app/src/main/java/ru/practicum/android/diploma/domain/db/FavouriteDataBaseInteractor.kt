@@ -13,4 +13,6 @@ interface FavouriteDataBaseInteractor {
 
     fun getFavouritesVacancies(): Flow<List<VacancyDetails>>
 
+    suspend fun getVacancyBiId(id: String): VacancyDetails
+
 }
