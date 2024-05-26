@@ -137,38 +137,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/regionErrorHolder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/choiceRegionScreenTitle"
-        tools:visibility="gone">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/error_region_holder"
-            android:importantForAccessibility="no" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_16dp"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:lineHeight="@dimen/text_line_height_26dp"
-            android:text="@string/error_region"
-            android:textAlignment="center"
-            android:textColor="?attr/prime_color_black"
-            android:textFontWeight="500"
-            android:textSize="@dimen/text_size_22sp" />
-
-    </LinearLayout>
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="44dp"
@@ -208,7 +176,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
