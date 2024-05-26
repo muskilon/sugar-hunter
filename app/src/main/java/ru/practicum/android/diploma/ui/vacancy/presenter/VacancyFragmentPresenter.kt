@@ -22,8 +22,7 @@ class VacancyFragmentPresenter(val binding: FragmentVacancyBinding, val context:
                 showContent(state.vacancy)
                 util.downloadImage(
                     state.vacancy.logoUrls.logo240,
-                    binding.vacancyImage,
-                    context
+                    binding.vacancyImage
                 )
             }
 
