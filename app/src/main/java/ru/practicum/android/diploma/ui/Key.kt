@@ -1,12 +1,17 @@
 package ru.practicum.android.diploma.ui
 
 object Key {
-    const val REGION_NAME = "regionName"
-    const val REGION_ID = "regionId"
-    const val COUNTRY_NAME = "countryName"
-    const val COUNTRY_ID = "countryId"
+    const val NOT_REQUEST = "not_request"
+    const val REGION_NAME = "not_request_regionName"
+    const val REGION_ID = "not_request_regionId"
+    const val COUNTRY_NAME = "not_request_countryName"
+    const val COUNTRY_ID = "not_request_countryId"
+
     const val ARROW = "arrow"
     const val CLEAR = "clear"
+
+    const val TRUE = "true"
+    const val FALSE = "false"
 
 //    API parameters
 
@@ -14,7 +19,6 @@ object Key {
     const val INDUSTRY = "industry"
     const val SALARY = "salary"
     const val ONLY_WITH_SALARY = "only_with_salary"
-    const val TRUE = "true"
 
 //    FragmentResults and Bundle's keys
 

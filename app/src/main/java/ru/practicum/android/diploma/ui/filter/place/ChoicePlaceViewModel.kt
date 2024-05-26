@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.ui.filter.place
 
 import android.os.Bundle
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,20 +27,13 @@ class ChoicePlaceViewModel : ViewModel() {
                 area[Key.COUNTRY_ID] = it
             }
         }
+        Log.d("SET_AREA_TAG", area.toString())
         workPlace.postValue(area)
     }
 
     fun setAreaFromFilters(bundle: Bundle) {
         val area = HashMap<String, String>()
-        with(bundle) {
-            if (getString(Key.COUNTRY_NAME).isNullOrEmpty()) {
-                getString(Key.REGION_NAME)?.let {
-                    area[Key.COUNTRY_NAME] = it
-                }
-                getString(Key.REGION_ID)?.let {
-                    area[Key.REGION_ID] = it
-                }
-            } else {
+            with(bundle) {
                 getString(Key.REGION_NAME)?.let {
                     area[Key.REGION_NAME] = it
                 }
@@ -49,47 +43,41 @@ class ChoicePlaceViewModel : ViewModel() {
                 getString(Key.COUNTRY_NAME)?.let {
                     area[Key.COUNTRY_NAME] = it
                 }
+                getString(Key.COUNTRY_ID)?.let {
+                    area[Key.COUNTRY_ID] = it
+                }
             }
-        }
+        Log.d("SET_AREA_FROM_FILTERS_TAG", area.toString())
         workPlace.postValue(area)
     }
 
-    fun clearRegion() {
+    fun clearRegion(isCountryVisible: Boolean) {
         val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
         workPlace.value?.let { tempWorkPlace.putAll(it) }
-        tempWorkPlace.remove(Key.REGION_NAME)
-        tempWorkPlace.remove(Key.REGION_ID)
+        if (isCountryVisible) {
+            tempWorkPlace[Key.COUNTRY_NAME]?.let { tempWorkPlace[Key.REGION_NAME] = it }
+            tempWorkPlace[Key.COUNTRY_ID]?.let { tempWorkPlace[Key.REGION_ID] = it }
+        } else {
+            tempWorkPlace.clear()
+        }
         workPlace.postValue(tempWorkPlace)
     }
 
     fun clearCountry() {
         val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
         workPlace.value?.let { tempWorkPlace.putAll(it) }
-        tempWorkPlace.remove(Key.COUNTRY_NAME)
-        tempWorkPlace.remove(Key.COUNTRY_ID)
-        workPlace.postValue(tempWorkPlace)
+        tempWorkPlace.clear() // TODO почистить
+        workPlace.postValue(mutableMapOf())
     }
 
     fun savePlace(): Bundle {
-        var bundle = bundleOf()
+        val bundle = bundleOf()
         val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
         workPlace.value?.let { tempWorkPlace.putAll(it) }
-        tempWorkPlace[Key.COUNTRY_ID]?.let { id ->
-            tempWorkPlace[Key.COUNTRY_NAME]?.let { name ->
-                bundle = bundleOf(
-                    Key.REGION_ID to id, Key.REGION_NAME to name
-                )
-            }
+        tempWorkPlace.forEach{
+            bundle.putString(it.key, it.value)
         }
-        tempWorkPlace[Key.REGION_ID]?.let { id ->
-            tempWorkPlace[Key.REGION_NAME]?.let { name ->
-                tempWorkPlace[Key.COUNTRY_NAME]?.let { countryName ->
-                    bundle = bundleOf(
-                        Key.REGION_ID to id, Key.REGION_NAME to name, Key.COUNTRY_NAME to countryName
-                    )
-                }
-            }
-        }
+        Log.d("BUNDLE_TAG", "${ bundle.getString(Key.REGION_ID, null) }, ${ bundle.getString(Key.REGION_NAME, null) }, ${ bundle.getString(Key.COUNTRY_ID, null)}, ${ bundle.getString(Key.COUNTRY_NAME, null) }")
         return bundle
     }
 

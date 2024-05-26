@@ -91,6 +91,8 @@ class CountryFragment : Fragment() {
         setFragmentResult(
             Key.SET_AREA,
             bundleOf(
+                Key.REGION_NAME to country.name,
+                Key.REGION_ID to country.id,
                 Key.COUNTRY_NAME to country.name,
                 Key.COUNTRY_ID to country.id
             )

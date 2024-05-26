@@ -99,19 +99,19 @@ class FilterFragment : Fragment() {
                     filters[Key.REGION_NAME] = it
                 }
                 getString(Key.REGION_ID)?.let {
-                    filters[Key.AREA] = it
+                    filters[Key.REGION_ID] = it
                 }
                 getString(Key.COUNTRY_NAME)?.let {
                     filters[Key.COUNTRY_NAME] = it
-                } ?: filters.remove(Key.COUNTRY_NAME)
+                }
+                getString(Key.COUNTRY_ID)?.let {
+                    filters[Key.COUNTRY_ID] = it
+                }
             }
             setStatements()
         }
     }
     private fun buttonApplyListener() {
-        if (filters[Key.REGION_NAME].isNullOrEmpty() && filters[Key.COUNTRY_NAME].isNullOrEmpty()) {
-            filters.remove(Key.AREA)
-        }
         viewModel.updateFilters(filters)
         setFragmentResult(
             Key.REQUEST_KEY,
@@ -123,8 +123,9 @@ class FilterFragment : Fragment() {
         when (binding.selectRegionActionButton.tag) {
             Key.CLEAR -> {
                 filters.remove(Key.REGION_NAME)
-//                filters.remove(Key.AREA)
+                filters.remove(Key.REGION_ID)
                 filters.remove(Key.COUNTRY_NAME)
+                filters.remove(Key.COUNTRY_ID)
                 binding.selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
                 binding.selectRegionActionButton.tag = Key.ARROW
                 setStatements()
@@ -139,7 +140,6 @@ class FilterFragment : Fragment() {
             //  TODO Отредактировать
             Key.CLEAR -> {
                 filters.remove(Key.REGION_NAME)
-//                filters.remove(Key.AREA)
                 filters.remove(Key.COUNTRY_NAME)
                 binding.selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
                 binding.selectRegionActionButton.tag = Key.ARROW
@@ -177,8 +177,9 @@ class FilterFragment : Fragment() {
             Key.SET_AREA_FROM_FILTERS,
             bundleOf(
                 Key.REGION_NAME to filters[Key.REGION_NAME],
-                Key.REGION_ID to filters[Key.AREA],
+                Key.REGION_ID to filters[Key.REGION_NAME],
                 Key.COUNTRY_NAME to filters[Key.COUNTRY_NAME],
+                Key.COUNTRY_ID to filters[Key.COUNTRY_ID]
             )
         )
         findNavController().navigate(R.id.action_filterFragment_to_choicePlaceFragment)
@@ -216,11 +217,8 @@ class FilterFragment : Fragment() {
                         binding.salaryClearButton.isVisible = true
                         salaryHeaderColor(false)
                     }
-
                     Key.ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
                     Key.INDUSTRY -> Unit // TODO подключить renderIndustry
-                    Key.AREA -> { renderArea() }
-
                 }
                 binding.buttonDecline.isVisible = true
             }
@@ -229,31 +227,50 @@ class FilterFragment : Fragment() {
             binding.salaryCheckBox.isChecked = false
             binding.salaryEdit.text.clear()
         }
+        renderArea()
     }
 
     private fun renderArea() {
-        if (filters[Key.COUNTRY_NAME].isNullOrEmpty() && filters[Key.REGION_NAME].isNullOrEmpty()) {
+        if (filters[Key.REGION_ID] != null) {
+            formatUtil.formatSelectedFilterTextHeader(binding.selectRegionHeader)
+            binding.selectRegionActionButton.setImageResource(R.drawable.clear_button)
+            binding.selectRegionActionButton.tag = Key.CLEAR
+            binding.selectedRegionsText.isVisible = true
+            if (filters[Key.COUNTRY_ID] == filters[Key.REGION_ID]) {
+                binding.selectedRegionsText.text = filters[Key.REGION_NAME]
+            } else {
+                val st = "${filters[Key.COUNTRY_NAME]}, ${filters[Key.REGION_NAME]}"
+                binding.selectedRegionsText.text = st
+            }
+        } else {
             binding.selectedRegionsText.text = filters[Key.COUNTRY_NAME]
             formatUtil.formatUnselectedFilterTextHeader(binding.selectRegionHeader)
             binding.selectRegionActionButton.tag = Key.ARROW
             binding.selectedRegionsText.isVisible = false
-        } else {
-            formatUtil.formatSelectedFilterTextHeader(binding.selectRegionHeader)
-            var st = ""
-            if (!filters[Key.COUNTRY_NAME].isNullOrEmpty()) {
-                st = st.plus(filters[Key.COUNTRY_NAME])
-            }
-            if (st.isNotEmpty()) {
-                st = st.plus(", ")
-            }
-            if (!filters[Key.REGION_NAME].isNullOrEmpty()) {
-                st = st.plus(filters[Key.REGION_NAME])
-            }
-            binding.selectedRegionsText.text = st
-            binding.selectRegionActionButton.setImageResource(R.drawable.clear_button)
-            binding.selectRegionActionButton.tag = Key.CLEAR
-            binding.selectedRegionsText.isVisible = true
         }
+
+//        if (filters[Key.COUNTRY_NAME].isNullOrEmpty() && filters[Key.REGION_NAME].isNullOrEmpty()) {
+//            binding.selectedRegionsText.text = filters[Key.COUNTRY_NAME]
+//            formatUtil.formatUnselectedFilterTextHeader(binding.selectRegionHeader)
+//            binding.selectRegionActionButton.tag = Key.ARROW
+//            binding.selectedRegionsText.isVisible = false
+//        } else {
+//            formatUtil.formatSelectedFilterTextHeader(binding.selectRegionHeader)
+//            var st = ""
+//            if (!filters[Key.COUNTRY_NAME].isNullOrEmpty()) {
+//                st = st.plus(filters[Key.COUNTRY_NAME])
+//            }
+//            if (st.isNotEmpty()) {
+//                st = st.plus(", ")
+//            }
+//            if (!filters[Key.REGION_NAME].isNullOrEmpty()) {
+//                st = st.plus(filters[Key.REGION_NAME])
+//            }
+//            binding.selectedRegionsText.text = st
+//            binding.selectRegionActionButton.setImageResource(R.drawable.clear_button)
+//            binding.selectRegionActionButton.tag = Key.CLEAR
+//            binding.selectedRegionsText.isVisible = true
+//        }
     }
 
     private fun renderIndustry() {
@@ -290,9 +307,6 @@ class FilterFragment : Fragment() {
     }
 
     fun exit() {
-        if (filters[Key.REGION_NAME].isNullOrEmpty() && filters[Key.COUNTRY_NAME].isNullOrEmpty()) {
-            filters.remove(Key.AREA)
-        }
         viewModel.updateFilters(filters)
         setFragmentResult(
             Key.REQUEST_KEY,
