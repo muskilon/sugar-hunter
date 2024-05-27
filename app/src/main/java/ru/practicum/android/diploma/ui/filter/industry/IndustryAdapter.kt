@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industry
 
-class IndustryAdapter(private val onItemClick: (Industry) -> Unit) :
+class IndustryAdapter(id: String, private val onItemClick: (Industry) -> Unit) :
     RecyclerView.Adapter<IndustryAdapter.IndustryViewHolder>() {
 
     var industryList = ArrayList<Industry>()
 
-    var industryId = ""
+    var industryId = id
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)

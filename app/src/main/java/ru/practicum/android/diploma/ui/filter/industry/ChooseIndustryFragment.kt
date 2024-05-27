@@ -25,7 +25,7 @@ class ChooseIndustryFragment : Fragment() {
     private var _binding: FragmentChoiceIndustryBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<ChooseIndustryViewModel>()
-    private val adapter by lazy { IndustryAdapter { industry -> saveIndustry(industry) } }
+    private var adapter: IndustryAdapter? = null
     private var searchText: String? = null
     private var bundle = Bundle()
 
@@ -41,20 +41,22 @@ class ChooseIndustryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setFragmentResultListener(Key.SET_INDUSTRY) { _, bundle ->
+            var id = ""
+            if (!bundle.isEmpty) {
+                id = bundle.getString(Key.INDUSTRY, "")
+                adapter = IndustryAdapter(id = id) { industry -> saveIndustry(industry) }
+                binding.industryRecycler.adapter = adapter
+            } else {
+                adapter = IndustryAdapter(id = "") { industry -> saveIndustry(industry) }
+                binding.industryRecycler.adapter = adapter
+            }
+        }
+
         viewModel.checkStateLiveData().observe(viewLifecycleOwner) { state ->
             render(state)
         }
 
-        setFragmentResultListener(Key.SET_INDUSTRY) { _, bundle ->
-            if (!bundle.isEmpty) {
-                val id = bundle.getString(Key.INDUSTRY, null)
-                val name = bundle.getString(Key.INDUSTRY_NAME, null)
-
-//                    Тут данные который придут из фильтров, если будут
-            }
-        }
-
-        binding.industryRecycler.adapter = adapter
         binding.industryRecycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
@@ -63,16 +65,6 @@ class ChooseIndustryFragment : Fragment() {
         }
 
         binding.industryEditText.addTextChangedListener(getTextWatcher())
-
-//        binding.industryEditText.setOnEditorActionListener { _, actionId, _ ->
-//            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                binding.industryEditText.clearFocus()
-//                if (!searchText.isNullOrEmpty()) {
-//                    viewModel.searchDebounce(String()) // Оно не будет работать, да и не нужно
-//                }
-//            }
-//            false
-//        }
 
         binding.clearIcon.setOnClickListener {
             binding.industryEditText.text.clear()
@@ -97,7 +89,6 @@ class ChooseIndustryFragment : Fragment() {
             binding.searchIcon.isVisible = s.isNullOrEmpty()
             searchText = s.toString()
             viewModel.searchIndustry(s.toString())
-//            searchText?.let { viewModel.searchDebounce(it) }
         }
 
         override fun afterTextChanged(s: Editable?) = Unit
@@ -111,8 +102,8 @@ class ChooseIndustryFragment : Fragment() {
             is IndustryState.Loading -> showProgressBar()
             is IndustryState.Content -> {
                 showContent()
-                adapter.industryList = state.industriesList as ArrayList<Industry>
-                adapter.notifyDataSetChanged()
+                adapter?.industryList = state.industriesList as ArrayList<Industry>
+                adapter?.notifyDataSetChanged()
             }
         }
     }
