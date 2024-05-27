@@ -80,6 +80,7 @@ class SearchFragment : Fragment() {
 
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.text.clear()
+            showStart()
         }
 
         viewModel.observeState().observe(viewLifecycleOwner) {
