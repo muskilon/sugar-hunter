@@ -22,21 +22,18 @@ class FilterViewModel(
     }
 
     fun updateFiltersInStorage() {
-        val tempFilters: MutableMap<String, String> = mutableMapOf()
-        filters.value?.let { tempFilters.putAll(it) }
+        val tempFilters = getTempFilters()
         filtersInterActor.updateFilters(SavedFilters(tempFilters))
     }
 
     fun setSalary(salary: CharSequence?) {
-        val tempFilters: MutableMap<String, String> = mutableMapOf()
-        filters.value?.let { tempFilters.putAll(it) }
+        val tempFilters = getTempFilters()
         salary?.let { tempFilters[Key.SALARY] = it.toString() } ?: tempFilters.remove(Key.SALARY)
         filters.postValue(tempFilters)
     }
 
     fun salaryCheckBoxProcessing(isChecked: Boolean) {
-        val tempFilters: MutableMap<String, String> = mutableMapOf()
-        filters.value?.let { tempFilters.putAll(it) }
+        val tempFilters = getTempFilters()
         if (isChecked) {
             tempFilters[Key.ONLY_WITH_SALARY] = Key.TRUE
         } else {
@@ -46,8 +43,7 @@ class FilterViewModel(
     }
 
     fun clearRegion() {
-        val tempFilters: MutableMap<String, String> = mutableMapOf()
-        filters.value?.let { tempFilters.putAll(it) }
+        val tempFilters = getTempFilters()
         tempFilters.remove(Key.REGION_NAME)
         tempFilters.remove(Key.REGION_ID)
         tempFilters.remove(Key.COUNTRY_NAME)
@@ -60,8 +56,7 @@ class FilterViewModel(
     }
 
     fun getBundle(): Bundle {
-        val tempFilters: MutableMap<String, String> = mutableMapOf()
-        filters.value?.let { tempFilters.putAll(it) }
+        val tempFilters = getTempFilters()
         return bundleOf(
             Key.REGION_NAME to tempFilters[Key.REGION_NAME],
             Key.REGION_ID to tempFilters[Key.REGION_ID],
@@ -71,8 +66,7 @@ class FilterViewModel(
     }
 
     fun processBundle(bundle: Bundle) {
-        val tempFilters: MutableMap<String, String> = mutableMapOf()
-        filters.value?.let { tempFilters.putAll(it) }
+        val tempFilters = getTempFilters()
         if (!bundle.isEmpty) {
             with(bundle) {
                 getString(Key.REGION_NAME)?.let {
@@ -90,5 +84,11 @@ class FilterViewModel(
             }
             filters.postValue(tempFilters)
         }
+    }
+
+    private fun getTempFilters(): MutableMap<String, String> {
+        val tempFilters: MutableMap<String, String> = mutableMapOf()
+        filters.value?.let { tempFilters.putAll(it) }
+        return tempFilters
     }
 }

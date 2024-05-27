@@ -47,28 +47,15 @@ class FilterFragment : Fragment() {
             setStatements(it)
         }
 
-        oldFilters.putAll(viewModel.getFiltersFromStorage())
-        oldFilters[Key.SALARY]?.let {
-            binding.salaryEdit.setText(it)
-            binding.salaryClearButton.isVisible = true
-            salaryHeaderColor(false)
-        }
-        setStatements(oldFilters)
+        initFilters()
 
         binding.selectRegionActionButton.setOnClickListener { selectRegionActionButtonClickListener() }
+
         binding.selectIndustryActionButton.setOnClickListener { selectIndustryActionButtonClickListener() }
 
         binding.salaryEdit.addTextChangedListener(getTextWatcher())
 
-        binding.salaryClearButton.setOnClickListener {
-            binding.salaryEdit.text.clear()
-            viewModel.setSalary(null)
-            if (binding.salaryEdit.isFocused) {
-                salaryHeaderColor(true)
-            } else {
-                salaryHeaderColor(null)
-            }
-        }
+        binding.salaryClearButton.setOnClickListener { salaryClearIconListener() }
 
         binding.salaryEdit.onFocusChangeListener = OnFocusChangeListener { _, isFocus ->
             salaryEditOnFocusChangeListener(isFocus)
@@ -89,6 +76,7 @@ class FilterFragment : Fragment() {
         binding.buttonApply.setOnClickListener { buttonApplyListener() }
 
         binding.selectIndustryLayout.setOnClickListener { selectIndustryClick() }
+
         binding.selectRegionLayout.setOnClickListener { selectRegionClick() }
 
         binding.salaryCheckBox.setOnClickListener {
@@ -145,6 +133,16 @@ class FilterFragment : Fragment() {
                     salaryHeaderColor(false)
                 }
             }
+        }
+    }
+
+    private fun salaryClearIconListener() {
+        binding.salaryEdit.text.clear()
+        viewModel.setSalary(null)
+        if (binding.salaryEdit.isFocused) {
+            salaryHeaderColor(true)
+        } else {
+            salaryHeaderColor(null)
         }
     }
 
@@ -225,6 +223,16 @@ class FilterFragment : Fragment() {
         }
 
         override fun afterTextChanged(s: Editable?) = Unit
+    }
+
+    private fun initFilters() {
+        oldFilters.putAll(viewModel.getFiltersFromStorage())
+        oldFilters[Key.SALARY]?.let {
+            binding.salaryEdit.setText(it)
+            viewModel.setSalary(it)
+            binding.salaryClearButton.isVisible = true
+            salaryHeaderColor(false)
+        }
     }
 
     override fun onStop() {
