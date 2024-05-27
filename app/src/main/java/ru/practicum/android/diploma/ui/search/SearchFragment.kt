@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +56,6 @@ class SearchFragment : Fragment() {
             }
         }
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
         if (viewModel.isFiltersOn()) {
             binding.favoriteButton.setImageResource(R.drawable.search_filter_active)
         } else {
@@ -72,14 +70,17 @@ class SearchFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.searchRecyclerView.adapter = searchAdapter
         binding.searchRecyclerView.addOnScrollListener(getOnScrollListener(imm))
-        binding.clearIcon.setOnClickListener {
-            binding.searchEditText.text.clear()
-            if (viewModel.observeState().value is SearchFragmentState.Empty ||
-                viewModel.observeState().value is SearchFragmentState.Error) {
-                viewModel.vmSetToStart()
+        viewModel.observeState().observe(viewLifecycleOwner) { state ->
+            render(state)
+            binding.clearIcon.setOnClickListener {
+                binding.searchEditText.text.clear()
+                when (state) {
+                    is SearchFragmentState.Empty -> { viewModel.vmSetToStart() }
+                    is SearchFragmentState.Error -> { viewModel.vmSetToStart() }
+                    else -> { }
+                }
             }
         }
-        viewModel.observeState().observe(viewLifecycleOwner) { render(it) }
         binding.favoriteButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterFragment
@@ -204,7 +205,6 @@ class SearchFragment : Fragment() {
             searchRecyclerView.visibility = View.GONE
             vacancyCount.visibility = View.GONE
         }
-        Log.d("errorMessage: ", errorMessage)
     }
     private fun showEmpty(emptyMessage: String) {
         with(binding) {
@@ -218,7 +218,6 @@ class SearchFragment : Fragment() {
             searchRecyclerView.visibility = View.GONE
             noInternet.visibility = View.GONE
         }
-        Log.d("emptyMessage: ", emptyMessage)
     }
     private fun showContent(vacancy: VacanciesResponse) {
         searchAdapter.setData(vacancy.items)
