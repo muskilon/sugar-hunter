@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,6 +47,7 @@ class SearchViewModel(
 
         }
         val request = filters.filterNot { it.key.startsWith(Key.NOT_REQUEST) }.toMap()
+        Log.d("SEARCH_REQUEST_TAG", request.toString())
         return request
     }
 

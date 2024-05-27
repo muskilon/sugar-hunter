@@ -25,7 +25,6 @@ class FilterFragment : Fragment() {
     private var _binding: FragmentFilterBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<FilterViewModel>()
-    private var filters: MutableMap<String, String> = mutableMapOf()
     private var oldFilters: MutableMap<String, String> = mutableMapOf()
 
     private val formatUtil = FormatUtilFunctions()
@@ -42,12 +41,19 @@ class FilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setFragmentResultListener(Key.AREA_FILTERS) { _, bundle -> processBundle(bundle) }
+        setFragmentResultListener(Key.AREA_FILTERS) { _, bundle -> viewModel.processBundle(bundle) }
 
-        filters = viewModel.getFilters()
-        oldFilters.putAll(filters)
+        viewModel.getFilters().observe(viewLifecycleOwner) {
+            setStatements(it)
+        }
 
-        setStatements()
+        oldFilters.putAll(viewModel.getFiltersFromStorage())
+        oldFilters[Key.SALARY]?.let {
+            binding.salaryEdit.setText(it)
+            binding.salaryClearButton.isVisible = true
+            salaryHeaderColor(false)
+        }
+        setStatements(oldFilters)
 
         binding.selectRegionActionButton.setOnClickListener { selectRegionActionButtonClickListener() }
         binding.selectIndustryActionButton.setOnClickListener { selectIndustryActionButtonClickListener() }
@@ -56,7 +62,12 @@ class FilterFragment : Fragment() {
 
         binding.salaryClearButton.setOnClickListener {
             binding.salaryEdit.text.clear()
-            salaryHeaderColor(null)
+            viewModel.setSalary(null)
+            if (binding.salaryEdit.isFocused) {
+                salaryHeaderColor(true)
+            } else {
+                salaryHeaderColor(null)
+            }
         }
 
         binding.salaryEdit.onFocusChangeListener = OnFocusChangeListener { _, isFocus ->
@@ -70,9 +81,9 @@ class FilterFragment : Fragment() {
         }
 
         binding.buttonDecline.setOnClickListener {
-            filters.clear()
+            viewModel.clearFilters()
+            binding.salaryEdit.clearFocus()
             salaryHeaderColor(null)
-            setStatements()
         }
 
         binding.buttonApply.setOnClickListener { buttonApplyListener() }
@@ -81,7 +92,8 @@ class FilterFragment : Fragment() {
         binding.selectRegionLayout.setOnClickListener { selectRegionClick() }
 
         binding.salaryCheckBox.setOnClickListener {
-            salaryCheckBoxProcessing()
+            binding.salaryEdit.clearFocus()
+            viewModel.salaryCheckBoxProcessing(binding.salaryCheckBox.isChecked)
         }
 
         binding.backButton.setOnClickListener { exit() }
@@ -92,27 +104,9 @@ class FilterFragment : Fragment() {
             }
         })
     }
-    private fun processBundle(bundle: Bundle) {
-        if (!bundle.isEmpty) {
-            with(bundle) {
-                getString(Key.REGION_NAME)?.let {
-                    filters[Key.REGION_NAME] = it
-                }
-                getString(Key.REGION_ID)?.let {
-                    filters[Key.REGION_ID] = it
-                }
-                getString(Key.COUNTRY_NAME)?.let {
-                    filters[Key.COUNTRY_NAME] = it
-                }
-                getString(Key.COUNTRY_ID)?.let {
-                    filters[Key.COUNTRY_ID] = it
-                }
-            }
-            setStatements()
-        }
-    }
+
     private fun buttonApplyListener() {
-        viewModel.updateFilters(filters)
+        viewModel.updateFiltersInStorage()
         setFragmentResult(
             Key.REQUEST_KEY,
             bundleOf(Key.IS_APPLY_BUTTON to true)
@@ -122,13 +116,7 @@ class FilterFragment : Fragment() {
     private fun selectRegionActionButtonClickListener() {
         when (binding.selectRegionActionButton.tag) {
             Key.CLEAR -> {
-                filters.remove(Key.REGION_NAME)
-                filters.remove(Key.REGION_ID)
-                filters.remove(Key.COUNTRY_NAME)
-                filters.remove(Key.COUNTRY_ID)
-                binding.selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
-                binding.selectRegionActionButton.tag = Key.ARROW
-                setStatements()
+                viewModel.clearRegion()
             }
 
             Key.ARROW -> selectRegionClick()
@@ -139,31 +127,19 @@ class FilterFragment : Fragment() {
         when (binding.selectRegionActionButton.tag) {
             //  TODO Отредактировать
             Key.CLEAR -> {
-                filters.remove(Key.REGION_NAME)
-                filters.remove(Key.COUNTRY_NAME)
                 binding.selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
                 binding.selectRegionActionButton.tag = Key.ARROW
-                setStatements()
             }
 
             Key.ARROW -> selectRegionClick()
         }
     }
 
-    private fun salaryCheckBoxProcessing() {
-        binding.salaryEdit.clearFocus()
-        when (binding.salaryCheckBox.isChecked) {
-            true -> filters[Key.ONLY_WITH_SALARY] = Key.TRUE
-            false -> filters.remove(Key.ONLY_WITH_SALARY)
-        }
-        setStatements()
-    }
-
     private fun salaryEditOnFocusChangeListener(isFocus: Boolean) {
         when (isFocus) {
             true -> salaryHeaderColor(true)
             false -> {
-                if (filters[Key.SALARY].isNullOrEmpty()) {
+                if (binding.salaryEdit.text.isEmpty()) {
                     salaryHeaderColor(null)
                 } else {
                     salaryHeaderColor(false)
@@ -175,12 +151,7 @@ class FilterFragment : Fragment() {
     private fun selectRegionClick() {
         setFragmentResult(
             Key.SET_AREA,
-            bundleOf(
-                Key.REGION_NAME to filters[Key.REGION_NAME],
-                Key.REGION_ID to filters[Key.REGION_ID],
-                Key.COUNTRY_NAME to filters[Key.COUNTRY_NAME],
-                Key.COUNTRY_ID to filters[Key.COUNTRY_ID]
-            )
+            viewModel.getBundle()
         )
         findNavController().navigate(R.id.action_filterFragment_to_choicePlaceFragment)
     }
@@ -192,31 +163,21 @@ class FilterFragment : Fragment() {
     }
 
     private fun salaryHeaderColor(isFocus: Boolean?) {
-        when (isFocus) {
-            true -> {
-                binding.salaryHeader.setTextColor(requireContext().getColorStateList(R.color.salary_header_focus))
-            }
-
-            null -> {
-                binding.salaryHeader.setTextColor(requireContext().getColorStateList(R.color.salary_header_default))
-            }
-
-            false -> {
-                binding.salaryHeader.setTextColor(requireContext().getColorStateList(R.color.salary_header_not_empty))
+        with(binding.salaryHeader) {
+            when (isFocus) {
+                true -> setTextColor(requireContext().getColorStateList(R.color.salary_header_focus))
+                null -> setTextColor(requireContext().getColorStateList(R.color.salary_header_default))
+                false -> setTextColor(requireContext().getColorStateList(R.color.salary_header_not_empty))
             }
         }
     }
 
-    private fun setStatements() {
-        binding.buttonApply.isVisible = oldFilters != filters
-        if (filters.isNotEmpty()) {
-            filters.keys.forEach { key ->
+    private fun setStatements(fil: MutableMap<String, String>) {
+        binding.buttonApply.isVisible = oldFilters != fil
+        renderArea(fil)
+        if (fil.isNotEmpty()) {
+            fil.keys.forEach { key ->
                 when (key) {
-                    Key.SALARY -> {
-                        binding.salaryEdit.setText(filters[key])
-                        binding.salaryClearButton.isVisible = true
-                        salaryHeaderColor(false)
-                    }
                     Key.ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
                     Key.INDUSTRY -> Unit // TODO подключить renderIndustry
                 }
@@ -227,10 +188,9 @@ class FilterFragment : Fragment() {
             binding.salaryCheckBox.isChecked = false
             binding.salaryEdit.text.clear()
         }
-        renderArea()
     }
 
-    private fun renderArea() {
+    private fun renderArea(filters: MutableMap<String, String>) {
         if (filters[Key.REGION_ID] != null) {
             formatUtil.formatSelectedFilterTextHeader(binding.selectRegionHeader)
             binding.selectRegionActionButton.setImageResource(R.drawable.clear_button)
@@ -247,6 +207,7 @@ class FilterFragment : Fragment() {
             formatUtil.formatUnselectedFilterTextHeader(binding.selectRegionHeader)
             binding.selectRegionActionButton.tag = Key.ARROW
             binding.selectedRegionsText.isVisible = false
+            binding.selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
         }
     }
 
@@ -258,16 +219,9 @@ class FilterFragment : Fragment() {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s.isNullOrEmpty()) {
-                filters.remove(Key.SALARY)
-                binding.salaryClearButton.isVisible = false
-                setStatements()
-            } else {
-                filters[Key.SALARY] = s.toString()
-                binding.buttonApply.isVisible = oldFilters != filters
-                binding.buttonDecline.isVisible = true
-                binding.salaryClearButton.isVisible = true
-            }
+            binding.salaryClearButton.isVisible = !s.isNullOrEmpty()
+            if (binding.salaryEdit.isFocused) salaryHeaderColor(true)
+            viewModel.setSalary(s)
         }
 
         override fun afterTextChanged(s: Editable?) = Unit
@@ -275,7 +229,7 @@ class FilterFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        viewModel.updateFilters(filters)
+        viewModel.updateFiltersInStorage()
     }
 
     override fun onDestroyView() {
@@ -284,7 +238,7 @@ class FilterFragment : Fragment() {
     }
 
     fun exit() {
-        viewModel.updateFilters(filters)
+        viewModel.updateFiltersInStorage()
         setFragmentResult(
             Key.REQUEST_KEY,
             bundleOf(Key.IS_APPLY_BUTTON to false)
