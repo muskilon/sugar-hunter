@@ -148,9 +148,10 @@ class ChooseIndustryFragment : Fragment() {
     private fun saveIndustry(industry: Industries) {
         binding.buttonApply.isVisible = true
         setFragmentResult(
-            Key.SET_AREA,
+            Key.INDUSTRY_FILTERS,
             bundleOf(
-                Key.INDUSTRY to industry.name,
+                Key.INDUSTRY to industry.id,
+                Key.INDUSTRY_NAME to industry.name
             )
         )
     }
