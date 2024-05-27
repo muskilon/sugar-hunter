@@ -81,7 +81,7 @@ class SearchFragment : Fragment() {
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.text.clear()
             if (viewModel.observeState().value is SearchFragmentState.Empty ||
-                viewModel.observeState().value is SearchFragmentState.Error ) {
+                viewModel.observeState().value is SearchFragmentState.Error) {
                 viewModel.vmSetToStart()
             }
         }
