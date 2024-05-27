@@ -144,6 +144,11 @@ class SearchViewModel(
             }
         }
     }
+
+    fun vmSetToStart() {
+        stateLiveData.postValue(SearchFragmentState.Start)
+    }
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
