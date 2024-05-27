@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,6 +29,7 @@ class ChooseIndustryFragment : Fragment() {
     private val viewModel by viewModel<ChooseIndustryViewModel>()
     private val adapter by lazy { IndustryAdapter { industry -> saveIndustry(industry) } }
     private var searchText: String? = null
+    private var bundle = Bundle()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +45,13 @@ class ChooseIndustryFragment : Fragment() {
 
         viewModel.checkStateLiveData().observe(viewLifecycleOwner) { state ->
             render(state)
+        }
+
+        setFragmentResultListener(Key.SET_INDUSTRY) { _, bundle ->
+            if (!bundle.isEmpty) {
+                val id = bundle.getString(Key.INDUSTRY, null)
+                val name = bundle.getString(Key.INDUSTRY_NAME, null)
+            }
         }
 
         binding.industryRecycler.adapter = adapter
@@ -69,17 +79,22 @@ class ChooseIndustryFragment : Fragment() {
         }
 
         binding.buttonApply.setOnClickListener {
+            if (!bundle.isEmpty) {
+                setFragmentResult(
+                    Key.INDUSTRY_FILTERS,
+                    bundle
+                )
+            }
             findNavController().popBackStack()
         }
-
     }
 
     private fun getTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            binding.clearIcon.visibility = clearButtonVisibility(s)
-            binding.searchIcon.visibility = searchButtonVisibility(s)
+            binding.clearIcon.isVisible = !s.isNullOrEmpty()
+            binding.searchIcon.isVisible = s.isNullOrEmpty()
             searchText = s.toString()
             searchText?.let { viewModel.searchDebounce(it) }
         }
@@ -98,22 +113,6 @@ class ChooseIndustryFragment : Fragment() {
                 adapter.industryList = state.industriesList
                 adapter.notifyDataSetChanged()
             }
-        }
-    }
-
-    private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
-
-    private fun searchButtonVisibility(s: CharSequence?): Int {
-        return if (!s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
         }
     }
 
@@ -147,13 +146,10 @@ class ChooseIndustryFragment : Fragment() {
 
     private fun saveIndustry(industry: Industries) {
         binding.buttonApply.isVisible = true
-        setFragmentResult(
-            Key.INDUSTRY_FILTERS,
-            bundleOf(
+            bundle = bundleOf(
                 Key.INDUSTRY to industry.id,
                 Key.INDUSTRY_NAME to industry.name
             )
-        )
     }
 
     override fun onDestroyView() {

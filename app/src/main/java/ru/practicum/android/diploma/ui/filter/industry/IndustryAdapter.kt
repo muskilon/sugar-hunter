@@ -38,7 +38,7 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) :
 
         fun bind(industry: Industries) {
             binding.itemCheck.text = industry.name
-            if (industryId.contains(industry.id.toString())) {
+            if (industryId == industry.id) {
                 selected()
             } else {
                 unselected()

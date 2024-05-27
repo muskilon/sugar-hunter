@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.filter.industry
 
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -81,6 +82,10 @@ class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor
                 stateMutableLiveData.postValue(IndustryState.Content(sortedArrayList))
             }
         }
+    }
+
+    fun setIndustry(bundle: Bundle) {
+        
     }
 
     private fun getProgressBar() {
