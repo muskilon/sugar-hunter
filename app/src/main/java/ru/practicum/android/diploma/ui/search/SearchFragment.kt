@@ -56,8 +56,8 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setFragmentResultListener(Key.REQUEST_KEY) { _, bundle ->
-            if (bundle.getBoolean(Key.IS_APPLY_BUTTON) && !searchText.isNullOrEmpty()) {
-                viewModel.repeatRequest(false)
+            if (bundle.getBoolean(Key.IS_APPLY_BUTTON)) {
+                viewModel.repeatRequest(binding.searchEditText.text.toString(),false)
             }
         }
 
@@ -105,9 +105,11 @@ class SearchFragment : Fragment() {
     private fun searchEditActionListener(actionId: Int) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             binding.searchEditText.clearFocus()
-            if (!searchText.isNullOrEmpty()) {
-                viewModel.searchVacancies(viewModel.getSearchRequest(searchText!!, null))
-                viewModel.searchDebounce(String())
+            viewModel.searchDebounce(String())
+            searchText?.let {
+                viewModel.searchVacancies(viewModel.getSearchRequest(it, null))
+            } ?: {
+                viewModel.searchVacancies(viewModel.getSearchRequest(String(), null))
             }
         }
     }
@@ -127,7 +129,7 @@ class SearchFragment : Fragment() {
                 val itemsCount = searchAdapter.itemCount
                 if (pos >= itemsCount - 1 && !isPageLoading && currentPage < pages - 1) {
                     isPageLoading = true
-                    viewModel.repeatRequest(true)
+                    viewModel.repeatRequest(String(),true)
                     binding.pageLoading.isVisible = true
                 }
             }

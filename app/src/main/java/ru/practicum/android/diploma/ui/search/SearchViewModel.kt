@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,6 +47,7 @@ class SearchViewModel(
 
         }
         val request = filters.filterNot { it.key.startsWith(Key.NOT_REQUEST) }.toMap()
+        Log.d("SEARCH_REQUEST_TAG", request.toString())
         return request
     }
 
@@ -74,29 +76,24 @@ class SearchViewModel(
 
     fun searchVacancies(request: Map<String, String>) {
         request[Key.TEXT]?.let { text ->
-            if (latestSearchText == text || text.isEmpty()) {
-                searchJob?.cancel()
-            } else {
-                stateLiveData.postValue(SearchFragmentState.Loading)
-                currentVacancies = listOf()
-                latestSearchText = text
-                viewModelScope.launch {
-                    vacanciesInterActor
-                        .searchVacancies(request)
-                        .collect { result ->
-                            processResult(result, true)
-                        }
-                }
+            stateLiveData.postValue(SearchFragmentState.Loading)
+            currentVacancies = listOf()
+            latestSearchText = text
+            viewModelScope.launch {
+                vacanciesInterActor.searchVacancies(request).collect { result ->
+                        processResult(result, true)
+                    }
             }
         }
     }
 
-    fun repeatRequest(isNeedAddCounter: Boolean) {
+    fun repeatRequest(searchInput: String, isNeedAddCounter: Boolean) {
         if (isNeedAddCounter) {
             currentPage++
         } else {
             stateLiveData.postValue(SearchFragmentState.Loading)
             currentPage = 0
+            latestSearchText = searchInput
         }
         viewModelScope.launch {
             vacanciesInterActor
