@@ -140,4 +140,22 @@ class SearchViewModel(
             }
         }
     }
+    fun vmSetToStart() {
+        stateLiveData.postValue(SearchFragmentState.Start)
+    }
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+
+//        API параметры
+
+        private const val TEXT = "text"
+        private const val PAGE = "page"
+        private const val PAGE_SIZE = "20"
+        private const val PER_PAGE = "per_page"
+        private const val REGION_MAME = "regionName"
+        private const val COUNTRY_NAME = "countryName"
+        private const val INDUSTRY_NAME = "industryName"
+    }
 }

@@ -74,10 +74,9 @@ class SearchFragment : Fragment() {
         binding.searchRecyclerView.addOnScrollListener(getOnScrollListener(imm))
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.text.clear()
-            if (searchAdapter.itemCount != 0) {
-                justShowContent()
-            } else {
-                showStart()
+            if (viewModel.observeState().value is SearchFragmentState.Empty ||
+                viewModel.observeState().value is SearchFragmentState.Error) {
+                viewModel.vmSetToStart()
             }
         }
         viewModel.observeState().observe(viewLifecycleOwner) { render(it) }
