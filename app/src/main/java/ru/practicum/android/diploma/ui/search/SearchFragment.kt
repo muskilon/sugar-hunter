@@ -80,9 +80,7 @@ class SearchFragment : Fragment() {
                 showStart()
             }
         }
-        viewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
-        }
+        viewModel.observeState().observe(viewLifecycleOwner) { render(it) }
         binding.favoriteButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterFragment
