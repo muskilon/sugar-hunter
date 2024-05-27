@@ -81,8 +81,8 @@ class SearchViewModel(
             latestSearchText = text
             viewModelScope.launch {
                 vacanciesInterActor.searchVacancies(request).collect { result ->
-                        processResult(result, true)
-                    }
+                    processResult(result, true)
+                }
             }
         }
     }

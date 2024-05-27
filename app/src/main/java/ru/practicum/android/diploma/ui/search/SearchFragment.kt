@@ -31,7 +31,6 @@ import ru.practicum.android.diploma.ui.search.recyclerview.SearchAdapter
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 
 class SearchFragment : Fragment() {
-
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
@@ -42,7 +41,6 @@ class SearchFragment : Fragment() {
     private var searchText: String? = null
     private var isClickAllowed = true
     private var isPageLoading = false
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,16 +49,13 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setFragmentResultListener(Key.REQUEST_KEY) { _, bundle ->
             if (bundle.getBoolean(Key.IS_APPLY_BUTTON)) {
-                viewModel.repeatRequest(binding.searchEditText.text.toString(),false)
+                viewModel.repeatRequest(binding.searchEditText.text.toString(), false)
             }
         }
-
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         if (viewModel.isFiltersOn()) {
@@ -68,21 +63,15 @@ class SearchFragment : Fragment() {
         } else {
             binding.favoriteButton.setImageResource(R.drawable.search_filter_inactive)
         }
-
         binding.searchEditText.addTextChangedListener(getTextWatcher())
-
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             searchEditActionListener(actionId)
             false
         }
-
         binding.searchRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
         binding.searchRecyclerView.adapter = searchAdapter
-
         binding.searchRecyclerView.addOnScrollListener(getOnScrollListener(imm))
-
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.text.clear()
             if (searchAdapter.itemCount != 0) {
@@ -91,7 +80,6 @@ class SearchFragment : Fragment() {
                 showStart()
             }
         }
-
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
@@ -101,7 +89,6 @@ class SearchFragment : Fragment() {
             )
         }
     }
-
     private fun searchEditActionListener(actionId: Int) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             binding.searchEditText.clearFocus()
@@ -113,14 +100,12 @@ class SearchFragment : Fragment() {
             }
         }
     }
-
     private fun getOnScrollListener(imm: InputMethodManager) = object :
         RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
         }
-
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             if (dy > 0) {
@@ -129,16 +114,14 @@ class SearchFragment : Fragment() {
                 val itemsCount = searchAdapter.itemCount
                 if (pos >= itemsCount - 1 && !isPageLoading && currentPage < pages - 1) {
                     isPageLoading = true
-                    viewModel.repeatRequest(String(),true)
+                    viewModel.repeatRequest(String(), true)
                     binding.pageLoading.isVisible = true
                 }
             }
         }
     }
-
     private fun getTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             binding.clearIcon.isVisible = !s.isNullOrEmpty()
             binding.searchIcon.isVisible = s.isNullOrEmpty()
@@ -152,10 +135,8 @@ class SearchFragment : Fragment() {
             }
             searchText?.let { viewModel.searchDebounce(it) } ?: { viewModel.searchDebounce(String()) }
         }
-
         override fun afterTextChanged(s: Editable?) = Unit
     }
-
     private fun render(state: SearchFragmentState) {
         when (state) {
             is SearchFragmentState.Start -> showStart()
@@ -185,7 +166,6 @@ class SearchFragment : Fragment() {
             is SearchFragmentState.Loading -> showLoading()
         }
     }
-
     private fun toastDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -197,7 +177,6 @@ class SearchFragment : Fragment() {
         }
         return current
     }
-
     private fun showStart() {
         with(binding) {
             placeholderSearch.visibility = View.VISIBLE
@@ -208,7 +187,6 @@ class SearchFragment : Fragment() {
             searchRecyclerView.visibility = View.GONE
         }
     }
-
     private fun showLoading() {
         with(binding) {
             progressBar.visibility = View.VISIBLE
@@ -220,7 +198,6 @@ class SearchFragment : Fragment() {
             searchRecyclerView.removeAllViewsInLayout()
         }
     }
-
     private fun showError(errorMessage: String) {
         with(binding) {
             noInternet.visibility = View.VISIBLE
@@ -232,7 +209,6 @@ class SearchFragment : Fragment() {
         }
         Log.d("errorMessage: ", errorMessage)
     }
-
     private fun showEmpty(emptyMessage: String) {
         with(binding) {
             vacancyCount.text = requireContext().getString(
@@ -247,7 +223,6 @@ class SearchFragment : Fragment() {
         }
         Log.d("emptyMessage: ", emptyMessage)
     }
-
     private fun showContent(vacancy: VacanciesResponse) {
         searchAdapter.setData(vacancy.items)
         isPageLoading = false
@@ -264,7 +239,6 @@ class SearchFragment : Fragment() {
             pageLoading.isVisible = false
         }
     }
-
     private fun justShowContent() {
         isPageLoading = false
         with(binding) {
@@ -289,7 +263,6 @@ class SearchFragment : Fragment() {
                 )
             }
         }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
