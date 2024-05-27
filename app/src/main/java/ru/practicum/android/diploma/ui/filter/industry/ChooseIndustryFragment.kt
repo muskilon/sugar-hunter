@@ -48,7 +48,7 @@ class ChooseIndustryFragment : Fragment() {
                 adapter = IndustryAdapter(id = id) { industry -> saveIndustry(industry) }
                 binding.industryRecycler.adapter = adapter
             } else {
-                adapter = IndustryAdapter(id = "") { industry -> saveIndustry(industry) }
+                adapter = IndustryAdapter(id = id) { industry -> saveIndustry(industry) }
                 binding.industryRecycler.adapter = adapter
             }
         }
