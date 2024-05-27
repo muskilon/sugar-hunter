@@ -122,6 +122,7 @@ class ChooseIndustryFragment : Fragment() {
         binding.noInternet.isVisible = true
         binding.progressBar.isVisible = false
         binding.industryRecycler.isVisible = false
+        binding.buttonApply.isVisible = false
     }
 
     private fun showNotFound() {
@@ -129,6 +130,7 @@ class ChooseIndustryFragment : Fragment() {
         binding.progressBar.isVisible = false
         binding.notFoundPlaceholder.isVisible = true
         binding.industryRecycler.isVisible = false
+        binding.buttonApply.isVisible = false
     }
 
     private fun showProgressBar() {
@@ -136,6 +138,7 @@ class ChooseIndustryFragment : Fragment() {
         binding.notFoundPlaceholder.isVisible = false
         binding.progressBar.isVisible = true
         binding.industryRecycler.isVisible = false
+        binding.buttonApply.isVisible = false
     }
 
     private fun showContent() {
@@ -143,6 +146,7 @@ class ChooseIndustryFragment : Fragment() {
         binding.notFoundPlaceholder.isVisible = false
         binding.progressBar.isVisible = false
         binding.industryRecycler.isVisible = true
+        binding.buttonApply.isVisible = !bundle.isEmpty
     }
 
     private fun saveIndustry(industry: Industry) {

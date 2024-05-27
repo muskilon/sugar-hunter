@@ -158,7 +158,7 @@
         android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/industry_input_text_frame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -194,7 +194,6 @@
         android:paddingBottom="0dp"
         android:text="@string/apply_choice_button_place"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/industryRecycler"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
