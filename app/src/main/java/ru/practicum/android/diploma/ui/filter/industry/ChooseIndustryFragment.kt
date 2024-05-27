@@ -68,7 +68,7 @@ class ChooseIndustryFragment : Fragment() {
 //            if (actionId == EditorInfo.IME_ACTION_DONE) {
 //                binding.industryEditText.clearFocus()
 //                if (!searchText.isNullOrEmpty()) {
-//                    viewModel.searchDebounce(String())
+//                    viewModel.searchDebounce(String()) // Оно не будет работать, да и не нужно
 //                }
 //            }
 //            false
