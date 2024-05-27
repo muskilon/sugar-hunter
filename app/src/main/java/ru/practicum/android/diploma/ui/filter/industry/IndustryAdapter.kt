@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemIndustryBinding
-import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.Industry
 
-class IndustryAdapter(private val onItemClick: (Industries) -> Unit) :
+class IndustryAdapter(private val onItemClick: (Industry) -> Unit) :
     RecyclerView.Adapter<IndustryAdapter.IndustryViewHolder>() {
 
-    var industryList = ArrayList<Industries>()
+    var industryList = ArrayList<Industry>()
 
     var industryId = ""
 
@@ -36,20 +36,20 @@ class IndustryAdapter(private val onItemClick: (Industries) -> Unit) :
             }
         }
 
-        fun bind(industry: Industries) {
+        fun bind(industry: Industry) {
             binding.itemCheck.text = industry.name
-            if (industryId.contains(industry.id.toString())) {
+            if (industryId == industry.id) {
                 selected()
             } else {
                 unselected()
             }
         }
 
-        private fun selection(selectedIndustry: Industries) {
-            val currentSelectedIndustry = industryList.find { it.id.toString() == industryId }
+        private fun selection(selectedIndustry: Industry) {
+            val currentSelectedIndustry = industryList.find { it.id == industryId }
             val selectedIndex = industryList.indexOf(currentSelectedIndustry)
             if (currentSelectedIndustry != selectedIndustry) {
-                industryId = selectedIndustry.id.toString()
+                industryId = selectedIndustry.id
                 if (selectedIndex != -1) {
                     notifyItemChanged(selectedIndex)
                 }

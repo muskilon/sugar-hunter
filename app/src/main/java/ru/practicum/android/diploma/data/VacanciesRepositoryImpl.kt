@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.data.dto.DTOToDataMappers
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.VacanciesRepository
 import ru.practicum.android.diploma.domain.models.Areas
-import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.domain.models.VacancyDetails
@@ -56,7 +56,7 @@ class VacanciesRepositoryImpl(
         }
     }.flowOn(Dispatchers.IO) // перенесла
 
-    override suspend fun getIndustries(): Flow<Resource<List<Industries>>> = flow {
+    override suspend fun getIndustries(): Flow<Resource<List<Industry>>> = flow {
         when (val response = networkClient.getIndustry()) {
             is Resource.Data -> {
                 with(response) {

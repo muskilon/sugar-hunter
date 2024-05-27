@@ -5,7 +5,6 @@ import ru.practicum.android.diploma.domain.models.Areas
 import ru.practicum.android.diploma.domain.models.Contacts
 import ru.practicum.android.diploma.domain.models.Employment
 import ru.practicum.android.diploma.domain.models.Experience
-import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.LogoUrls
 import ru.practicum.android.diploma.domain.models.Phones
@@ -80,16 +79,9 @@ class DTOToDataMappers {
         )
     fun industryResponseToIndustries(data: IndustryResponse) =
         data.container.map {
-            val industries = Industries(
+            val industries = Industry(
                 id = it.id,
                 name = it.name,
-                industries = it.industries.map { sub ->
-                    val subIndustry = Industry(
-                        id = sub.id,
-                        name = sub.name
-                    )
-                    subIndustry
-                }
             )
             industries
         }

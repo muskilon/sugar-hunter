@@ -6,6 +6,7 @@ object Key {
     const val REGION_ID = "not_request_regionId"
     const val COUNTRY_NAME = "not_request_countryName"
     const val COUNTRY_ID = "not_request_countryId"
+    const val INDUSTRY_NAME = "not_request_industryName"
 
     const val ARROW = "arrow"
     const val CLEAR = "clear"
@@ -22,10 +23,11 @@ object Key {
 
 //    FragmentResults and Bundle's keys
 
+    const val INDUSTRY_FILTERS = "industryFilters"
     const val SET_AREA = "setArea"
+    const val SET_INDUSTRY = "setIndustry"
     const val CHOSEN_COUNTRY = "chosenCountry"
     const val REQUEST_KEY = "requestKey"
     const val IS_APPLY_BUTTON = "isApplyButton"
-    const val SET_AREA_FROM_FILTERS = "setAreaFromFilters"
     const val AREA_FILTERS = "areaFilters"
 }

@@ -7,16 +7,16 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentChoiceIndustryBinding
-import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.IndustryState
 import ru.practicum.android.diploma.ui.Key
 
@@ -27,6 +27,7 @@ class ChooseIndustryFragment : Fragment() {
     private val viewModel by viewModel<ChooseIndustryViewModel>()
     private val adapter by lazy { IndustryAdapter { industry -> saveIndustry(industry) } }
     private var searchText: String? = null
+    private var bundle = Bundle()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +45,15 @@ class ChooseIndustryFragment : Fragment() {
             render(state)
         }
 
+        setFragmentResultListener(Key.SET_INDUSTRY) { _, bundle ->
+            if (!bundle.isEmpty) {
+                val id = bundle.getString(Key.INDUSTRY, null)
+                val name = bundle.getString(Key.INDUSTRY_NAME, null)
+
+//                    Тут данные который придут из фильтров, если будут
+            }
+        }
+
         binding.industryRecycler.adapter = adapter
         binding.industryRecycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -54,34 +64,40 @@ class ChooseIndustryFragment : Fragment() {
 
         binding.industryEditText.addTextChangedListener(getTextWatcher())
 
-        binding.industryEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                binding.industryEditText.clearFocus()
-                if (!searchText.isNullOrEmpty()) {
-                    viewModel.searchDebounce(String())
-                }
-            }
-            false
-        }
+//        binding.industryEditText.setOnEditorActionListener { _, actionId, _ ->
+//            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                binding.industryEditText.clearFocus()
+//                if (!searchText.isNullOrEmpty()) {
+//                    viewModel.searchDebounce(String()) // Оно не будет работать, да и не нужно
+//                }
+//            }
+//            false
+//        }
 
         binding.clearIcon.setOnClickListener {
             binding.industryEditText.text.clear()
         }
 
         binding.buttonApply.setOnClickListener {
+            if (!bundle.isEmpty) {
+                setFragmentResult(
+                    Key.INDUSTRY_FILTERS,
+                    bundle
+                )
+            }
             findNavController().popBackStack()
         }
-
     }
 
     private fun getTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            binding.clearIcon.visibility = clearButtonVisibility(s)
-            binding.searchIcon.visibility = searchButtonVisibility(s)
+            binding.clearIcon.isVisible = !s.isNullOrEmpty()
+            binding.searchIcon.isVisible = s.isNullOrEmpty()
             searchText = s.toString()
-            searchText?.let { viewModel.searchDebounce(it) }
+            viewModel.searchIndustry(s.toString())
+//            searchText?.let { viewModel.searchDebounce(it) }
         }
 
         override fun afterTextChanged(s: Editable?) = Unit
@@ -95,25 +111,9 @@ class ChooseIndustryFragment : Fragment() {
             is IndustryState.Loading -> showProgressBar()
             is IndustryState.Content -> {
                 showContent()
-                adapter.industryList = state.industriesList
+                adapter.industryList = state.industriesList as ArrayList<Industry>
                 adapter.notifyDataSetChanged()
             }
-        }
-    }
-
-    private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
-
-    private fun searchButtonVisibility(s: CharSequence?): Int {
-        return if (!s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
         }
     }
 
@@ -122,6 +122,7 @@ class ChooseIndustryFragment : Fragment() {
         binding.noInternet.isVisible = true
         binding.progressBar.isVisible = false
         binding.industryRecycler.isVisible = false
+        binding.buttonApply.isVisible = false
     }
 
     private fun showNotFound() {
@@ -129,6 +130,7 @@ class ChooseIndustryFragment : Fragment() {
         binding.progressBar.isVisible = false
         binding.notFoundPlaceholder.isVisible = true
         binding.industryRecycler.isVisible = false
+        binding.buttonApply.isVisible = false
     }
 
     private fun showProgressBar() {
@@ -136,6 +138,7 @@ class ChooseIndustryFragment : Fragment() {
         binding.notFoundPlaceholder.isVisible = false
         binding.progressBar.isVisible = true
         binding.industryRecycler.isVisible = false
+        binding.buttonApply.isVisible = false
     }
 
     private fun showContent() {
@@ -143,15 +146,14 @@ class ChooseIndustryFragment : Fragment() {
         binding.notFoundPlaceholder.isVisible = false
         binding.progressBar.isVisible = false
         binding.industryRecycler.isVisible = true
+        binding.buttonApply.isVisible = !bundle.isEmpty
     }
 
-    private fun saveIndustry(industry: Industries) {
+    private fun saveIndustry(industry: Industry) {
         binding.buttonApply.isVisible = true
-        setFragmentResult(
-            Key.SET_AREA,
-            bundleOf(
-                Key.INDUSTRY to industry.name,
-            )
+        bundle = bundleOf(
+            Key.INDUSTRY to industry.id,
+            Key.INDUSTRY_NAME to industry.name
         )
     }
 

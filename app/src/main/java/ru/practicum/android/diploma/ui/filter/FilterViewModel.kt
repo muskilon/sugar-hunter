@@ -56,11 +56,18 @@ class FilterViewModel(
         filters.value = tempFilters
     }
 
+    fun clearIndustry() {
+        val tempFilters = getTempFilters()
+        tempFilters.remove(Key.INDUSTRY)
+        tempFilters.remove(Key.INDUSTRY_NAME)
+        filters.value = tempFilters
+    }
+
     fun clearFilters() {
         filters.value = mutableMapOf()
     }
 
-    fun getBundle(): Bundle {
+    fun getAreaBundle(): Bundle {
         val tempFilters = getTempFilters()
         return bundleOf(
             Key.REGION_NAME to tempFilters[Key.REGION_NAME],
@@ -70,7 +77,30 @@ class FilterViewModel(
         )
     }
 
-    fun processBundle(bundle: Bundle) {
+    fun getIndustryBundle(): Bundle {
+        val tempFilters = getTempFilters()
+        return bundleOf(
+            Key.INDUSTRY_NAME to tempFilters[Key.INDUSTRY_NAME],
+            Key.INDUSTRY to tempFilters[Key.INDUSTRY]
+        )
+    }
+
+    fun processIndustryBundle(bundle: Bundle) {
+        val tempFilters = getTempFilters()
+        if (!bundle.isEmpty) {
+            with(bundle) {
+                getString(Key.INDUSTRY)?.let {
+                    tempFilters[Key.INDUSTRY] = it
+                }
+                getString(Key.INDUSTRY_NAME)?.let {
+                    tempFilters[Key.INDUSTRY_NAME] = it
+                }
+            }
+            filters.value = tempFilters
+        }
+    }
+
+    fun processAreaBundle(bundle: Bundle) {
         val tempFilters = getTempFilters()
         if (!bundle.isEmpty) {
             with(bundle) {

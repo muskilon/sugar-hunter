@@ -41,7 +41,8 @@ class FilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setFragmentResultListener(Key.AREA_FILTERS) { _, bundle -> viewModel.processBundle(bundle) }
+        setFragmentResultListener(Key.AREA_FILTERS) { _, bundle -> viewModel.processAreaBundle(bundle) }
+        setFragmentResultListener(Key.INDUSTRY_FILTERS) { _, bundle -> viewModel.processIndustryBundle(bundle) }
 
         viewModel.getFilters().observe(viewLifecycleOwner) {
             setStatements(it)
@@ -59,12 +60,6 @@ class FilterFragment : Fragment() {
 
         binding.salaryEdit.onFocusChangeListener = OnFocusChangeListener { _, isFocus ->
             salaryEditOnFocusChangeListener(isFocus)
-        }
-
-        binding.selectIndustryActionButton.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_filterFragment_to_choiceSphereFragment
-            )
         }
 
         binding.buttonDecline.setOnClickListener {
@@ -103,22 +98,15 @@ class FilterFragment : Fragment() {
     }
     private fun selectRegionActionButtonClickListener() {
         when (binding.selectRegionActionButton.tag) {
-            Key.CLEAR -> {
-                viewModel.clearRegion()
-            }
-
+            Key.CLEAR -> viewModel.clearRegion()
             Key.ARROW -> selectRegionClick()
         }
     }
 
-    private fun selectIndustryActionButtonClickListener() { //  Доработать
-        when (binding.selectRegionActionButton.tag) {
-            Key.CLEAR -> {
-                binding.selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
-                binding.selectRegionActionButton.tag = Key.ARROW
-            }
-
-            Key.ARROW -> selectRegionClick()
+    private fun selectIndustryActionButtonClickListener() {
+        when (binding.selectIndustryActionButton.tag) {
+            Key.CLEAR -> viewModel.clearIndustry()
+            Key.ARROW -> selectIndustryClick()
         }
     }
 
@@ -148,15 +136,17 @@ class FilterFragment : Fragment() {
     private fun selectRegionClick() {
         setFragmentResult(
             Key.SET_AREA,
-            viewModel.getBundle()
+            viewModel.getAreaBundle()
         )
         findNavController().navigate(R.id.action_filterFragment_to_choicePlaceFragment)
     }
 
     private fun selectIndustryClick() {
         findNavController().navigate(R.id.action_filterFragment_to_choiceSphereFragment)
-
-        // доработать
+        setFragmentResult(
+            Key.SET_INDUSTRY,
+            viewModel.getIndustryBundle()
+        )
     }
 
     private fun salaryHeaderColor(isFocus: Boolean?) {
@@ -172,11 +162,11 @@ class FilterFragment : Fragment() {
     private fun setStatements(filters: MutableMap<String, String>) {
         binding.buttonApply.isVisible = oldFilters != filters
         renderArea(filters)
+        renderIndustry(filters)
         if (filters.isNotEmpty()) {
-            filters.keys.forEach { key ->
+            filters.keys.forEach { key -> // Переделать
                 when (key) {
                     Key.ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
-                    Key.INDUSTRY -> Unit // подключить renderIndustry
                 }
                 binding.buttonDecline.isVisible = true
             }
@@ -184,6 +174,22 @@ class FilterFragment : Fragment() {
             binding.buttonDecline.isVisible = false
             binding.salaryCheckBox.isChecked = false
             binding.salaryEdit.text.clear()
+        }
+    }
+
+    private fun renderIndustry(filters: MutableMap<String, String>) {
+        if (filters[Key.INDUSTRY] != null) {
+            formatUtil.formatSelectedFilterTextHeader(binding.selectIndustryHeader)
+            binding.selectIndustryActionButton.setImageResource(R.drawable.clear_button)
+            binding.selectIndustryActionButton.tag = Key.CLEAR
+            binding.selectedIndustryText.isVisible = true
+            binding.selectedIndustryText.text = filters[Key.INDUSTRY_NAME]
+        } else {
+            binding.selectedIndustryText.text = String() // Проверить
+            formatUtil.formatUnselectedFilterTextHeader(binding.selectIndustryHeader)
+            binding.selectIndustryActionButton.tag = Key.ARROW
+            binding.selectedIndustryText.isVisible = false
+            binding.selectIndustryActionButton.setImageResource(R.drawable.leading_icon_filter)
         }
     }
 
@@ -200,16 +206,13 @@ class FilterFragment : Fragment() {
                 binding.selectedRegionsText.text = st
             }
         } else {
-            binding.selectedRegionsText.text = filters[Key.COUNTRY_NAME]
+            binding.selectedRegionsText.text = String() // Проверить
             formatUtil.formatUnselectedFilterTextHeader(binding.selectRegionHeader)
             binding.selectRegionActionButton.tag = Key.ARROW
             binding.selectedRegionsText.isVisible = false
             binding.selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
         }
     }
-
-//    private fun renderIndustry() {
-//    }
 
     private fun getTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit

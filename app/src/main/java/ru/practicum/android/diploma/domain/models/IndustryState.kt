@@ -5,7 +5,7 @@ sealed class IndustryState {
     data object Loading : IndustryState()
 
     data class Content(
-        val industriesList: ArrayList<Industries>
+        val industriesList: List<Industry>
     ) : IndustryState()
 
     data object NotFound : IndustryState()
