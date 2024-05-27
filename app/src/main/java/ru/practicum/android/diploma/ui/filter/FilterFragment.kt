@@ -111,9 +111,8 @@ class FilterFragment : Fragment() {
         }
     }
 
-    private fun selectIndustryActionButtonClickListener() {
+    private fun selectIndustryActionButtonClickListener() { //  Доработать
         when (binding.selectRegionActionButton.tag) {
-            //  TODO Отредактировать
             Key.CLEAR -> {
                 binding.selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
                 binding.selectRegionActionButton.tag = Key.ARROW
@@ -155,9 +154,9 @@ class FilterFragment : Fragment() {
     }
 
     private fun selectIndustryClick() {
-        // TODO Сделать клон метода выше
         findNavController().navigate(R.id.action_filterFragment_to_choiceSphereFragment)
 
+        // доработать
     }
 
     private fun salaryHeaderColor(isFocus: Boolean?) {
@@ -177,7 +176,7 @@ class FilterFragment : Fragment() {
             filters.keys.forEach { key ->
                 when (key) {
                     Key.ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
-                    Key.INDUSTRY -> Unit // TODO подключить renderIndustry
+                    Key.INDUSTRY -> Unit // подключить renderIndustry
                 }
                 binding.buttonDecline.isVisible = true
             }
@@ -209,9 +208,8 @@ class FilterFragment : Fragment() {
         }
     }
 
-    private fun renderIndustry() {
-        TODO("Сделать метод для отрасли как метод выше")
-    }
+//    private fun renderIndustry() {
+//    }
 
     private fun getTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
