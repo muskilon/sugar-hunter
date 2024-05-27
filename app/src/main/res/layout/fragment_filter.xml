@@ -105,7 +105,8 @@
     <LinearLayout
         android:id="@+id/selectIndustryButton"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
         android:paddingEnd="@dimen/padding_4dp"
         android:clickable="true"
         android:orientation="horizontal"
@@ -117,7 +118,8 @@
         <LinearLayout
             android:id="@+id/selectIndustryLayout"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:minHeight="60dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
@@ -145,7 +147,7 @@
                 android:textColor="?prime_color_black"
                 android:textFontWeight="400"
                 android:textSize="@dimen/text_size_16sp"
-                tools:text="Телекоммуникации"
+                tools:text="Телекоммуникации, Информационные системы"
                 android:visibility="gone"
                 tools:visibility="visible" />
         </LinearLayout>

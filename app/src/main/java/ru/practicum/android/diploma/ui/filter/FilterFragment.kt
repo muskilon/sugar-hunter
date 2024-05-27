@@ -142,11 +142,11 @@ class FilterFragment : Fragment() {
     }
 
     private fun selectIndustryClick() {
-        findNavController().navigate(R.id.action_filterFragment_to_choiceSphereFragment)
         setFragmentResult(
             Key.SET_INDUSTRY,
             viewModel.getIndustryBundle()
         )
+        findNavController().navigate(R.id.action_filterFragment_to_choiceSphereFragment)
     }
 
     private fun salaryHeaderColor(isFocus: Boolean?) {
