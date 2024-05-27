@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.filter
 
 import android.os.Bundle
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

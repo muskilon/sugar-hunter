@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.data.dto.DTOToDataMappers
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.IndustryRepository
-import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Resource
 
 class IndustryRepositoryImpl(
     private val networkClient: NetworkClient,
     private val mapper: DTOToDataMappers
 ) : IndustryRepository {
-    override suspend fun getIndustries(): Flow<Resource<List<Industries>>> = flow {
+    override suspend fun getIndustries(): Flow<Resource<List<Industry>>> = flow {
         when (val response = networkClient.getIndustry()) {
             is Resource.Data -> {
                 with(response) {

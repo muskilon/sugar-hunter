@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -18,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentChoiceIndustryBinding
-import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.IndustryState
 import ru.practicum.android.diploma.ui.Key
 
@@ -51,6 +49,8 @@ class ChooseIndustryFragment : Fragment() {
             if (!bundle.isEmpty) {
                 val id = bundle.getString(Key.INDUSTRY, null)
                 val name = bundle.getString(Key.INDUSTRY_NAME, null)
+
+//                    Тут данные который придут из фильтров, если будут
             }
         }
 
@@ -64,15 +64,15 @@ class ChooseIndustryFragment : Fragment() {
 
         binding.industryEditText.addTextChangedListener(getTextWatcher())
 
-        binding.industryEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                binding.industryEditText.clearFocus()
-                if (!searchText.isNullOrEmpty()) {
-                    viewModel.searchDebounce(String())
-                }
-            }
-            false
-        }
+//        binding.industryEditText.setOnEditorActionListener { _, actionId, _ ->
+//            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                binding.industryEditText.clearFocus()
+//                if (!searchText.isNullOrEmpty()) {
+//                    viewModel.searchDebounce(String())
+//                }
+//            }
+//            false
+//        }
 
         binding.clearIcon.setOnClickListener {
             binding.industryEditText.text.clear()
@@ -96,7 +96,8 @@ class ChooseIndustryFragment : Fragment() {
             binding.clearIcon.isVisible = !s.isNullOrEmpty()
             binding.searchIcon.isVisible = s.isNullOrEmpty()
             searchText = s.toString()
-            searchText?.let { viewModel.searchDebounce(it) }
+            viewModel.searchIndustry(s.toString())
+//            searchText?.let { viewModel.searchDebounce(it) }
         }
 
         override fun afterTextChanged(s: Editable?) = Unit
@@ -110,7 +111,7 @@ class ChooseIndustryFragment : Fragment() {
             is IndustryState.Loading -> showProgressBar()
             is IndustryState.Content -> {
                 showContent()
-                adapter.industryList = state.industriesList
+                adapter.industryList = state.industriesList as ArrayList<Industry>
                 adapter.notifyDataSetChanged()
             }
         }
@@ -144,12 +145,12 @@ class ChooseIndustryFragment : Fragment() {
         binding.industryRecycler.isVisible = true
     }
 
-    private fun saveIndustry(industry: Industries) {
+    private fun saveIndustry(industry: Industry) {
         binding.buttonApply.isVisible = true
-            bundle = bundleOf(
-                Key.INDUSTRY to industry.id,
-                Key.INDUSTRY_NAME to industry.name
-            )
+        bundle = bundleOf(
+            Key.INDUSTRY to industry.id,
+            Key.INDUSTRY_NAME to industry.name
+        )
     }
 
     override fun onDestroyView() {

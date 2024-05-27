@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.ui.filter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -178,8 +177,8 @@ class FilterFragment : Fragment() {
         }
     }
 
-    private fun renderIndustry (filters: MutableMap<String, String>) {
-        if (filters[Key.INDUSTRY] != null){
+    private fun renderIndustry(filters: MutableMap<String, String>) {
+        if (filters[Key.INDUSTRY] != null) {
             formatUtil.formatSelectedFilterTextHeader(binding.selectIndustryHeader)
             binding.selectIndustryActionButton.setImageResource(R.drawable.clear_button)
             binding.selectIndustryActionButton.tag = Key.CLEAR
