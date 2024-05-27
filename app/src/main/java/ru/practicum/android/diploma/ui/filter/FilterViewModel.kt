@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.filter
 
 import android.os.Bundle
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,17 +17,13 @@ class FilterViewModel(
     fun getFilters(): LiveData<MutableMap<String, String>> = filters
     fun getFiltersFromStorage(): MutableMap<String, String> {
         val newFilters = filtersInterActor.getFilters().filters
-        Log.d("NEW_FILTERS_TAG", newFilters.toString())
         filters.value = newFilters
-        Log.d("TEMP_LIVE_FILTERS_TAG", filters.value.toString())
         return newFilters
     }
 
     fun updateFiltersInStorage() {
         val tempFilters = getTempFilters()
         filtersInterActor.updateFilters(SavedFilters(tempFilters))
-//        Log.d("TEMP_FILTERS_TAG", tempFilters.toString())
-//        Log.d("TAG_SHARED AFTER", filtersInterActor.getFilters().filters.toString())
     }
 
     fun setSalary(salary: CharSequence?) {
@@ -39,7 +34,6 @@ class FilterViewModel(
             tempFilters[Key.SALARY] = salary.toString()
         }
         filters.value = tempFilters
-        Log.d("SET_SALARY_TAG", filters.value.toString())
 
     }
 
