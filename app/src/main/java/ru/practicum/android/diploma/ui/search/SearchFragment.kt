@@ -85,6 +85,11 @@ class SearchFragment : Fragment() {
 
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.text.clear()
+            if (searchAdapter.itemCount != 0) {
+                justShowContent()
+            } else {
+                showStart()
+            }
         }
 
         viewModel.observeState().observe(viewLifecycleOwner) {
@@ -130,20 +135,23 @@ class SearchFragment : Fragment() {
     }
 
     private fun getTextWatcher() = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            // empty
-        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             binding.clearIcon.isVisible = !s.isNullOrEmpty()
             binding.searchIcon.isVisible = s.isNullOrEmpty()
             searchText = s.toString()
-            searchText?.let { viewModel.searchDebounce(it) }
+            if (searchText.isNullOrEmpty()) {
+                if (searchAdapter.itemCount != 0) {
+                    justShowContent()
+                } else {
+                    showStart()
+                }
+            }
+            searchText?.let { viewModel.searchDebounce(it) } ?: { viewModel.searchDebounce(String()) }
         }
 
-        override fun afterTextChanged(s: Editable?) {
-            // empty
-        }
+        override fun afterTextChanged(s: Editable?) = Unit
     }
 
     private fun render(state: SearchFragmentState) {
@@ -240,6 +248,22 @@ class SearchFragment : Fragment() {
 
     private fun showContent(vacancy: VacanciesResponse) {
         searchAdapter.setData(vacancy.items)
+        isPageLoading = false
+        with(binding) {
+            vacancyCount.text = App.getAppResources()?.getQuantityString(
+                R.plurals.vacancy_plurals, totalFoundVacancies, totalFoundVacancies
+            )
+            placeholderSearch.visibility = View.GONE
+            progressBar.visibility = View.GONE
+            somethingWrong.visibility = View.GONE
+            noInternet.visibility = View.GONE
+            vacancyCount.visibility = View.VISIBLE
+            searchRecyclerView.visibility = View.VISIBLE
+            pageLoading.isVisible = false
+        }
+    }
+
+    private fun justShowContent() {
         isPageLoading = false
         with(binding) {
             vacancyCount.text = App.getAppResources()?.getQuantityString(
