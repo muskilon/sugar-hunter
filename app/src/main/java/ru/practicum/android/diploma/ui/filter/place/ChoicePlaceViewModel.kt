@@ -29,15 +29,12 @@ class ChoicePlaceViewModel : ViewModel() {
         workPlace.postValue(area)
     }
 
-    fun clearRegion(isCountryVisible: Boolean) {
+    fun clearRegion() {
         val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
         workPlace.value?.let { tempWorkPlace.putAll(it) }
-        if (isCountryVisible) {
-            tempWorkPlace[Key.COUNTRY_NAME]?.let { tempWorkPlace[Key.REGION_NAME] = it }
-            tempWorkPlace[Key.COUNTRY_ID]?.let { tempWorkPlace[Key.REGION_ID] = it }
-        } else {
-            tempWorkPlace.clear()
-        }
+        tempWorkPlace[Key.COUNTRY_NAME]?.let { tempWorkPlace[Key.REGION_NAME] = it }
+        tempWorkPlace[Key.COUNTRY_ID]?.let { tempWorkPlace[Key.REGION_ID] = it }
+
         workPlace.postValue(tempWorkPlace)
     }
 

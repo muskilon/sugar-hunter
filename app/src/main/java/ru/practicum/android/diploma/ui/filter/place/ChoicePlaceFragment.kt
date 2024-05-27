@@ -81,25 +81,14 @@ class ChoicePlaceFragment : Fragment() {
 
     private fun selectCountryActionButtonClickListener() {
         when (binding.selectCountryActionButton.tag) {
-            Key.CLEAR -> {
-                if (binding.selectedRegionText.isVisible) {
-                    binding.selectedCountryText.text = null
-                    binding.selectedCountryText.isVisible = false
-                    binding.selectCountryActionButton.setImageResource(R.drawable.leading_icon_filter)
-                    binding.selectCountryActionButton.tag = Key.ARROW
-                    formatUtil.formatUnselectedFilterTextHeader(binding.selectCountryHeader)
-                    chosenCountry = String()
-                } else {
-                    viewModel.clearCountry()
-                }
-            }
+            Key.CLEAR -> { viewModel.clearCountry() }
             Key.ARROW -> findNavController().navigate(R.id.action_choicePlaceFragment_to_countryFragment)
         }
     }
 
     private fun selectRegionActionButtonClickListener() {
         when (binding.selectRegionActionButton.tag) {
-            Key.CLEAR -> viewModel.clearRegion(binding.selectedCountryText.isVisible)
+            Key.CLEAR -> viewModel.clearRegion()
             Key.ARROW -> {
                 setFragmentResult(Key.CHOSEN_COUNTRY, bundleOf(Key.CHOSEN_COUNTRY to chosenCountry))
                 findNavController().navigate(R.id.action_choicePlaceFragment_to_regionFragment)
@@ -139,7 +128,7 @@ class ChoicePlaceFragment : Fragment() {
                 selectCountryActionButton.setImageResource(R.drawable.clear_button)
                 selectCountryActionButton.tag = Key.CLEAR
 
-                chosenCountry = area[Key.COUNTRY_NAME]!!
+                area[Key.COUNTRY_NAME]?.let { chosenCountry = it }
                 formatUtil.formatSelectedFilterTextHeader(selectCountryHeader)
                 formatUtil.formatUnselectedFilterTextHeader(selectRegionHeader)
             } else {
@@ -153,7 +142,7 @@ class ChoicePlaceFragment : Fragment() {
                 selectCountryActionButton.setImageResource(R.drawable.clear_button)
                 selectCountryActionButton.tag = Key.CLEAR
 
-                chosenCountry = area[Key.COUNTRY_NAME]!!
+                area[Key.COUNTRY_NAME]?.let { chosenCountry = it }
                 formatUtil.formatSelectedFilterTextHeader(selectCountryHeader)
                 formatUtil.formatSelectedFilterTextHeader(selectRegionHeader)
             }
