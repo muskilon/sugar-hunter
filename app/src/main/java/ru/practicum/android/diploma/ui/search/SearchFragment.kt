@@ -14,14 +14,18 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.App
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.VacanciesResponse
+import ru.practicum.android.diploma.ui.Key
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 import ru.practicum.android.diploma.ui.search.recyclerview.SearchAdapter
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
@@ -36,6 +40,7 @@ class SearchFragment : Fragment() {
     private var currentPage = 0
     private val searchAdapter by lazy { getAdapter() }
     private var searchText: String? = null
+    private var isClickAllowed = true
     private var isPageLoading = false
 
     override fun onCreateView(
@@ -50,8 +55,8 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setFragmentResultListener("requestKey") { _, bundle ->
-            if (bundle.getBoolean("isApplyButton") && !searchText.isNullOrEmpty()) {
+        setFragmentResultListener(Key.REQUEST_KEY) { _, bundle ->
+            if (bundle.getBoolean(Key.IS_APPLY_BUTTON) && !searchText.isNullOrEmpty()) {
                 viewModel.repeatRequest(false)
             }
         }
@@ -156,16 +161,31 @@ class SearchFragment : Fragment() {
                     showError(state.errorMessage)
                 } else {
                     binding.pageLoading.isVisible = false
-                    Toast.makeText(
-                        requireContext(),
-                        state.errorMessage,
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    isPageLoading = false
+                    if (toastDebounce()) {
+                        Toast.makeText(
+                            requireContext(),
+                            state.errorMessage,
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
                 }
             }
             is SearchFragmentState.Loading -> showLoading()
         }
+    }
+
+    private fun toastDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            lifecycleScope.launch {
+                delay(Key.TOAST_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
     }
 
     private fun showStart() {
@@ -187,7 +207,7 @@ class SearchFragment : Fragment() {
             somethingWrong.visibility = View.GONE
             vacancyCount.visibility = View.GONE
             searchRecyclerView.visibility = View.GONE
-            searchRecyclerView.removeAllViewsInLayout() // очистка RV, что бы не моргали предыдущие результаты поиска
+            searchRecyclerView.removeAllViewsInLayout()
         }
     }
 

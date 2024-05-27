@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,17 +36,16 @@ class SearchViewModel(
     fun getSearchRequest(text: String, page: String?): Map<String, String> {
         val filters = filtersInterActor.getFilters().filters
         with(filters) {
-            this[TEXT] = text
-            this[PER_PAGE] = PAGE_SIZE
+            this[Key.TEXT] = text
+            this[Key.PER_PAGE] = Key.PAGE_SIZE
             this[Key.REGION_ID]?.let { this[Key.AREA] = it }
             this.remove(Key.REGION_ID)
             page?.let {
-                this[PAGE] = page
+                this[Key.PAGE] = page
             }
 
         }
         val request = filters.filterNot { it.key.startsWith(Key.NOT_REQUEST) }.toMap()
-        Log.d("SEARCH_REQUEST_TAG", request.toString())
         return request
     }
 
@@ -56,7 +54,7 @@ class SearchViewModel(
         if (isClickAllowed) {
             isClickAllowed = false
             viewModelScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
+                delay(Key.CLICK_DEBOUNCE_DELAY)
                 isClickAllowed = true
             }
         }
@@ -68,14 +66,14 @@ class SearchViewModel(
         } else {
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
-                delay(SEARCH_DEBOUNCE_DELAY)
+                delay(Key.SEARCH_DEBOUNCE_DELAY)
                 searchVacancies(getSearchRequest(text, null))
             }
         }
     }
 
     fun searchVacancies(request: Map<String, String>) {
-        request[TEXT]?.let { text ->
+        request[Key.TEXT]?.let { text ->
             if (latestSearchText == text || text.isEmpty()) {
                 searchJob?.cancel()
             } else {
@@ -112,6 +110,7 @@ class SearchViewModel(
     private fun processResult(foundVacancies: Resource<VacanciesResponse>, isSearch: Boolean) {
         when (foundVacancies) {
             is Resource.ConnectionError -> {
+                if (!isSearch) currentPage--
                 stateLiveData.postValue(
                     SearchFragmentState.Error(
                         foundVacancies.message,
@@ -143,19 +142,5 @@ class SearchViewModel(
                 )
             }
         }
-    }
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-
-//        API параметры
-
-        private const val TEXT = "text"
-        private const val PAGE = "page"
-        private const val PAGE_SIZE = "20"
-        private const val PER_PAGE = "per_page"
-        private const val REGION_MAME = "regionName"
-        private const val COUNTRY_NAME = "countryName"
-        private const val INDUSTRY_NAME = "industryName"
     }
 }
