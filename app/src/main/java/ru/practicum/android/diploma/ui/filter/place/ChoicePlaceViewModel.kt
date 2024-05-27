@@ -29,66 +29,25 @@ class ChoicePlaceViewModel : ViewModel() {
         workPlace.postValue(area)
     }
 
-    fun setAreaFromFilters(bundle: Bundle) {
-        val area = HashMap<String, String>()
-        with(bundle) {
-            if (getString(Key.COUNTRY_NAME).isNullOrEmpty()) {
-                getString(Key.REGION_NAME)?.let {
-                    area[Key.COUNTRY_NAME] = it
-                }
-                getString(Key.REGION_ID)?.let {
-                    area[Key.REGION_ID] = it
-                }
-            } else {
-                getString(Key.REGION_NAME)?.let {
-                    area[Key.REGION_NAME] = it
-                }
-                getString(Key.REGION_ID)?.let {
-                    area[Key.REGION_ID] = it
-                }
-                getString(Key.COUNTRY_NAME)?.let {
-                    area[Key.COUNTRY_NAME] = it
-                }
-            }
-        }
-        workPlace.postValue(area)
-    }
-
     fun clearRegion() {
         val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
         workPlace.value?.let { tempWorkPlace.putAll(it) }
-        tempWorkPlace.remove(Key.REGION_NAME)
-        tempWorkPlace.remove(Key.REGION_ID)
+        tempWorkPlace[Key.COUNTRY_NAME]?.let { tempWorkPlace[Key.REGION_NAME] = it }
+        tempWorkPlace[Key.COUNTRY_ID]?.let { tempWorkPlace[Key.REGION_ID] = it }
+
         workPlace.postValue(tempWorkPlace)
     }
 
     fun clearCountry() {
-        val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
-        workPlace.value?.let { tempWorkPlace.putAll(it) }
-        tempWorkPlace.remove(Key.COUNTRY_NAME)
-        tempWorkPlace.remove(Key.COUNTRY_ID)
-        workPlace.postValue(tempWorkPlace)
+        workPlace.postValue(mutableMapOf())
     }
 
     fun savePlace(): Bundle {
-        var bundle = bundleOf()
+        val bundle = bundleOf()
         val tempWorkPlace: MutableMap<String, String> = mutableMapOf()
         workPlace.value?.let { tempWorkPlace.putAll(it) }
-        tempWorkPlace[Key.COUNTRY_ID]?.let { id ->
-            tempWorkPlace[Key.COUNTRY_NAME]?.let { name ->
-                bundle = bundleOf(
-                    Key.REGION_ID to id, Key.REGION_NAME to name
-                )
-            }
-        }
-        tempWorkPlace[Key.REGION_ID]?.let { id ->
-            tempWorkPlace[Key.REGION_NAME]?.let { name ->
-                tempWorkPlace[Key.COUNTRY_NAME]?.let { countryName ->
-                    bundle = bundleOf(
-                        Key.REGION_ID to id, Key.REGION_NAME to name, Key.COUNTRY_NAME to countryName
-                    )
-                }
-            }
+        tempWorkPlace.forEach {
+            bundle.putString(it.key, it.value)
         }
         return bundle
     }

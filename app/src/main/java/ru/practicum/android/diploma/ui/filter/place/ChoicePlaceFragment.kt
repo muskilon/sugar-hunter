@@ -41,9 +41,6 @@ class ChoicePlaceFragment : Fragment() {
         setFragmentResultListener(Key.SET_AREA) { _, bundle ->
             if (!bundle.isEmpty) viewModel.setArea(bundle)
         }
-        setFragmentResultListener(Key.SET_AREA_FROM_FILTERS) { _, bundle ->
-            if (!bundle.isEmpty) viewModel.setAreaFromFilters(bundle)
-        }
 
         binding.buttonApply.setOnClickListener {
             viewModel.savePlace()
@@ -53,12 +50,14 @@ class ChoicePlaceFragment : Fragment() {
 
         binding.selectCountryActionButton.setOnClickListener { selectCountryActionButtonClickListener() }
 
-        binding.selectRegionActionButton.setOnClickListener {
-            selectRegionActionButtonClickListener()
-        }
+        binding.selectRegionActionButton.setOnClickListener { selectRegionActionButtonClickListener() }
 
         viewModel.getArea().observe(viewLifecycleOwner) {
-            render(it)
+            if (it.isNotEmpty()) {
+                renderContent(it)
+            } else {
+                renderEmpty()
+            }
         }
 
         binding.selectCountryButtonGroup.setOnClickListener {
@@ -82,7 +81,7 @@ class ChoicePlaceFragment : Fragment() {
 
     private fun selectCountryActionButtonClickListener() {
         when (binding.selectCountryActionButton.tag) {
-            Key.CLEAR -> viewModel.clearCountry()
+            Key.CLEAR -> { viewModel.clearCountry() }
             Key.ARROW -> findNavController().navigate(R.id.action_choicePlaceFragment_to_countryFragment)
         }
     }
@@ -97,39 +96,58 @@ class ChoicePlaceFragment : Fragment() {
         }
     }
 
-    private fun render(area: MutableMap<String, String>) {
+    private fun renderEmpty() {
         with(binding) {
-            if (area[Key.REGION_NAME].isNullOrEmpty()) {
+            selectedRegionText.text = null
+            selectedRegionText.isVisible = false
+            selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
+            selectRegionActionButton.tag = Key.ARROW
+
+            selectedCountryText.text = null
+            selectedCountryText.isVisible = false
+            selectCountryActionButton.setImageResource(R.drawable.leading_icon_filter)
+            selectCountryActionButton.tag = Key.ARROW
+
+            formatUtil.formatUnselectedFilterTextHeader(selectRegionHeader)
+            formatUtil.formatUnselectedFilterTextHeader(selectCountryHeader)
+            chosenCountry = String()
+            buttonApply.isVisible = false
+        }
+    }
+
+    private fun renderContent(area: MutableMap<String, String>) {
+        with(binding) {
+            if (area[Key.COUNTRY_ID] == area[Key.REGION_ID]) {
                 selectedRegionText.text = null
                 selectedRegionText.isVisible = false
                 selectRegionActionButton.setImageResource(R.drawable.leading_icon_filter)
                 selectRegionActionButton.tag = Key.ARROW
-                formatUtil.formatUnselectedFilterTextHeader(selectRegionHeader)
 
+                selectedCountryText.text = area[Key.COUNTRY_NAME]
+                selectedCountryText.isVisible = true
+                selectCountryActionButton.setImageResource(R.drawable.clear_button)
+                selectCountryActionButton.tag = Key.CLEAR
+
+                area[Key.COUNTRY_NAME]?.let { chosenCountry = it }
+                formatUtil.formatSelectedFilterTextHeader(selectCountryHeader)
+                formatUtil.formatUnselectedFilterTextHeader(selectRegionHeader)
             } else {
                 selectedRegionText.text = area[Key.REGION_NAME]
                 selectedRegionText.isVisible = true
                 selectRegionActionButton.setImageResource(R.drawable.clear_button)
                 selectRegionActionButton.tag = Key.CLEAR
-                formatUtil.formatSelectedFilterTextHeader(selectRegionHeader)
-            }
-            if (area[Key.COUNTRY_NAME].isNullOrEmpty()) {
-                selectedCountryText.text = null
-                selectedCountryText.isVisible = false
-                selectCountryActionButton.setImageResource(R.drawable.leading_icon_filter)
-                selectCountryActionButton.tag = Key.ARROW
-                chosenCountry = String()
-                formatUtil.formatUnselectedFilterTextHeader(selectCountryHeader)
-            } else {
+
                 selectedCountryText.text = area[Key.COUNTRY_NAME]
                 selectedCountryText.isVisible = true
                 selectCountryActionButton.setImageResource(R.drawable.clear_button)
                 selectCountryActionButton.tag = Key.CLEAR
-                chosenCountry = area[Key.COUNTRY_NAME]!!
+
+                area[Key.COUNTRY_NAME]?.let { chosenCountry = it }
                 formatUtil.formatSelectedFilterTextHeader(selectCountryHeader)
+                formatUtil.formatSelectedFilterTextHeader(selectRegionHeader)
             }
         }
-        binding.buttonApply.isVisible = area.isNotEmpty()
+        binding.buttonApply.isVisible = true
     }
 
     fun exit() {

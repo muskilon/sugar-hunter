@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import ru.practicum.android.diploma.domain.VacanciesInterActor
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.Key
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 
 class SearchViewModel(
@@ -33,19 +35,20 @@ class SearchViewModel(
     }
 
     fun getSearchRequest(text: String, page: String?): Map<String, String> {
-        val request = filtersInterActor.getFilters().filters
-        with(request) {
+        val filters = filtersInterActor.getFilters().filters
+        with(filters) {
             this[TEXT] = text
             this[PER_PAGE] = PAGE_SIZE
-            this.remove(REGION_MAME)
-            this.remove(INDUSTRY_NAME)
-            this.remove(COUNTRY_NAME)
+            this[Key.REGION_ID]?.let { this[Key.AREA] = it }
+            this.remove(Key.REGION_ID)
             page?.let {
                 this[PAGE] = page
             }
 
         }
-        return request.toMap()
+        val request = filters.filterNot { it.key.startsWith(Key.NOT_REQUEST) }.toMap()
+        Log.d("SEARCH_REQUEST_TAG", request.toString())
+        return request
     }
 
     fun clickDebounce(): Boolean {
