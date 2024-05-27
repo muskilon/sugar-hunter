@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.filter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -95,6 +96,7 @@ class FilterFragment : Fragment() {
 
     private fun buttonApplyListener() {
         viewModel.updateFiltersInStorage()
+//        Log.d("BUTTON_APPLY_TAG", viewModel.getFiltersFromStorage().toString())
         setFragmentResult(
             Key.REQUEST_KEY,
             bundleOf(Key.IS_APPLY_BUTTON to true)
@@ -170,11 +172,12 @@ class FilterFragment : Fragment() {
         }
     }
 
-    private fun setStatements(fil: MutableMap<String, String>) {
-        binding.buttonApply.isVisible = oldFilters != fil
-        renderArea(fil)
-        if (fil.isNotEmpty()) {
-            fil.keys.forEach { key ->
+    private fun setStatements(filters: MutableMap<String, String>) {
+        Log.d("SET_STATEMENTS_TAG", filters.toString())
+        binding.buttonApply.isVisible = oldFilters != filters
+        renderArea(filters)
+        if (filters.isNotEmpty()) {
+            filters.keys.forEach { key ->
                 when (key) {
                     Key.ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
                     Key.INDUSTRY -> Unit // TODO подключить renderIndustry
@@ -227,6 +230,7 @@ class FilterFragment : Fragment() {
 
     private fun initFilters() {
         oldFilters.putAll(viewModel.getFiltersFromStorage())
+        Log.d("OLD_FILTERS_TAG", oldFilters.toString())
         oldFilters[Key.SALARY]?.let {
             binding.salaryEdit.setText(it)
             viewModel.setSalary(it)
@@ -247,6 +251,7 @@ class FilterFragment : Fragment() {
 
     fun exit() {
         viewModel.updateFiltersInStorage()
+//        Log.d("EXIT_TAG", viewModel.getFiltersFromStorage().toString())
         setFragmentResult(
             Key.REQUEST_KEY,
             bundleOf(Key.IS_APPLY_BUTTON to false)

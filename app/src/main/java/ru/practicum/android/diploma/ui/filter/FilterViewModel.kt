@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.ui.filter
 
 import android.os.Bundle
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,19 +18,29 @@ class FilterViewModel(
     fun getFilters(): LiveData<MutableMap<String, String>> = filters
     fun getFiltersFromStorage(): MutableMap<String, String> {
         val newFilters = filtersInterActor.getFilters().filters
-        filters.postValue(newFilters)
+        Log.d("NEW_FILTERS_TAG", newFilters.toString())
+        filters.value = newFilters
+        Log.d("TEMP_LIVE_FILTERS_TAG", filters.value.toString())
         return newFilters
     }
 
     fun updateFiltersInStorage() {
         val tempFilters = getTempFilters()
         filtersInterActor.updateFilters(SavedFilters(tempFilters))
+//        Log.d("TEMP_FILTERS_TAG", tempFilters.toString())
+//        Log.d("TAG_SHARED AFTER", filtersInterActor.getFilters().filters.toString())
     }
 
     fun setSalary(salary: CharSequence?) {
         val tempFilters = getTempFilters()
-        salary?.let { tempFilters[Key.SALARY] = it.toString() } ?: tempFilters.remove(Key.SALARY)
-        filters.postValue(tempFilters)
+        if (salary.isNullOrEmpty()) {
+            tempFilters.remove(Key.SALARY)
+        } else {
+            tempFilters[Key.SALARY] = salary.toString()
+        }
+        filters.value = tempFilters
+        Log.d("SET_SALARY_TAG", filters.value.toString())
+
     }
 
     fun salaryCheckBoxProcessing(isChecked: Boolean) {
@@ -39,7 +50,7 @@ class FilterViewModel(
         } else {
             tempFilters.remove(Key.ONLY_WITH_SALARY)
         }
-        filters.postValue(tempFilters)
+        filters.value = tempFilters
     }
 
     fun clearRegion() {
@@ -48,11 +59,11 @@ class FilterViewModel(
         tempFilters.remove(Key.REGION_ID)
         tempFilters.remove(Key.COUNTRY_NAME)
         tempFilters.remove(Key.COUNTRY_ID)
-        filters.postValue(tempFilters)
+        filters.value = tempFilters
     }
 
     fun clearFilters() {
-        filters.postValue(mutableMapOf())
+        filters.value = mutableMapOf()
     }
 
     fun getBundle(): Bundle {
@@ -82,7 +93,7 @@ class FilterViewModel(
                     tempFilters[Key.COUNTRY_ID] = it
                 }
             }
-            filters.postValue(tempFilters)
+            filters.value = tempFilters
         }
     }
 
