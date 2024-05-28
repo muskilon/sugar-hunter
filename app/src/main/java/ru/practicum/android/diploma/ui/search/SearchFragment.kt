@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -95,6 +96,12 @@ class SearchFragment : Fragment() {
                 R.id.action_searchFragment_to_filterFragment
             )
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                exit()
+            }
+        })
     }
     private fun searchEditActionListener(actionId: Int) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -201,6 +208,18 @@ class SearchFragment : Fragment() {
                 )
             }
         }
+    private fun exit() {
+        if (toastDebounce()) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.exit_message),
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        } else {
+            requireActivity().finish()
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
