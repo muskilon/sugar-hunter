@@ -49,26 +49,35 @@ class SearchFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setFragmentResultListener(Key.REQUEST_KEY) { _, bundle ->
             if (bundle.getBoolean(Key.IS_APPLY_BUTTON)) {
                 viewModel.repeatRequest(binding.searchEditText.text.toString(), false)
             }
         }
+
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
         if (viewModel.isFiltersOn()) {
             binding.favoriteButton.setImageResource(R.drawable.search_filter_active)
         } else {
             binding.favoriteButton.setImageResource(R.drawable.search_filter_inactive)
         }
+
         binding.searchEditText.addTextChangedListener(getTextWatcher())
+
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             searchEditActionListener(actionId)
             false
         }
+
         binding.searchRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
         binding.searchRecyclerView.adapter = searchAdapter
+
         binding.searchRecyclerView.addOnScrollListener(getOnScrollListener(imm))
+
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
             render(state)
             binding.clearIcon.setOnClickListener {
@@ -80,6 +89,7 @@ class SearchFragment : Fragment() {
                 }
             }
         }
+
         binding.favoriteButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterFragment
