@@ -81,14 +81,7 @@ class SearchFragment : Fragment() {
 
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
             render(state)
-            binding.clearIcon.setOnClickListener {
-                binding.searchEditText.text.clear()
-                when (state) {
-                    is SearchFragmentState.Empty -> viewModel.vmSetToStart()
-                    is SearchFragmentState.Error -> viewModel.vmSetToStart()
-                    else -> { }
-                }
-            }
+            binding.clearIcon.setOnClickListener { clearIconClickListener(state) }
         }
 
         binding.favoriteButton.setOnClickListener {
@@ -98,10 +91,17 @@ class SearchFragment : Fragment() {
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                exit()
-            }
+            override fun handleOnBackPressed() { exit() }
         })
+    }
+
+    private fun clearIconClickListener(state: SearchFragmentState) {
+        binding.searchEditText.text.clear()
+        when (state) {
+            is SearchFragmentState.Empty -> viewModel.vmSetToStart()
+            is SearchFragmentState.Error -> viewModel.vmSetToStart()
+            else -> { }
+        }
     }
     private fun searchEditActionListener(actionId: Int) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
