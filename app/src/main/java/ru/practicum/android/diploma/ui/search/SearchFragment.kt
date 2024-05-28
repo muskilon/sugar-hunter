@@ -37,6 +37,7 @@ class SearchFragment : Fragment() {
     private var pages = 0
     private var currentPage = 0
     private val searchAdapter by lazy { getAdapter() }
+    private val presenter by lazy { ttt() }
     private var searchText: String? = null
     private var isClickAllowed = true
     private var isPageLoading = false
@@ -126,9 +127,9 @@ class SearchFragment : Fragment() {
             searchText = s.toString()
             if (searchText.isNullOrEmpty()) {
                 if (searchAdapter.itemCount != 0) {
-                    justShowContent()
+                    isPageLoading = presenter.justShowContent(totalFoundVacancies)
                 } else {
-                    showStart()
+                    presenter.showStart()
                 }
             }
             searchText?.let { viewModel.searchDebounce(it) } ?: { viewModel.searchDebounce(String()) }
@@ -137,17 +138,17 @@ class SearchFragment : Fragment() {
     }
     private fun render(state: SearchFragmentState) {
         when (state) {
-            is SearchFragmentState.Start -> showStart()
+            is SearchFragmentState.Start -> presenter.showStart()
             is SearchFragmentState.Content -> {
                 pages = state.vacancy.pages
                 currentPage = state.vacancy.page
                 totalFoundVacancies = state.vacancy.found
-                showContent(state.vacancy)
+                isPageLoading = presenter.showContent(state.vacancy, totalFoundVacancies, searchAdapter)
             }
-            is SearchFragmentState.Empty -> showEmpty(state.message)
+            is SearchFragmentState.Empty -> presenter.showEmpty(state.message)
             is SearchFragmentState.Error -> {
                 if (state.isSearch) {
-                    showError(state.errorMessage)
+                    presenter.showError(state.errorMessage)
                 } else {
                     binding.pageLoading.isVisible = false
                     isPageLoading = false
@@ -161,7 +162,7 @@ class SearchFragment : Fragment() {
                     }
                 }
             }
-            is SearchFragmentState.Loading -> showLoading()
+            is SearchFragmentState.Loading -> presenter.showLoading()
         }
     }
     private fun toastDebounce(): Boolean {
@@ -250,6 +251,7 @@ class SearchFragment : Fragment() {
             pageLoading.isVisible = false
         }
     }
+    private fun ttt() = SearchFragmentPresenter(binding)
     private fun getAdapter() =
         SearchAdapter { vacancy ->
             if (viewModel.clickDebounce()) {
