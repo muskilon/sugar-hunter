@@ -155,7 +155,7 @@ class SearchFragment : Fragment() {
                 currentPage = state.vacancy.page
                 totalFoundVacancies = state.vacancy.found
                 presenter.showContent(
-                    state.vacancy,
+                    vacancy = state.vacancy,
                     searchAdapter = searchAdapter,
                     totalFoundVacancies = totalFoundVacancies
                 )

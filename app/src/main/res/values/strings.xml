@@ -1,6 +1,6 @@
 <resources>
     <!--    Bottom bar Tab's names-->
-    <string name="app_name">Practicum-Android-Diploma</string>
+    <string name="app_name">Sugar Hunter</string>
     <string name="main">Главная</string>
     <string name="favourite">Избранное</string>
 
