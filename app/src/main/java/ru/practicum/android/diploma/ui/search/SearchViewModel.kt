@@ -37,12 +37,12 @@ class SearchViewModel(
     fun getSearchRequest(text: String, page: String?): Map<String, String> {
         val filters = filtersInterActor.getFilters().filters
         with(filters) {
-            this[TEXT] = text
-            this[PER_PAGE] = PAGE_SIZE
+            this[Key.TEXT] = text
+            this[Key.PER_PAGE] = Key.PAGE_SIZE
             this[Key.REGION_ID]?.let { this[Key.AREA] = it }
             this.remove(Key.REGION_ID)
             page?.let {
-                this[PAGE] = page
+                this[Key.PAGE] = page
             }
 
         }
@@ -56,7 +56,7 @@ class SearchViewModel(
         if (isClickAllowed) {
             isClickAllowed = false
             viewModelScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
+                delay(Key.CLICK_DEBOUNCE_DELAY)
                 isClickAllowed = true
             }
         }
@@ -68,37 +68,32 @@ class SearchViewModel(
         } else {
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
-                delay(SEARCH_DEBOUNCE_DELAY)
+                delay(Key.SEARCH_DEBOUNCE_DELAY)
                 searchVacancies(getSearchRequest(text, null))
             }
         }
     }
 
     fun searchVacancies(request: Map<String, String>) {
-        request[TEXT]?.let { text ->
-            if (latestSearchText == text || text.isEmpty()) {
-                searchJob?.cancel()
-            } else {
-                stateLiveData.postValue(SearchFragmentState.Loading)
-                currentVacancies = listOf()
-                latestSearchText = text
-                viewModelScope.launch {
-                    vacanciesInterActor
-                        .searchVacancies(request)
-                        .collect { result ->
-                            processResult(result, true)
-                        }
+        request[Key.TEXT]?.let { text ->
+            stateLiveData.postValue(SearchFragmentState.Loading)
+            currentVacancies = listOf()
+            latestSearchText = text
+            viewModelScope.launch {
+                vacanciesInterActor.searchVacancies(request).collect { result ->
+                    processResult(result, true)
                 }
             }
         }
     }
 
-    fun repeatRequest(isNeedAddCounter: Boolean) {
+    fun repeatRequest(searchInput: String, isNeedAddCounter: Boolean) {
         if (isNeedAddCounter) {
             currentPage++
         } else {
             stateLiveData.postValue(SearchFragmentState.Loading)
             currentPage = 0
+            latestSearchText = searchInput
         }
         viewModelScope.launch {
             vacanciesInterActor
@@ -112,6 +107,7 @@ class SearchViewModel(
     private fun processResult(foundVacancies: Resource<VacanciesResponse>, isSearch: Boolean) {
         when (foundVacancies) {
             is Resource.ConnectionError -> {
+                if (!isSearch) currentPage--
                 stateLiveData.postValue(
                     SearchFragmentState.Error(
                         foundVacancies.message,
@@ -144,7 +140,6 @@ class SearchViewModel(
             }
         }
     }
-
     fun vmSetToStart() {
         stateLiveData.postValue(SearchFragmentState.Start)
     }
