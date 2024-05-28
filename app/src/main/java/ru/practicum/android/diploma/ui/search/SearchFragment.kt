@@ -21,9 +21,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.app.App
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.ui.Key
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 import ru.practicum.android.diploma.ui.search.recyclerview.SearchAdapter
@@ -37,7 +35,7 @@ class SearchFragment : Fragment() {
     private var pages = 0
     private var currentPage = 0
     private val searchAdapter by lazy { getAdapter() }
-    private val presenter by lazy { ttt() }
+    private val presenter get() = SearchFragmentPresenter(binding)
     private var searchText: String? = null
     private var isClickAllowed = true
     private var isPageLoading = false
@@ -76,8 +74,8 @@ class SearchFragment : Fragment() {
             binding.clearIcon.setOnClickListener {
                 binding.searchEditText.text.clear()
                 when (state) {
-                    is SearchFragmentState.Empty -> { viewModel.vmSetToStart() }
-                    is SearchFragmentState.Error -> { viewModel.vmSetToStart() }
+                    is SearchFragmentState.Empty -> viewModel.vmSetToStart()
+                    is SearchFragmentState.Error -> viewModel.vmSetToStart()
                     else -> { }
                 }
             }
@@ -127,7 +125,8 @@ class SearchFragment : Fragment() {
             searchText = s.toString()
             if (searchText.isNullOrEmpty()) {
                 if (searchAdapter.itemCount != 0) {
-                    isPageLoading = presenter.justShowContent(totalFoundVacancies)
+                    presenter.justShowContent(totalFoundVacancies)
+                    isPageLoading = false
                 } else {
                     presenter.showStart()
                 }
@@ -138,12 +137,19 @@ class SearchFragment : Fragment() {
     }
     private fun render(state: SearchFragmentState) {
         when (state) {
-            is SearchFragmentState.Start -> presenter.showStart()
+            is SearchFragmentState.Start -> {
+                presenter.showStart()
+            }
             is SearchFragmentState.Content -> {
                 pages = state.vacancy.pages
                 currentPage = state.vacancy.page
                 totalFoundVacancies = state.vacancy.found
-                isPageLoading = presenter.showContent(state.vacancy, totalFoundVacancies, searchAdapter)
+                presenter.showContent(
+                    state.vacancy,
+                    searchAdapter = searchAdapter,
+                    totalFoundVacancies = totalFoundVacancies
+                )
+                isPageLoading = false
             }
             is SearchFragmentState.Empty -> presenter.showEmpty(state.message)
             is SearchFragmentState.Error -> {
@@ -176,82 +182,6 @@ class SearchFragment : Fragment() {
         }
         return current
     }
-    private fun showStart() {
-        with(binding) {
-            placeholderSearch.visibility = View.VISIBLE
-            noInternet.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            vacancyCount.visibility = View.GONE
-            searchRecyclerView.visibility = View.GONE
-        }
-    }
-    private fun showLoading() {
-        with(binding) {
-            progressBar.visibility = View.VISIBLE
-            placeholderSearch.visibility = View.GONE
-            noInternet.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
-            vacancyCount.visibility = View.GONE
-            searchRecyclerView.visibility = View.GONE
-            searchRecyclerView.removeAllViewsInLayout()
-        }
-    }
-    private fun showError(errorMessage: String) {
-        with(binding) {
-            noInternet.visibility = View.VISIBLE
-            placeholderSearch.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            searchRecyclerView.visibility = View.GONE
-            vacancyCount.visibility = View.GONE
-        }
-    }
-    private fun showEmpty(emptyMessage: String) {
-        with(binding) {
-            vacancyCount.text = requireContext().getString(
-                R.string.search_error_no_vacancies
-            )
-            vacancyCount.visibility = View.VISIBLE
-            somethingWrong.visibility = View.VISIBLE
-            placeholderSearch.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            searchRecyclerView.visibility = View.GONE
-            noInternet.visibility = View.GONE
-        }
-    }
-    private fun showContent(vacancy: VacanciesResponse) {
-        searchAdapter.setData(vacancy.items)
-        isPageLoading = false
-        with(binding) {
-            vacancyCount.text = App.getAppResources()?.getQuantityString(
-                R.plurals.vacancy_plurals, totalFoundVacancies, totalFoundVacancies
-            )
-            placeholderSearch.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
-            noInternet.visibility = View.GONE
-            vacancyCount.visibility = View.VISIBLE
-            searchRecyclerView.visibility = View.VISIBLE
-            pageLoading.isVisible = false
-        }
-    }
-    private fun justShowContent() {
-        isPageLoading = false
-        with(binding) {
-            vacancyCount.text = App.getAppResources()?.getQuantityString(
-                R.plurals.vacancy_plurals, totalFoundVacancies, totalFoundVacancies
-            )
-            placeholderSearch.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
-            noInternet.visibility = View.GONE
-            vacancyCount.visibility = View.VISIBLE
-            searchRecyclerView.visibility = View.VISIBLE
-            pageLoading.isVisible = false
-        }
-    }
-    private fun ttt() = SearchFragmentPresenter(binding)
     private fun getAdapter() =
         SearchAdapter { vacancy ->
             if (viewModel.clickDebounce()) {
