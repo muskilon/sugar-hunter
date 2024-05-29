@@ -36,7 +36,6 @@ class SearchFragment : Fragment() {
     private var pages = 0
     private var currentPage = 0
     private val searchAdapter by lazy { getAdapter() }
-    private val presenter get() = SearchFragmentPresenter(binding)
     private var searchText: String? = null
     private var isClickAllowed = true
     private var isPageLoading = false
@@ -56,6 +55,7 @@ class SearchFragment : Fragment() {
                 viewModel.repeatRequest(binding.searchEditText.text.toString(), false)
             }
         }
+        val presenter = SearchFragmentPresenter(binding)
 
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -65,7 +65,7 @@ class SearchFragment : Fragment() {
             binding.favoriteButton.setImageResource(R.drawable.search_filter_inactive)
         }
 
-        binding.searchEditText.addTextChangedListener(getTextWatcher())
+        binding.searchEditText.addTextChangedListener(getTextWatcher(presenter))
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             searchEditActionListener(actionId)
@@ -80,7 +80,7 @@ class SearchFragment : Fragment() {
         binding.searchRecyclerView.addOnScrollListener(getOnScrollListener(imm))
 
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
-            render(state)
+            render(state, presenter)
             binding.clearIcon.setOnClickListener { clearIconClickListener(state) }
         }
 
@@ -134,7 +134,7 @@ class SearchFragment : Fragment() {
             }
         }
     }
-    private fun getTextWatcher() = object : TextWatcher {
+    private fun getTextWatcher(presenter: SearchFragmentPresenter) = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             binding.clearIcon.isVisible = !s.isNullOrEmpty()
@@ -152,7 +152,7 @@ class SearchFragment : Fragment() {
         }
         override fun afterTextChanged(s: Editable?) = Unit
     }
-    private fun render(state: SearchFragmentState) {
+    private fun render(state: SearchFragmentState, presenter: SearchFragmentPresenter) {
         when (state) {
             is SearchFragmentState.Start -> {
                 presenter.showStart()
