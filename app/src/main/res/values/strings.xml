@@ -71,7 +71,7 @@
     <string name="choice_industry_header">Выбор отрасли</string>
     <string name="search_industry_text">Введите отрасль</string>
     <string name="nothing_industry">Такой отрасли нет</string>
-    <string name="exit_message">Если хотите выйти из приложения, нажмите \"Назад\" еще раз</string>
+    <string name="exit_message">Если хотите выйти из приложения,\nнажмите \"Назад\" еще раз</string>
 
     <plurals name="vacancy_plurals">
         <item quantity="zero">Вакансий не найдено</item>
