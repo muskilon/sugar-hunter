@@ -25,9 +25,7 @@ class RetrofitNetworkClient(
             industry = try {
                 hhApi.getAreasDictionary().body()?.let {
                     Resource.Data(AreasDictionaryDTO(container = it.asList()))
-                } ?: Resource.NotFound(
-                    NOT_FOUND
-                )
+                } ?: Resource.NotFound(NOT_FOUND)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
                 Resource.ConnectionError(REQUEST_ERROR_TAG)
@@ -41,8 +39,7 @@ class RetrofitNetworkClient(
         if (!isConnected()) return Resource.ConnectionError(OFFLINE)
         withContext(Dispatchers.IO) {
             vacancies = try {
-                hhApi.getSearch(request).body()?.let { Resource.Data(it) } ?: Resource.NotFound(
-                    OFFLINE)
+                hhApi.getSearch(request).body()?.let { Resource.Data(it) } ?: Resource.NotFound(NOT_FOUND)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
                 Resource.ConnectionError(REQUEST_ERROR_TAG)
@@ -58,8 +55,7 @@ class RetrofitNetworkClient(
             industry = try {
                 hhApi.getIndustry().body()?.let {
                     Resource.Data(IndustryResponse(container = it.asList()))
-                } ?: Resource.NotFound(
-                    NOT_FOUND)
+                } ?: Resource.NotFound(NOT_FOUND)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
                 Resource.ConnectionError(REQUEST_ERROR_TAG)
@@ -73,8 +69,7 @@ class RetrofitNetworkClient(
         if (!isConnected()) return Resource.ConnectionError(OFFLINE)
         withContext(Dispatchers.IO) {
             details = try {
-                hhApi.getVacancyDetails(id).body()?.let { Resource.Data(it) } ?: Resource.NotFound(
-                    NOT_FOUND)
+                hhApi.getVacancyDetails(id).body()?.let { Resource.Data(it) } ?: Resource.NotFound(NOT_FOUND)
             } catch (ex: IOException) {
                 Log.e(REQUEST_ERROR_TAG, ex.toString())
                 Resource.ConnectionError(REQUEST_ERROR_TAG)

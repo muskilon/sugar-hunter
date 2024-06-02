@@ -16,12 +16,15 @@
         <action
             android:id="@+id/action_choicePlaceFragment_to_regionFragment"
             app:destination="@id/regionFragment" />
+        <action
+            android:id="@+id/action_choicePlaceFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
     </fragment>
     <fragment
         android:id="@+id/choiceSphereFragment"
         android:name="ru.practicum.android.diploma.ui.filter.industry.ChooseIndustryFragment"
         android:label="fragment_choice_sphere"
-        tools:layout="@layout/fragment_choice_sphere" />
+        tools:layout="@layout/fragment_choice_industry" />
     <fragment
         android:id="@+id/countryFragment"
         android:name="ru.practicum.android.diploma.ui.filter.place.country.CountryFragment"
@@ -47,6 +50,9 @@
         <action
             android:id="@+id/action_filterFragment_to_choiceSphereFragment"
             app:destination="@id/choiceSphereFragment" />
+        <action
+            android:id="@+id/action_filterFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/regionFragment"

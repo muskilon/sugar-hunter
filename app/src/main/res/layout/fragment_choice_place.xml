@@ -6,15 +6,174 @@
     android:layout_height="match_parent"
     tools:context=".ui.filter.place.ChoicePlaceFragment">
 
-    <TextView
-        android:id="@+id/title"
+    <ImageView
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_19dp"
-        android:text="Выбор места работы"
-        android:textSize="@dimen/text_size_22sp"
+        android:importantForAccessibility="no"
+        android:paddingStart="@dimen/padding_16dp"
+        android:paddingTop="@dimen/padding_20dp"
+        android:paddingEnd="@dimen/padding_16dp"
+        android:paddingBottom="@dimen/padding_20dp"
+        android:src="@drawable/back_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/choicePlaceScreenTittle"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:lineHeight="@dimen/text_line_height_26dp"
+        android:paddingStart="0dp"
+        android:paddingTop="@dimen/margin_19dp"
+        android:paddingEnd="@dimen/margin_8dp"
+        android:paddingBottom="@dimen/margin_19dp"
+        android:text="@string/choice_place_screen_header"
+        android:textColor="?attr/prime_color_black"
+        android:textFontWeight="500"
+        android:textSize="@dimen/text_size_22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/backButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/selectCountryButtonGroup"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/padding_4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choicePlaceScreenTittle"
+        tools:ignore="RtlSymmetry">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="6dp"
+            android:paddingStart="16dp">
+
+            <TextView
+                android:id="@+id/selectCountryHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ys_display_regular"
+                android:gravity="start|center"
+                android:lineHeight="@dimen/text_line_height_19dp"
+                android:text="@string/select_country_header"
+                android:textColor="@color/dark_gray"
+                android:textFontWeight="400"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <TextView
+                android:id="@+id/selectedCountryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:lineHeight="19dp"
+                android:textColor="?prime_color_black"
+                android:textFontWeight="400"
+                android:textSize="@dimen/text_size_16sp"
+                android:visibility="gone"
+                tools:text="Россия"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/selectCountryActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:importantForAccessibility="no"
+            android:paddingVertical="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:src="@drawable/leading_icon_filter"
+            app:tint="?attr/prime_color_black"
+            android:tag="arrow"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/selectRegionButtonGroup"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/padding_4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/selectCountryButtonGroup"
+        tools:ignore="RtlSymmetry">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="6dp"
+            android:paddingStart="16dp">
+
+            <TextView
+                android:id="@+id/selectRegionHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ys_display_regular"
+                android:gravity="start|center"
+                android:lineHeight="@dimen/text_line_height_19dp"
+                android:text="@string/select_region_header"
+                android:textColor="@color/dark_gray"
+                android:textFontWeight="400"
+                android:textSize="@dimen/text_size_16sp" />
+
+            <TextView
+                android:id="@+id/selectedRegionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:lineHeight="19dp"
+                android:textColor="?prime_color_black"
+                android:textFontWeight="400"
+                android:textSize="@dimen/text_size_16sp"
+                android:visibility="gone"
+                tools:text="Москва"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/selectRegionActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:importantForAccessibility="no"
+            android:paddingVertical="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:src="@drawable/leading_icon_filter"
+            app:tint="?attr/prime_color_black"
+            android:tag="arrow" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonApply"
+        style="@style/filterButtonsStyle"
+        android:layout_width="0dp"
+        android:layout_height="59dp"
+        android:layout_marginHorizontal="17dp"
+        android:layout_marginBottom="@dimen/margin_24dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:text="@string/apply_choice_button_place"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

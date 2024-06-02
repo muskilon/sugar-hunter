@@ -40,7 +40,7 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vacancyFragmentPresenter = VacancyFragmentPresenter(binding, requireContext())
+        val vacancyFragmentPresenter = VacancyFragmentPresenter(binding)
 
         viewModel.getVacancyScreenStateLiveData().observe(viewLifecycleOwner) { state ->
             vacancyFragmentPresenter.render(state)

@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.util
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.Log
 import android.util.TypedValue
 import android.widget.ImageView
@@ -48,19 +49,19 @@ class FormatUtilFunctions {
         return string
     }
 
-    fun downloadImage(url: String?, imageView: ImageView, context: Context) {
+    fun downloadImage(url: String?, imageView: ImageView) {
         if (url.isNullOrEmpty()) {
             return
         } else {
             Glide.with(imageView)
                 .load(url)
                 .placeholder(R.drawable.vacancy_no_image_holder)
-                .transform(RoundedCorners(dpToPx(context)))
+                .transform(RoundedCorners(dpToPx(imageView.context)))
                 .into(imageView)
         }
     }
 
-    private fun dpToPx(context: Context): Int {
+    fun dpToPx(context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             ROUNDED_CORNERS_12PX,
@@ -100,9 +101,25 @@ class FormatUtilFunctions {
         }
     }
 
+    fun formatSelectedFilterTextHeader(textView: TextView) {
+        val typedValue = TypedValue()
+        val theme = textView.context.theme
+        theme.resolveAttribute(R.attr.prime_color_black, typedValue, true)
+        val color = typedValue.data
+        textView.setTextColor(ColorStateList.valueOf(color))
+        textView.textSize = TEXT_SIZE_12SP
+    }
+
+    fun formatUnselectedFilterTextHeader(textView: TextView) {
+        textView.setTextColor(textView.context.getColor(R.color.dark_gray))
+        textView.textSize = TEXT_SIZE_16SP
+    }
+
     companion object {
         const val ROUNDED_CORNERS_12PX = 12f
         const val THREE_DIGITS_FOR_SPACE = 3
+        const val TEXT_SIZE_12SP = 12F
+        const val TEXT_SIZE_16SP = 16f
     }
 
 }

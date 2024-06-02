@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.data.dto.DTOToDataMappers
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.VacanciesRepository
-import ru.practicum.android.diploma.domain.models.AreasDictionary
-import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.Areas
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.domain.models.VacancyDetails
@@ -32,7 +32,6 @@ class VacanciesRepositoryImpl(
                     }
                 }
             }
-
             is Resource.NotFound -> emit(Resource.NotFound(response.message))
             is Resource.ConnectionError -> {
                 emit(Resource.ConnectionError(response.message))
@@ -50,15 +49,14 @@ class VacanciesRepositoryImpl(
                     emit(Resource.Data(data))
                 }
             }
-
             is Resource.NotFound -> emit(Resource.NotFound(response.message))
             is Resource.ConnectionError -> {
                 emit(Resource.ConnectionError(response.message))
             }
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO) // перенесла
 
-    override suspend fun getIndustries(): Flow<Resource<List<Industries>>> = flow {
+    override suspend fun getIndustries(): Flow<Resource<List<Industry>>> = flow {
         when (val response = networkClient.getIndustry()) {
             is Resource.Data -> {
                 with(response) {
@@ -66,7 +64,6 @@ class VacanciesRepositoryImpl(
                     emit(Resource.Data(data))
                 }
             }
-
             is Resource.NotFound -> emit(Resource.NotFound(response.message))
             is Resource.ConnectionError -> {
                 emit(Resource.ConnectionError(response.message))
@@ -74,15 +71,14 @@ class VacanciesRepositoryImpl(
         }
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getAreas(): Flow<Resource<AreasDictionary>> = flow {
+    override suspend fun getAreas(): Flow<Resource<List<Areas>>> = flow {
         when (val response = networkClient.getAreasDictionary()) {
             is Resource.Data -> {
                 with(response) {
-                    val data = mapper.areasDictionaryDTOToAreasDictionary(this.value)
+                    val data = mapper.areasDictionaryToList(this.value.container)
                     emit(Resource.Data(data))
                 }
             }
-
             is Resource.NotFound -> emit(Resource.NotFound(response.message))
             is Resource.ConnectionError -> {
                 emit(Resource.ConnectionError(response.message))

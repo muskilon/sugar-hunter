@@ -18,12 +18,10 @@ import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
 import ru.practicum.android.diploma.domain.models.FavouritesState
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
-import java.lang.ref.WeakReference
 
 class FavouriteFragment : Fragment() {
 
-    private val context by lazy { WeakReference(requireContext()) }
-    private val adapter by lazy { FavouriteAdapter({ vacancy -> goToVacancy(vacancy) }, context) }
+    private val adapter by lazy { FavouriteAdapter { vacancy -> goToVacancy(vacancy) } }
     private var _binding: FragmentFavouriteBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<FavouriteViewModel>()
@@ -41,9 +39,9 @@ class FavouriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.checkStateLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer { favouriteState ->
+        viewModel.checkStateLiveData().observe(viewLifecycleOwner) { favouriteState ->
             render(favouriteState)
-        })
+        }
 
         binding.favoriteRecyclerView.adapter = adapter
         binding.favoriteRecyclerView.layoutManager =
@@ -56,12 +54,14 @@ class FavouriteFragment : Fragment() {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
-    private suspend fun clickDebounce(): Boolean {
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            delay(CLICK_DEBOUNCE_DELAY)
-            isClickAllowed = true
+            lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }

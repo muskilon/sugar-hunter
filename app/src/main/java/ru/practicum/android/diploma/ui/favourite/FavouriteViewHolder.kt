@@ -10,9 +10,8 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.FormatUtilFunctions
-import java.lang.ref.WeakReference
 
-class FavouriteViewHolder(private val binding: ItemVacancyBinding, private val context: WeakReference<Context>) :
+class FavouriteViewHolder(private val binding: ItemVacancyBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     val utilFunctions = FormatUtilFunctions()

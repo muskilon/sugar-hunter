@@ -18,7 +18,7 @@ class FavouriteViewModel(private val favouriteDataBaseInteractor: FavouriteDataB
     fun checkStateLiveData(): LiveData<FavouritesState> = stateMutableLiveData
 
     private var favoriteMutableListLiveData = MutableLiveData<ArrayList<VacancyDetails>>()
-    fun favoriteListLiveData(): LiveData<ArrayList<VacancyDetails>> = favoriteMutableListLiveData
+    private fun favoriteListLiveData(): LiveData<ArrayList<VacancyDetails>> = favoriteMutableListLiveData
 
     init {
         viewModelScope.launch {
@@ -47,7 +47,7 @@ class FavouriteViewModel(private val favouriteDataBaseInteractor: FavouriteDataB
         }
     }
 
-    fun setStateContent() {
+    private fun setStateContent() {
         viewModelScope.launch {
             if (favoriteMutableListLiveData.value != null) {
                 stateMutableLiveData.postValue(FavouritesState.Content(favoriteMutableListLiveData.value!!))
@@ -58,11 +58,11 @@ class FavouriteViewModel(private val favouriteDataBaseInteractor: FavouriteDataB
         }
     }
 
-    fun setStateEmpty() {
+    private fun setStateEmpty() {
         stateMutableLiveData.postValue(FavouritesState.Empty)
     }
 
-    fun setStateError() {
+    private fun setStateError() {
         stateMutableLiveData.postValue(FavouritesState.Error)
     }
 

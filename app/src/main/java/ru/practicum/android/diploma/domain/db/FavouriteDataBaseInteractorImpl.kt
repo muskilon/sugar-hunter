@@ -21,4 +21,8 @@ class FavouriteDataBaseInteractorImpl(private val favouriteDataBaseRepository: F
         return favouriteDataBaseRepository.getFavouritesVacancies()
     }
 
+    override suspend fun getVacancyBiId(id: String): VacancyDetails {
+        return favouriteDataBaseRepository.getVacancyById(id)
+    }
+
 }
