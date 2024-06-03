@@ -16,9 +16,6 @@
         <action
             android:id="@+id/action_choicePlaceFragment_to_regionFragment"
             app:destination="@id/regionFragment" />
-        <action
-            android:id="@+id/action_choicePlaceFragment_to_filterFragment"
-            app:destination="@id/filterFragment" />
     </fragment>
     <fragment
         android:id="@+id/choiceSphereFragment"
@@ -50,9 +47,6 @@
         <action
             android:id="@+id/action_filterFragment_to_choiceSphereFragment"
             app:destination="@id/choiceSphereFragment" />
-        <action
-            android:id="@+id/action_filterFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/regionFragment"
@@ -67,18 +61,6 @@
         <action
             android:id="@+id/action_searchFragment_to_filterFragment"
             app:destination="@id/filterFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_choicePlaceFragment"
-            app:destination="@id/choicePlaceFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_countryFragment"
-            app:destination="@id/countryFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_choiceSphereFragment"
-            app:destination="@id/choiceSphereFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_regionFragment"
-            app:destination="@id/regionFragment" />
         <action
             android:id="@+id/action_searchFragment_to_vacancyFragment"
             app:destination="@id/vacancyFragment" />
