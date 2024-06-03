@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -21,9 +22,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.app.App
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.domain.models.VacanciesResponse
 import ru.practicum.android.diploma.ui.Key
 import ru.practicum.android.diploma.ui.search.models.SearchFragmentState
 import ru.practicum.android.diploma.ui.search.recyclerview.SearchAdapter
@@ -50,42 +49,56 @@ class SearchFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setFragmentResultListener(Key.REQUEST_KEY) { _, bundle ->
             if (bundle.getBoolean(Key.IS_APPLY_BUTTON)) {
                 viewModel.repeatRequest(binding.searchEditText.text.toString(), false)
             }
         }
+        val presenter = SearchFragmentPresenter(binding)
+
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
         if (viewModel.isFiltersOn()) {
             binding.favoriteButton.setImageResource(R.drawable.search_filter_active)
         } else {
             binding.favoriteButton.setImageResource(R.drawable.search_filter_inactive)
         }
-        binding.searchEditText.addTextChangedListener(getTextWatcher())
+
+        binding.searchEditText.addTextChangedListener(getTextWatcher(presenter))
+
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             searchEditActionListener(actionId)
             false
         }
+
         binding.searchRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
         binding.searchRecyclerView.adapter = searchAdapter
+
         binding.searchRecyclerView.addOnScrollListener(getOnScrollListener(imm))
+
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
-            render(state)
-            binding.clearIcon.setOnClickListener {
-                binding.searchEditText.text.clear()
-                when (state) {
-                    is SearchFragmentState.Empty -> { viewModel.vmSetToStart() }
-                    is SearchFragmentState.Error -> { viewModel.vmSetToStart() }
-                    else -> { }
-                }
-            }
+            render(state, presenter)
         }
+
+        binding.clearIcon.setOnClickListener { clearIconClickListener(presenter) }
+
         binding.favoriteButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_searchFragment_to_filterFragment
             )
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() { exit() }
+        })
+    }
+
+    private fun clearIconClickListener(presenter: SearchFragmentPresenter) {
+        binding.searchEditText.text.clear()
+        emptySearchInputState(presenter)
     }
     private fun searchEditActionListener(actionId: Int) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -118,36 +131,46 @@ class SearchFragment : Fragment() {
             }
         }
     }
-    private fun getTextWatcher() = object : TextWatcher {
+
+    private fun emptySearchInputState(presenter: SearchFragmentPresenter) {
+        if (searchAdapter.itemCount != 0) {
+            presenter.justShowContent(totalFoundVacancies)
+            isPageLoading = false
+        } else {
+            presenter.showStart()
+        }
+    }
+    private fun getTextWatcher(presenter: SearchFragmentPresenter) = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             binding.clearIcon.isVisible = !s.isNullOrEmpty()
             binding.searchIcon.isVisible = s.isNullOrEmpty()
             searchText = s.toString()
-            if (searchText.isNullOrEmpty()) {
-                if (searchAdapter.itemCount != 0) {
-                    justShowContent()
-                } else {
-                    showStart()
-                }
-            }
+            if (searchText.isNullOrEmpty()) emptySearchInputState(presenter)
             searchText?.let { viewModel.searchDebounce(it) } ?: { viewModel.searchDebounce(String()) }
         }
         override fun afterTextChanged(s: Editable?) = Unit
     }
-    private fun render(state: SearchFragmentState) {
+    private fun render(state: SearchFragmentState, presenter: SearchFragmentPresenter) {
         when (state) {
-            is SearchFragmentState.Start -> showStart()
+            is SearchFragmentState.Start -> {
+                presenter.showStart()
+            }
             is SearchFragmentState.Content -> {
                 pages = state.vacancy.pages
                 currentPage = state.vacancy.page
                 totalFoundVacancies = state.vacancy.found
-                showContent(state.vacancy)
+                presenter.showContent(
+                    vacancy = state.vacancy,
+                    searchAdapter = searchAdapter,
+                    totalFoundVacancies = totalFoundVacancies
+                )
+                isPageLoading = false
             }
-            is SearchFragmentState.Empty -> showEmpty(state.message)
+            is SearchFragmentState.Empty -> presenter.showEmpty(state.message)
             is SearchFragmentState.Error -> {
                 if (state.isSearch) {
-                    showError(state.errorMessage)
+                    presenter.showError(state.errorMessage)
                 } else {
                     binding.pageLoading.isVisible = false
                     isPageLoading = false
@@ -161,7 +184,7 @@ class SearchFragment : Fragment() {
                     }
                 }
             }
-            is SearchFragmentState.Loading -> showLoading()
+            is SearchFragmentState.Loading -> presenter.showLoading()
         }
     }
     private fun toastDebounce(): Boolean {
@@ -175,81 +198,6 @@ class SearchFragment : Fragment() {
         }
         return current
     }
-    private fun showStart() {
-        with(binding) {
-            placeholderSearch.visibility = View.VISIBLE
-            noInternet.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            vacancyCount.visibility = View.GONE
-            searchRecyclerView.visibility = View.GONE
-        }
-    }
-    private fun showLoading() {
-        with(binding) {
-            progressBar.visibility = View.VISIBLE
-            placeholderSearch.visibility = View.GONE
-            noInternet.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
-            vacancyCount.visibility = View.GONE
-            searchRecyclerView.visibility = View.GONE
-            searchRecyclerView.removeAllViewsInLayout()
-        }
-    }
-    private fun showError(errorMessage: String) {
-        with(binding) {
-            noInternet.visibility = View.VISIBLE
-            placeholderSearch.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            searchRecyclerView.visibility = View.GONE
-            vacancyCount.visibility = View.GONE
-        }
-    }
-    private fun showEmpty(emptyMessage: String) {
-        with(binding) {
-            vacancyCount.text = requireContext().getString(
-                R.string.search_error_no_vacancies
-            )
-            vacancyCount.visibility = View.VISIBLE
-            somethingWrong.visibility = View.VISIBLE
-            placeholderSearch.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            searchRecyclerView.visibility = View.GONE
-            noInternet.visibility = View.GONE
-        }
-    }
-    private fun showContent(vacancy: VacanciesResponse) {
-        searchAdapter.setData(vacancy.items)
-        isPageLoading = false
-        with(binding) {
-            vacancyCount.text = App.getAppResources()?.getQuantityString(
-                R.plurals.vacancy_plurals, totalFoundVacancies, totalFoundVacancies
-            )
-            placeholderSearch.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
-            noInternet.visibility = View.GONE
-            vacancyCount.visibility = View.VISIBLE
-            searchRecyclerView.visibility = View.VISIBLE
-            pageLoading.isVisible = false
-        }
-    }
-    private fun justShowContent() {
-        isPageLoading = false
-        with(binding) {
-            vacancyCount.text = App.getAppResources()?.getQuantityString(
-                R.plurals.vacancy_plurals, totalFoundVacancies, totalFoundVacancies
-            )
-            placeholderSearch.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            somethingWrong.visibility = View.GONE
-            noInternet.visibility = View.GONE
-            vacancyCount.visibility = View.VISIBLE
-            searchRecyclerView.visibility = View.VISIBLE
-            pageLoading.isVisible = false
-        }
-    }
     private fun getAdapter() =
         SearchAdapter { vacancy ->
             if (viewModel.clickDebounce()) {
@@ -259,6 +207,18 @@ class SearchFragment : Fragment() {
                 )
             }
         }
+    private fun exit() {
+        if (toastDebounce()) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.exit_message),
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        } else {
+            requireActivity().finish()
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

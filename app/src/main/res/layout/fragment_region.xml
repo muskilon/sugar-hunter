@@ -24,14 +24,12 @@
         android:layout_width="0dp"
         android:layout_height="64dp"
         android:fontFamily="@font/ys_display_medium"
-        android:lineHeight="@dimen/text_line_height_26dp"
         android:paddingStart="0dp"
         android:paddingTop="@dimen/margin_19dp"
         android:paddingEnd="@dimen/margin_8dp"
         android:paddingBottom="@dimen/margin_19dp"
         android:text="@string/choice_region_fragment_header"
         android:textColor="?attr/prime_color_black"
-        android:textFontWeight="500"
         android:textSize="@dimen/text_size_22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/backButton"
@@ -61,12 +59,10 @@
             android:fontFamily="@font/ys_display_regular"
             android:hint="@string/region_input_edittext"
             android:inputType="text"
-            android:lineHeight="@dimen/text_line_height_19dp"
             android:maxLines="1"
             android:textColor="@color/black_universal"
             android:textColorHint="?attr/secondary_dark_gray"
             android:textCursorDrawable="@drawable/search_edittext_color_cursor"
-            android:textFontWeight="400"
             android:textSize="@dimen/text_size_16sp" />
 
         <ImageView
@@ -128,11 +124,9 @@
             android:layout_marginHorizontal="@dimen/margin_16dp"
             android:layout_marginTop="@dimen/margin_16dp"
             android:fontFamily="@font/ys_display_medium"
-            android:lineHeight="@dimen/text_line_height_26dp"
             android:text="@string/region_no_found"
             android:textAlignment="center"
             android:textColor="?attr/prime_color_black"
-            android:textFontWeight="500"
             android:textSize="@dimen/text_size_22sp" />
 
     </LinearLayout>

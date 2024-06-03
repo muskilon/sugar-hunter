@@ -1,7 +1,6 @@
 
 package ru.practicum.android.diploma.ui.vacancy
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,10 +32,8 @@ class VacancyViewModel(
 
             if (checkInFavouritesMutableLiveData.value == true) {
                 searchVacancyInBD(vacancyId)
-                Log.d("bd", true.toString())
             } else {
                 searchVacancyById(vacancyId)
-                Log.d("bd", false.toString())
             }
         }
     }

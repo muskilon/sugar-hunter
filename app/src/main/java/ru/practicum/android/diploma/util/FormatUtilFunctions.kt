@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.util
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.util.Log
 import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,7 +29,7 @@ class FormatUtilFunctions {
     }
 
     private fun getCurrency(currency: String?): String {
-        var string = ""
+        var string = String()
         if (currency != null) {
             string = when (currency) {
                 "RUR", "RUB" -> "₽"
@@ -61,7 +60,7 @@ class FormatUtilFunctions {
         }
     }
 
-    fun dpToPx(context: Context): Int {
+    private fun dpToPx(context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             ROUNDED_CORNERS_12PX,
@@ -70,14 +69,13 @@ class FormatUtilFunctions {
     }
 
     fun showSalaryString(salary: Salary?, textView: TextView) {
-        Log.d("mull_salary", salary.toString())
         val nullString = textView.context.getString(R.string.no_salary_string)
         if (salary == null) {
             textView.isVisible = true
             textView.text = nullString
             return
         } else {
-            var salaryText: String = ""
+            var salaryText = String()
 
             if (salary.from != null) {
                 salaryText =
@@ -121,5 +119,4 @@ class FormatUtilFunctions {
         const val TEXT_SIZE_12SP = 12F
         const val TEXT_SIZE_16SP = 16f
     }
-
 }

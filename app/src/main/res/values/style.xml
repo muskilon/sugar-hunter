@@ -4,7 +4,6 @@
 
     <style name="CustomBottomNavigation" parent="Widget.Design.BottomNavigationView">
         <item name="android:textSize">@dimen/text_size_12sp</item>
-        <item name="android:textFontWeight">400</item>
         <item name="lineHeight">@dimen/text_line_height_16dp</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
@@ -21,7 +20,16 @@
         <item name="android:textAllCaps">false</item>
         <item name="cornerRadius">12dp</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textFontWeight">500</item>
     </style>
+
+    <style name="teamMemberStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin_16dp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textColor">?attr/prime_color_black</item>
+        <item name="android:textSize">@dimen/text_size_16sp</item>
+    </style>
+
 
 </resources>

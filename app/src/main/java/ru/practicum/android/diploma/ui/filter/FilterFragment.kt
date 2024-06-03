@@ -164,12 +164,8 @@ class FilterFragment : Fragment() {
         renderArea(filters)
         renderIndustry(filters)
         if (filters.isNotEmpty()) {
-            filters.keys.forEach { key -> // Переделать
-                when (key) {
-                    Key.ONLY_WITH_SALARY -> binding.salaryCheckBox.isChecked = true
-                }
-                binding.buttonDecline.isVisible = true
-            }
+            binding.salaryCheckBox.isChecked = !filters[Key.ONLY_WITH_SALARY].isNullOrEmpty()
+            binding.buttonDecline.isVisible = true
         } else {
             binding.buttonDecline.isVisible = false
             binding.salaryCheckBox.isChecked = false
@@ -185,7 +181,7 @@ class FilterFragment : Fragment() {
             binding.selectedIndustryText.isVisible = true
             binding.selectedIndustryText.text = filters[Key.INDUSTRY_NAME]
         } else {
-            binding.selectedIndustryText.text = String() // Проверить
+            binding.selectedIndustryText.text = String()
             formatUtil.formatUnselectedFilterTextHeader(binding.selectIndustryHeader)
             binding.selectIndustryActionButton.tag = Key.ARROW
             binding.selectedIndustryText.isVisible = false
@@ -206,7 +202,7 @@ class FilterFragment : Fragment() {
                 binding.selectedRegionsText.text = st
             }
         } else {
-            binding.selectedRegionsText.text = String() // Проверить
+            binding.selectedRegionsText.text = String()
             formatUtil.formatUnselectedFilterTextHeader(binding.selectRegionHeader)
             binding.selectRegionActionButton.tag = Key.ARROW
             binding.selectedRegionsText.isVisible = false
@@ -227,6 +223,7 @@ class FilterFragment : Fragment() {
     }
 
     private fun initFilters() {
+        oldFilters.clear()
         oldFilters.putAll(viewModel.getFiltersFromStorage())
         oldFilters[Key.SALARY]?.let {
             binding.salaryEdit.setText(it)
