@@ -81,8 +81,9 @@ class SearchFragment : Fragment() {
 
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
             render(state, presenter)
-            binding.clearIcon.setOnClickListener { clearIconClickListener(state) }
         }
+
+        binding.clearIcon.setOnClickListener { clearIconClickListener(presenter) }
 
         binding.favoriteButton.setOnClickListener {
             findNavController().navigate(
@@ -95,13 +96,9 @@ class SearchFragment : Fragment() {
         })
     }
 
-    private fun clearIconClickListener(state: SearchFragmentState) {
+    private fun clearIconClickListener(presenter: SearchFragmentPresenter) {
         binding.searchEditText.text.clear()
-        when (state) {
-            is SearchFragmentState.Empty -> viewModel.vmSetToStart()
-            is SearchFragmentState.Error -> viewModel.vmSetToStart()
-            else -> { }
-        }
+        emptySearchInputState(presenter)
     }
     private fun searchEditActionListener(actionId: Int) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -134,20 +131,22 @@ class SearchFragment : Fragment() {
             }
         }
     }
+
+    private fun emptySearchInputState(presenter: SearchFragmentPresenter){
+        if (searchAdapter.itemCount != 0) {
+            presenter.justShowContent(totalFoundVacancies)
+            isPageLoading = false
+        } else {
+            presenter.showStart()
+        }
+    }
     private fun getTextWatcher(presenter: SearchFragmentPresenter) = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             binding.clearIcon.isVisible = !s.isNullOrEmpty()
             binding.searchIcon.isVisible = s.isNullOrEmpty()
             searchText = s.toString()
-            if (searchText.isNullOrEmpty()) {
-                if (searchAdapter.itemCount != 0) {
-                    presenter.justShowContent(totalFoundVacancies)
-                    isPageLoading = false
-                } else {
-                    presenter.showStart()
-                }
-            }
+            if (searchText.isNullOrEmpty()) emptySearchInputState(presenter)
             searchText?.let { viewModel.searchDebounce(it) } ?: { viewModel.searchDebounce(String()) }
         }
         override fun afterTextChanged(s: Editable?) = Unit
