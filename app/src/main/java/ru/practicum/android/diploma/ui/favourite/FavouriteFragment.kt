@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
 import ru.practicum.android.diploma.domain.models.FavouritesState
 import ru.practicum.android.diploma.domain.models.VacancyDetails
+import ru.practicum.android.diploma.ui.Key
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 
 class FavouriteFragment : Fragment() {
@@ -49,17 +50,12 @@ class FavouriteFragment : Fragment() {
 
     }
 
-    companion object {
-        fun newInstance(): Fragment = FavouriteFragment()
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
-
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
             lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
+                delay(Key.CLICK_DEBOUNCE_DELAY)
                 isClickAllowed = true
             }
         }
@@ -122,6 +118,5 @@ class FavouriteFragment : Fragment() {
             viewModel.readFavoriteList()
             viewModel.updateState()
         }
-
     }
 }

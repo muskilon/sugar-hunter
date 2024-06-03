@@ -152,5 +152,4 @@ class ChooseIndustryFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

@@ -5,31 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.databinding.FragmentTeamBinding
+import ru.practicum.android.diploma.R
+
 
 class TeamFragment : Fragment() {
-
-    private var _binding: FragmentTeamBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel by viewModel<TeamViewModel>()
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTeamBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        return inflater.inflate(R.layout.fragment_team, container, false)
     }
 }

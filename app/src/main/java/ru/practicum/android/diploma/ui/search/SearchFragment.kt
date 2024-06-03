@@ -132,7 +132,7 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun emptySearchInputState(presenter: SearchFragmentPresenter){
+    private fun emptySearchInputState(presenter: SearchFragmentPresenter) {
         if (searchAdapter.itemCount != 0) {
             presenter.justShowContent(totalFoundVacancies)
             isPageLoading = false

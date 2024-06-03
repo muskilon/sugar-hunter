@@ -138,7 +138,4 @@ class SearchViewModel(
             }
         }
     }
-    fun vmSetToStart() {
-        stateLiveData.postValue(SearchFragmentState.Start)
-    }
 }
