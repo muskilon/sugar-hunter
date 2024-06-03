@@ -12,8 +12,6 @@ import ru.practicum.android.diploma.domain.models.Resource
 
 class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor) : ViewModel() {
 
-//    private var latestSearchText = ""
-//    private var searchJob: Job? = null
     private var industriesList = ArrayList<Industry>()
 
     private var stateMutableLiveData = MutableLiveData<IndustryState>()
@@ -46,41 +44,6 @@ class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor
         }
     }
 
-//    fun searchDebounce(text: String) {
-//        if (latestSearchText == text || text.isEmpty()) {
-//            searchJob?.cancel()
-//            viewModelScope.launch {
-//                renderState()
-//            }
-//        } else {
-//            getProgressBar()
-//            searchJob?.cancel()
-//            searchJob = viewModelScope.launch {
-//                delay(SEARCH_DEBOUNCE_DELAY)
-//                sortIndustriesListByInput(text)
-//            }
-//        }
-//    }
-
-//    private fun sortIndustriesListByInput(request: String) {
-//        if (request.isNotEmpty()) {
-//            val filteredList = industriesList.filter {
-//                it.name.lowercase(Locale.getDefault()).startsWith(request) ||
-//                    it.name.lowercase(Locale.getDefault()).contains(request)
-//            }
-//            val sortedList = filteredList.sortedWith(compareBy(
-//                { !it.name.startsWith(request, ignoreCase = true) },
-//                { it.name }
-//            ))
-//            val sortedArrayList = ArrayList(sortedList)
-//            if (sortedArrayList.isEmpty()) {
-//                stateMutableLiveData.postValue(IndustryState.NotFound)
-//            } else {
-//                stateMutableLiveData.postValue(IndustryState.Content(sortedArrayList))
-//            }
-//        }
-//    }
-
     fun searchIndustry(request: String) {
         if (request.isNotEmpty()) {
             val result = industriesList.filter {
@@ -95,13 +58,4 @@ class ChooseIndustryViewModel(private val industryInteractor: IndustryInteractor
             stateMutableLiveData.postValue(IndustryState.Content(industriesList))
         }
     }
-
-//    private fun getProgressBar() {
-//        stateMutableLiveData.postValue(IndustryState.Loading)
-//    }
-//
-//    companion object {
-//        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-//    }
-
 }

@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.favourite
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,10 +30,9 @@ class FavouriteViewModel(private val favouriteDataBaseInteractor: FavouriteDataB
         return withContext(Dispatchers.IO) {
             val flowList = favouriteDataBaseInteractor.getFavouritesVacancies()
             val favoriteList = ArrayList<VacancyDetails>()
-            flowList.collect { vacansies ->
-                favoriteList.addAll(vacansies)
+            flowList.collect { vacancies ->
+                favoriteList.addAll(vacancies)
             }
-            Log.d("list", favoriteList.toString())
             favoriteMutableListLiveData.postValue(favoriteList)
         }
     }
@@ -51,7 +49,6 @@ class FavouriteViewModel(private val favouriteDataBaseInteractor: FavouriteDataB
         viewModelScope.launch {
             if (favoriteMutableListLiveData.value != null) {
                 stateMutableLiveData.postValue(FavouritesState.Content(favoriteMutableListLiveData.value!!))
-                Log.d("content", stateMutableLiveData.toString())
             } else {
                 setStateError()
             }
@@ -65,5 +62,4 @@ class FavouriteViewModel(private val favouriteDataBaseInteractor: FavouriteDataB
     private fun setStateError() {
         stateMutableLiveData.postValue(FavouritesState.Error)
     }
-
 }

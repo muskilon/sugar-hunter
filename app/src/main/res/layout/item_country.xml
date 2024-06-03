@@ -16,9 +16,7 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:fontFamily="@font/ys_display_regular"
-        android:lineHeight="@dimen/text_line_height_19dp"
         android:textColor="?attr/prime_color_black"
-        android:textFontWeight="400"
         android:textSize="@dimen/text_size_16sp"
         tools:text="Место" />
 

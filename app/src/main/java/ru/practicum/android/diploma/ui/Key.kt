@@ -12,6 +12,7 @@ object Key {
 
     const val ARROW = "arrow"
     const val CLEAR = "clear"
+    const val ERROR_MESSAGE = "Error message"
 
 //    API parameters
 

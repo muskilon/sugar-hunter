@@ -8,9 +8,7 @@ import ru.practicum.android.diploma.ui.filter.industry.ChooseIndustryViewModel
 import ru.practicum.android.diploma.ui.filter.place.ChoicePlaceViewModel
 import ru.practicum.android.diploma.ui.filter.place.country.CountryViewModel
 import ru.practicum.android.diploma.ui.filter.place.region.RegionViewModel
-import ru.practicum.android.diploma.ui.root.RootViewModel
 import ru.practicum.android.diploma.ui.search.SearchViewModel
-import ru.practicum.android.diploma.ui.team.TeamViewModel
 import ru.practicum.android.diploma.ui.vacancy.VacancyViewModel
 
 val viewModelModules = module {
@@ -33,13 +31,7 @@ val viewModelModules = module {
         FilterViewModel(filtersInterActor = get())
     }
     viewModel {
-        RootViewModel()
-    }
-    viewModel {
         SearchViewModel(vacanciesInterActor = get(), filtersInterActor = get())
-    }
-    viewModel {
-        TeamViewModel()
     }
     viewModel { (id: String) ->
         VacancyViewModel(vacancyId = id, favouriteDataBaseInteractor = get(), vacanciesInterActor = get())

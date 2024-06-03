@@ -26,7 +26,7 @@ class VacanciesRepositoryImpl(
                 with(response) {
                     val data = mapper.mapSearchResponseToVacanciesResponse(this.value)
                     if (data.items.isEmpty()) {
-                        emit(Resource.NotFound(EMPTY))
+                        emit(Resource.NotFound(String()))
                     } else {
                         emit(Resource.Data(data))
                     }
@@ -85,8 +85,4 @@ class VacanciesRepositoryImpl(
             }
         }
     }.flowOn(Dispatchers.IO)
-
-    companion object {
-        private const val EMPTY = "EMPTY"
-    }
 }

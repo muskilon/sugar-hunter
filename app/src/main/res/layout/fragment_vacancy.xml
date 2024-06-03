@@ -25,14 +25,12 @@
         android:layout_width="0dp"
         android:layout_height="64dp"
         android:fontFamily="@font/ys_display_medium"
-        android:lineHeight="@dimen/text_line_height_26dp"
         android:paddingStart="0dp"
         android:paddingTop="@dimen/margin_19dp"
         android:paddingEnd="@dimen/margin_8dp"
         android:paddingBottom="@dimen/margin_19dp"
         android:text="@string/vacancy_fragment_header"
         android:textColor="?attr/prime_color_black"
-        android:textFontWeight="500"
         android:textSize="@dimen/text_size_22sp"
         app:layout_constraintEnd_toStartOf="@id/shareButton"
         app:layout_constraintStart_toEndOf="@+id/backButton"
@@ -43,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
-        android:paddingLeft="@dimen/padding_20dp"
+        android:paddingStart="@dimen/padding_20dp"
         android:paddingTop="@dimen/padding_20dp"
         android:paddingEnd="@dimen/padding_20dp"
         android:paddingBottom="@dimen/padding_20dp"
@@ -97,9 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ys_display_bold"
-                    android:lineHeight="@dimen/text_line_height_38dp"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="700"
                     android:textSize="@dimen/text_size_32sp"
                     tools:text="Android-разработчик" />
 
@@ -108,9 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="@dimen/text_line_height_26dp"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="500"
                     android:textSize="@dimen/text_size_22sp"
                     tools:text="от 00 до 00" />
             </LinearLayout>
@@ -142,9 +136,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_toEndOf="@id/vacancyImage"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="26dp"
                     android:textColor="@color/black_day"
-                    android:textFontWeight="500"
                     android:textSize="@dimen/text_size_22sp"
                     tools:text="Еда" />
 
@@ -158,9 +150,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_toEndOf="@id/vacancyImage"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="19dp"
                     android:textColor="@color/black_day"
-                    android:textFontWeight="400"
                     android:textSize="@dimen/text_size_16sp"
                     tools:text="Москва" />
 
@@ -178,10 +168,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="19dp"
                     android:text="@string/experience_header"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="500"
                     android:textSize="@dimen/text_size_16sp"
                     tools:text="Требуемый опыт" />
 
@@ -191,9 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="19dp"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="400"
                     android:textSize="@dimen/text_size_16sp"
                     tools:text="От 3 лет до 5 лет" />
             </LinearLayout>
@@ -204,9 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/ys_display_regular"
-                android:lineHeight="19dp"
                 android:textColor="?attr/prime_color_black"
-                android:textFontWeight="400"
                 android:textSize="@dimen/text_size_16sp"
                 tools:text="Полная занятость, Удаленная работа" />
 
@@ -217,10 +201,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/ys_display_regular"
-                android:lineHeight="@dimen/text_line_height_26dp"
                 android:text="@string/about_job_header"
                 android:textColor="?attr/prime_color_black"
-                android:textFontWeight="500"
                 android:textSize="@dimen/text_size_22sp"
                 tools:text="Описание вакансии" />
 
@@ -237,11 +219,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="@dimen/text_line_height_19dp"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="400"
                     android:textSize="@dimen/text_size_16sp"
-                    tools:text="Набор \nОпупительных\nОбязанностей" />
+                    tools:text="Набор \nРабочих\nОбязанностей" />
             </LinearLayout>
 
             <LinearLayout
@@ -256,10 +236,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="@dimen/text_line_height_26dp"
                     android:text="@string/keySkills_header"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="500"
                     android:textSize="@dimen/text_size_22sp"
                     tools:text="Ключевые навыки" />
 
@@ -269,9 +247,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16dp"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="@dimen/text_line_height_19dp"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="400"
                     android:textSize="@dimen/text_size_16sp"
                     tools:text="Набор \nОпупительных\nНавыков" />
             </LinearLayout>
@@ -288,10 +264,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="@dimen/text_line_height_26dp"
                     android:text="@string/contacts_header"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="500"
                     android:textSize="@dimen/text_size_22sp" />
 
                 <TextView
@@ -300,10 +274,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="19dp"
                     android:text="@string/contact_face_header"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="500"
                     android:textSize="16sp" />
 
                 <TextView
@@ -311,9 +283,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="19dp"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="400"
                     android:textSize="16sp"
                     tools:text="Ирина" />
 
@@ -323,10 +293,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16dp"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="19dp"
                     android:text="@string/contact_email_header"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="500"
                     android:textSize="16sp" />
 
                 <TextView
@@ -335,9 +303,7 @@
                     android:layout_height="wrap_content"
                     android:autoLink="email"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="19dp"
                     android:textColorLink="@color/blue"
-                    android:textFontWeight="400"
                     android:textSize="16sp"
                     tools:text="i.lozgkina@yandex.ru" />
 
@@ -347,10 +313,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_24dp"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="19dp"
                     android:text="@string/contact_phone_header"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="500"
                     android:textSize="16sp" />
 
                 <TextView
@@ -359,9 +323,7 @@
                     android:layout_height="wrap_content"
                     android:autoLink="phone"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="19dp"
                     android:textColorLink="@color/blue"
-                    android:textFontWeight="400"
                     android:textSize="16sp"
                     tools:text="+7 (904) 329-27-71" />
 
@@ -371,10 +333,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16dp"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="19dp"
                     android:text="@string/contact_comments_header"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="500"
                     android:textSize="16sp" />
 
                 <TextView
@@ -383,9 +343,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/ys_display_regular"
-                    android:lineHeight="19dp"
                     android:textColor="?attr/prime_color_black"
-                    android:textFontWeight="400"
                     android:textSize="16sp"
                     tools:text="Заполнить анкету по форме можно на нашем сайте" />
 
@@ -422,11 +380,9 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="@dimen/margin_16dp"
             android:fontFamily="@font/ys_display_medium"
-            android:lineHeight="@dimen/text_line_height_26dp"
             android:text="@string/vacancy_fragment_placeholder_text"
             android:textAlignment="center"
             android:textColor="?attr/prime_color_black"
-            android:textFontWeight="500"
             android:textSize="@dimen/text_size_22sp" />
     </LinearLayout>
 
