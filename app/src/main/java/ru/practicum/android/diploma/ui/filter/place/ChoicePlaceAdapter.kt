@@ -24,7 +24,6 @@ class ChoicePlaceAdapter(
             onItemClick.invoke(countries[holder.getBindingAdapterPosition()])
         }
     }
-
     override fun getItemCount(): Int = countries.size
 
     @SuppressLint("NotifyDataSetChanged")
